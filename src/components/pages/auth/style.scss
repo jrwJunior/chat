@@ -1,0 +1,42 @@
+.ant-form.login-form,
+.ant-form.register-form {
+  margin-top: 22px;
+}
+
+.ant-form .ant-form-item {
+  margin-bottom: 10px;
+}
+
+.ant-form .ant-form-item:last-child {
+  margin-top: 15px;
+}
+
+.ant-form .ant-input {
+  font-size: 16px;
+  height: 40px;
+  background-color: rgba(0, 0, 0, .04);
+  border-color: transparent;
+  border-radius: 6px;
+}
+
+.ant-form .ant-input:focus {
+  box-shadow: none;
+}
+
+.ant-form .ant-input::-webkit-input-placeholder {
+  color: #898989;
+}
+
+.ant-typography.text {
+  font-size: 18px;
+  color: rgba(0, 0, 0, .55);
+}
+
+.form-link {
+  display: block;
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #323232;
+  text-align: center;
+}
