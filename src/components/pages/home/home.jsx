@@ -1,8 +1,10 @@
 import React from 'react';
 
+import Message from 'components/message';
+
 const Home = () => {
   return (
-    <div>Home</div>
+    <Message/>
   )
 };
 
