@@ -1,21 +1,17 @@
 import React from 'react';
-import routes from '../../routes';
-import { Typography } from 'antd';
+import { Switch, Route } from "react-router-dom";
 
-const { Title, Text } = Typography;
+import Auth from 'components/pages/auth';
+import Home from 'components/pages/home';
 
 const App = () => {
-  const authRoutes = routes();
-
   return (
-    <div className="container">
-      <div className='auth-container'>
-        <Title>Be together, whenever.</Title>
-        <Text className='text'>A simple way to text, audio chat and plan things all in one place.</Text>
-        { authRoutes }
-      </div>
-      <div className='scene-hero' />
-    </div>
+    <Switch>
+      <Route exact path={[ '/login', '/register' ]} component={ Auth } />
+      <Route 
+        path='/'
+        render={ () => <Home/> } />
+    </Switch>
   );
 }
 

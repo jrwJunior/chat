@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Button from '../../../button';
-import { Form, Input } from 'antd';
+import { Form, Input, Button } from 'antd';
 
-import '../style.scss';
+import 'style_components/button/style.scss';
 
 const Register = () => {
   return (
