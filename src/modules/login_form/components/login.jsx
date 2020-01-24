@@ -6,10 +6,10 @@ import Field from '../../form_field';
 import 'style_components/button/style.scss';
 
 const Login = (props) => {
-  const { isValid, isSubmitting } = props;
+  const { isValid, isSubmitting, handleSubmit } = props;
 
   return (
-    <Form className="login-form">
+    <Form className="login-form" onSubmit={ handleSubmit }>
       <Field
         id='email'
         type='email'

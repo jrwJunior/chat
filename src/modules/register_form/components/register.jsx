@@ -6,10 +6,10 @@ import Field from '../../form_field';
 import 'style_components/button/style.scss';
 
 const Register = props => {
-  const { isValid, isSubmitting } = props;
+  const { isValid, isSubmitting, handleSubmit } = props;
 
   return (
-    <Form className="register-form">
+    <Form className="register-form" onSubmit={ handleSubmit }>
       <Field
         id='email'
         type='email'

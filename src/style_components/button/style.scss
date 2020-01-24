@@ -24,3 +24,8 @@
   background-color: darken(#59d539, 15%);
   border-color: darken(#59d539, 15%);
 }
+
+.ant-btn.ant-btn-primary[disabled],
+.ant-btn.ant-btn-primary[disabled]:hover {
+  border-color: #f5f5f5;
+}
