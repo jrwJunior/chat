@@ -1,30 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
+import { Form, Button } from 'antd';
 
+import Field from '../../form_field';
 import 'style_components/button/style.scss';
 
-const Login = () => {
+const Login = (props) => {
+  const { isValid, isSubmitting } = props;
+
   return (
     <Form className="login-form">
-      <Form.Item>
-        <Input
-          type='email'
-          placeholder="Email"
-        />
-      </Form.Item>
-      <Form.Item>
-        <Input
-          type="password"
-          placeholder="Password"
-        />
-      </Form.Item>
+      <Field
+        id='email'
+        type='email'
+        placeholder="Email"
+        { ...props }
+      />
+      <Field
+        id='password'
+        type='password'
+        placeholder="password"
+        { ...props }
+      />
       <Form.Item>
         <Button
           type="primary" 
           size='large'
-          className='btn-base'
           htmlType="submit"
+          className='btn-base'
+          disabled={ !isValid || isSubmitting }
         >
           Log in
         </Button>
