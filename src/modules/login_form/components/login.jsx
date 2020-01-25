@@ -14,6 +14,7 @@ const Login = (props) => {
         id='email'
         type='email'
         placeholder="Email"
+        allowClear
         { ...props }
       />
       <Field

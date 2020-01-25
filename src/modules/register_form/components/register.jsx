@@ -14,18 +14,21 @@ const Register = props => {
         id='email'
         type='email'
         placeholder="Email"
+        allowClear
         { ...props }
       />
       <Field
         id='firstName'
         type='text'
         placeholder="First Name"
+        allowClear
         { ...props }
       />
       <Field
         id='surname'
         type='text'
         placeholder="Surname"
+        allowClear
         { ...props }
       />
       <Field

@@ -4,10 +4,11 @@ import classNames from 'classnames';
 import { Input, Form } from 'antd';
 
 const { Item } = Form;
+const { Password } = Input;
 
 const Field = props => {
-  const { id, type, placeholder, ...rest } = props;
-  const attrs = { id, type, placeholder };
+  const { id, type, placeholder, allowClear, ...rest } = props;
+  const attrs = { id, type, placeholder, allowClear };
   const {
     values,
     touched,
@@ -18,16 +19,25 @@ const Field = props => {
 
   return (
     <Item
-      hasFeedback
       validateStatus={ classNames({ 'error': errors[id] && touched[id], 'success': !errors[id] && touched[id] }) }
-      help={ errors[id] && touched[id] && errors[id] }
+      help={ touched[id] && errors[id] }
     >
-      <Input
-        { ...attrs }
-        value={values[id]}
-        onChange={handleChange}
-        onBlur={handleBlur}
-      />
+      {/* eslint-disable-next-line */}
+      { id == 'password' ? (
+        <Password
+          { ...attrs }
+          value={values[id]}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+      ) : (
+        <Input
+          { ...attrs }
+          value={values[id]}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+      )}
     </Item>
   )
 };
