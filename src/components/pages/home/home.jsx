@@ -1,16 +1,22 @@
 import React from 'react';
 
-import Message from 'components/message';
-import Indicator from 'components/typing_indicator';
 import Dialogs from 'components/dialogs';
+import Navbar from 'components/navbar';
+import HistoriDialog from 'components/history_dialog';
+import SendPanel from 'components/send_panel';
+
+import './style.scss';
 
 const Home = () => {
   return (
-    <>
-      <Message/>
-      <Indicator/>
+    <div className='layout'>
       <Dialogs/>
-    </>
+      <main className='content'>
+        <Navbar/>
+        <HistoriDialog/>
+        <SendPanel/>
+      </main>
+    </div>
   )
 };
 

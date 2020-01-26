@@ -1,8 +1,8 @@
 import React from 'react';
 
 import DialogBanner from './banner';
-import DialogSearch from './search';
-import DialogItem from './item';
+import DialogSearch from '../dialog_search';
+import DialogItem from '../dilaog_item';
 import './style.scss';
 
 const Dialogs = () => {

@@ -10,7 +10,6 @@ const DialogSearch = () => {
       <Search
         placeholder="Search Contacts"
         onSearch={value => console.log(value)}
-        style={{ width: '200px' }}
       />
     </div>
   )

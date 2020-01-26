@@ -1,9 +1,23 @@
+.dialogs-panel {
+  width: 320px;
+  height: 100vh;
+  background-color: #fff;
+  border-right: 1px solid #ececec;
+  padding: 10px 15px;
+}
+
 .dialog {
   display: flex;
 }
 
 .dialog-banner {
   display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.dialogs_search {
+  margin-bottom: 25px;
 }
 
 .dialog-add_message {
@@ -42,6 +56,7 @@
 
 .dialog-message_wrap {
   margin-left: 10px;
+  overflow: hidden;
 }
 
 .dialog-head {
@@ -52,8 +67,10 @@
 
 .dialog-message {
   font-size: 14px;
+  max-width: 200px;
   color: #202020;
   opacity: 0.5;
+  white-space: nowrap;
 }
 
 .dialog-meta {

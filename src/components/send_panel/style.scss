@@ -1,0 +1,52 @@
+.send-filed_panel {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.send-field_wrap {
+  position: relative;
+  width: 100%;
+}
+
+.attach-file {
+  display: flex;
+  margin-right: 3px;
+}
+
+.emoji-insert_btn {
+  position: absolute;
+  right: 10px;
+  bottom: 1px;
+  z-index: 1;
+}
+
+.message-send.ant-btn-lg {
+  padding: 0;
+}
+
+.ant-input {
+  resize: none;
+}
+
+.ant-input.send-textarea {
+  padding: 8px 11px;
+  background-color: #F7F8F9;
+  border-color: #F7F8F9;
+  border-radius: 2px;
+
+  &::-webkit-input-placeholder {
+    font-size: 15px;
+    color: #202020;
+    opacity: 0.5;
+  }
+}
+
+.ant-input.send-textarea:hover {
+  border-color: transparent;
+}
+
+.ant-input.send-textarea:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
