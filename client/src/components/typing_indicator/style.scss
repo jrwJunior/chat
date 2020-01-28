@@ -1,0 +1,31 @@
+.indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 85px;
+  height: 45px;
+  background: #E5EDFF;
+  border-radius: 12px 12px 12px 0px;
+}
+
+.indicator-dot {
+  width: 12px;
+  height: 12px;
+  margin: 5px 2px;
+  border-radius: 10px;
+  background-color: #A6BDF0;
+  transform: scale(0.75);
+  animation: typingIndicator 1s ease-in infinite;
+
+  &:nth-of-type(2) {
+    animation-delay: 0.15s;
+  }
+  &:nth-of-type(3) {
+    animation-delay: 0.3s;
+  }
+}
+
+@keyframes typingIndicator {
+  0%, 70% { transform: scale(0.75); }
+  35% { transform: scale(1); }
+}

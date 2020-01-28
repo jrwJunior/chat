@@ -1,0 +1,52 @@
+html {
+  font-size: 100%;
+  width: 100%;
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1.52947;
+  font-weight: normal;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  direction: ltr;
+  color: #323232;
+  background-color: #f7f7f7;
+  overflow-x: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.auth-container {
+  display: flex;
+  height: 100%;
+  max-width: 1270px;
+  margin: auto;
+  padding: 0 2%;
+}
+
+.wrapper-auth {
+  max-width: 320px;
+  margin-top: 80px;
+}
+
+.scene-hero {
+  background: url('./img/main4.gif') no-repeat center/contain;
+  width: 70%;
+  height: 550px;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
