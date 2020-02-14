@@ -17,6 +17,19 @@ export default (state = initialState, action) => {
         isLoading: false,
         messages: action.payload
       }
+    case actionTypes.GET_MESSAGE:
+      return {
+        ...state,
+        messages: [
+          ...state.messages,
+          action.payload
+        ]
+      }
+    case actionTypes.DELETE_MESSAGE:
+      return {
+        ...state,
+        messages: state.messages.filter(item => item._id !== action.payload)
+      }
     default:
       return state;
   }

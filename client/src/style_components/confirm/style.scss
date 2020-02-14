@@ -1,0 +1,40 @@
+.ant-modal-confirm-btns .ant-btn {
+  position: relative;
+  font-size: 15px;
+  border: 0;
+  box-shadow: none;
+  color: #0aa4ff;
+}
+
+.ant-modal-confirm-btns button:nth-child(1) {
+  &::after {
+    content: '';
+    width: 1px;
+    height: 18px;
+    position: absolute;
+    top: 7px;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.10);
+  }
+}
+
+.ant-modal-confirm-btns .ant-btn-danger {
+  background-color: transparent;
+  color: #f03d25;
+}
+
+.ant-modal-confirm-btns .ant-btn-danger:hover {
+  background-color: transparent;
+  border-color: transparent;
+  color: #f03d25;
+}
+
+.ant-modal-confirm-btns .ant-btn-danger:focus {
+  background-color: transparent;
+  border-color: transparent;
+  color: #f03d25;
+}
+
+.ant-modal.ant-modal-confirm .ant-modal-confirm-btns button + button {
+  margin-left: 0;
+}

@@ -1,13 +1,32 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { Typography } from 'antd';
+import React, { useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Switch, Route, withRouter } from 'react-router-dom';
+import { Typography, Alert } from 'antd';
 
 import { LoginForm, RegisterForm } from 'modules';
+import { clearError } from 'actions/action_auth';
+import { usePrevious } from 'utils/hooks/usePrevious';
+import { showNotify } from 'utils/helpers';
 import './style.scss';
 
 const { Title, Text } = Typography;
 
-const Auth = () => {
+const Auth = ({ location }) => {
+  const { error, status } = useSelector(state => state.user_auth);
+  const prevPath = usePrevious(location.pathname);
+  const dispatch = useDispatch();
+  const setInitialState = useCallback(() => dispatch(clearError()), [dispatch]);
+
+  if (prevPath !== location.pathname && error) {
+    setInitialState();
+  }
+
+  useEffect(() => {
+    if (status === 'success') {
+      showNotify({type: status})
+    }
+  }, [status]);
+
   return (
     <div className="auth-container">
       <div className='wrapper-auth'>
@@ -17,10 +36,17 @@ const Auth = () => {
           <Route exact path='/login' component={ LoginForm } />
           <Route path='/register' component={ RegisterForm } />
         </Switch>
+        { !!error ? (
+          <Alert
+            type="error"
+            message={ error }
+            closable
+          />
+        ) : null}
       </div>
       <div className='scene-hero' />
     </div>
   );
 };
 
-export default Auth;
+export default withRouter(Auth);

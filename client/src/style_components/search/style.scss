@@ -30,8 +30,27 @@
 }
 
 .ant-input-search.ant-input-affix-wrapper .ant-input-suffix {
+  pointer-events: none;
   left: 12px;
   right: auto;
+}
+
+.ant-input-search .ant-input-suffix {
+  width: calc(100% - 12px);
+}
+
+.ant-input-search .ant-input-suffix .ant-input-search-icon,
+.ant-input-clear-icon {
+  pointer-events: auto;
+}
+
+.ant-input-search .ant-input-suffix .ant-input-clear-icon {
+  position: absolute;
+  right: 12px;
+}
+
+.ant-input-search .ant-input-suffix .ant-input-clear-icon + i {
+  margin-left: 0;
 }
 
 .ant-input-search-icon {

@@ -1,12 +1,18 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Form, Button } from 'antd';
+import { Form, Button, Spin, Icon } from 'antd';
 
-import Field from '../../form_field';
+import Field from 'modules/form_field';
+import { useAuth } from 'utils/hooks';
 import 'style_components/button/style.scss';
 
-const Login = (props) => {
-  const { isValid, isSubmitting, handleSubmit } = props;
+const Login = props => {
+  const { isValid, isSubmitting, history, handleSubmit, setSubmitting } = props;
+  const { isLoading } = useSelector(state => state.user_auth);
+
+  const antIcon = <Icon type="loading" style={{ fontSize: 25 }} spin />;
+  useAuth(isSubmitting, setSubmitting, history);
 
   return (
     <Form className="login-form" onSubmit={ handleSubmit }>
@@ -32,6 +38,7 @@ const Login = (props) => {
           disabled={ !isValid || isSubmitting }
         >
           Log in
+          { isLoading ? <Spin style={{ left: 'auto', right: '15px' }} indicator={antIcon} /> : null }
         </Button>
         <Button
           type="primary" 

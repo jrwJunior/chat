@@ -1,11 +1,9 @@
-import { all } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 
-import fetchDialogs from './dialogs';
-import fetchMessages from './messages';
+import * as sagas from './sagas';
 
 export default function* rootSaga() {
   yield all([
-    fetchDialogs(),
-    fetchMessages()
-  ]);
+    ...Object.values(sagas)
+  ].map(fork));
 }

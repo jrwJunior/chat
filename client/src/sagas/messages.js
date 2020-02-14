@@ -1,24 +1,60 @@
-import { put, call, takeEvery, select } from 'redux-saga/effects';
+import { put, call, take, fork, cancel } from 'redux-saga/effects';
 
 import * as actionTypes from 'constans';
-import { getChatDialogs } from './selectors';
+import { loadMessages } from 'actions/action_messages';
 import { API } from 'utils/api';
 
-function* fetchData() {
-  const api = new API();
+const api = new API();
 
+function* fetchRemoveMessage(action) {
   try {
-    const state = yield select(getChatDialogs);
-    const data = yield call(api.getAllMessages, state.dialogId);
-   
-    yield put({ type: actionTypes.MESSAGES_LOAD_SUCCESS, payload: data });
-  } catch(e) {
-    console.log(e.message);
+    yield call(api.removeMessage, action.payload);
+  } catch(err) {
+    console.log(err.message);
   }
 }
 
-function* watchFetchData() {
-  yield takeEvery(actionTypes.MESSAGES_REQUESTED, fetchData);
+function* fetchMessage(action) {
+  try {
+    yield call(api.createMessage, action.payload);
+  } catch(err) {
+    console.log(err.message);
+  }
 }
 
-export default watchFetchData;
+function* fetchAllMessages(action) {
+  try {
+    const { data } = yield call(api.getMessages, action.payload);
+
+    yield put(loadMessages(data));
+  } catch(err) {
+    console.log(err.message);
+  }
+}
+
+function* watchForMessages() {
+  const sagas = [
+    fetchAllMessages,
+    fetchMessage,
+    fetchRemoveMessage
+  ];
+  let task;
+
+  while(true) {
+    const action = yield take([
+      actionTypes.MESSAGES_REQUESTED,
+      actionTypes.SEND_MESSAGE,
+      actionTypes.DELETE_MESSAGE
+    ]);
+
+    yield sagas.map(saga => {
+      if (task) {
+        yield cancel(task);
+      }
+
+      task = fork(saga, action);
+    });
+  }
+}
+
+export default watchForMessages;

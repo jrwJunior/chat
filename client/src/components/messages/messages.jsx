@@ -1,40 +1,54 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spin, Icon } from 'antd';
-import { getAllMessages } from 'actions/action_messages';
+import { Scrollbars } from 'react-custom-scrollbars';
 
-import { usePrevious } from 'utils/hooks';
+import SendPanel from 'components/send_panel';
 import Message from 'components/message';
+import { getAllMessages } from 'actions/action_messages';
+import { getUsersDialog } from 'utils/helpers';
 import './style.scss';
 import 'style_components/indicator/style.scss';
 
-const HistoryMessages = () => {
-  const { dialogId } = useSelector(state => state.chat_dialogs);
+const HistoryMessages = props => {
+  const { match } = props;
+  const { userData } = useSelector(state => state.user_auth);
   const { messages, isLoading } = useSelector(state => state.chat_message);
-  const prevDialogId = usePrevious(dialogId);
-  const dispatch = useDispatch();
+  const { dialogs } = useSelector(state => state.chat_dialogs);
 
-  const setMessages = useCallback(() => dispatch(getAllMessages()), [dispatch]);
-  const antIcon = <Icon type="loading" style={{ fontSize: 26 }} spin />;
+  const dispatch = useDispatch();
+  const getHistory = useCallback((dialogId, interlocutor) => dispatch(getAllMessages({ dialogId, interlocutor })), [dispatch]);
+
+  const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
   useEffect(() => {
-    // eslint-disable-next-line
-    if (prevDialogId != dialogId) {
-      setMessages();
+    if (dialogs.length) {
+      const dialog = getUsersDialog(dialogs, match.params.id) || {};
+      getHistory(dialog._id, match.params.id);
     }
-  }, [setMessages, prevDialogId, dialogId]);
+  }, [getHistory, dialogs, match.params.id]);
 
   return (
-    <div className='history-messages'>
-      { isLoading ? (
-        <Spin indicator={antIcon}/>
-      ) : messages.map(item => (
-        <Message
-          key={ item._id }
-          { ...item }
-        />
-      ))}
-    </div>
+    <>
+      <Scrollbars
+        style={{ height: 'calc(100% - 110px)' }}
+      >
+        <div className='history-messages'>
+          { isLoading ? (
+            <Spin indicator={antIcon}/>
+            ) : messages.map(item => (
+              <Message
+                key={ item._id }
+                isMe={ item.user._id === userData._id }
+                { ...item }
+              />
+            ))}
+        </div>
+      </Scrollbars>
+      <SendPanel
+        userId={ match.params.id }
+      />
+    </>
   )
 };
 

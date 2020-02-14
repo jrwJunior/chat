@@ -1,22 +1,24 @@
 import React, { useEffect, useCallback } from 'react';
-import { getAllDialogs, getDialogId } from 'actions/action_dialogs';
+import { getAllDialogs } from 'actions/action_dialogs';
 import { useSelector, useDispatch } from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import DialogBanner from './banner';
 import DialogSearch from '../dialog_search';
 import DialogItem from '../dilaog_item';
+import Contacts from 'components/contacts';
 import './style.scss';
 
 const Dialogs = () => {
-  const { dialogs, dialogId } = useSelector(state => state.chat_dialogs);
+  const { userData } = useSelector(state => state.user_auth);
+  const { dialogs } = useSelector(state => state.chat_dialogs);
+  const { contacts } = useSelector(state => state.dialogs_contacts);
   const dispatch = useDispatch();
   
   const setDialogs = useCallback(() => dispatch(getAllDialogs()), [dispatch]);
-  const setDialogId = useCallback(id => dispatch(getDialogId(id)), [dispatch]);
   
   useEffect(() => {
-    setDialogs()
+    setDialogs();
   }, [setDialogs]);
 
   return (
@@ -28,16 +30,17 @@ const Dialogs = () => {
         autoHideTimeout={ 1000 }
         autoHideDuration={ 200 }
       >
-        <ul className='nav-pills'>
-          { dialogs.map(item => (
-            <DialogItem 
-              key={ item._id }
-              dialogId={ dialogId }
-              onSelected={ setDialogId }
-              { ...item }
-            />
-          ))}
-        </ul>
+        { !contacts.length ? (
+          <ul className='nav-pills'>
+            { dialogs.map(item => (
+              <DialogItem 
+                key={ item._id }
+                isMe={ item.owner._id === userData._id }
+                { ...item }
+              />
+            ))}
+          </ul>
+        ) : <Contacts/> }
       </Scrollbars>
     </aside>
   )

@@ -1,23 +1,82 @@
 import axios from 'axios';
 
 class API {
- async getAllDialogs() {
-   try {
-    const { data } = await axios.get('/dialogs');
-    return data;
-   } catch(e) {
-    console.log(e.message);
-   }
- }
+  constructor() {
+    axios.defaults.headers.common['authorization'] = localStorage['_token'];
+  }
 
- async getAllMessages(dialogId) {
-  try {
-    const { data } = await axios.get(`/messages?dialog=${dialogId}`);
-    return data;
-   } catch(e) {
-    console.log(e.message);
-   }
- }
+  errorBoundary(error) {
+    throw new Error(JSON.stringify(error.data));
+  }
+
+  login = async(values) => {
+    try {
+      return await axios.post('/api/login', values);
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
+
+  createAccount = async(values) => {
+    try {
+      const res = await axios.post('/api/register', values);
+      return res;
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
+
+  getUser = async() => {
+    try {
+      return await axios.get('/api/user/me');
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
+
+  searchForUsers = async(query) => {
+    try {
+     return await axios.get(`/api/user/search?query=${query}`);
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
+
+  getAllDialogs = async() => {
+    try {
+      return await axios.get('/api/dialogs');
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
+
+  getMessages = async({ dialogId }) => {
+    try {
+      return await axios.get(`/api/messages?dialog=${dialogId}`);
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
+
+  createMessage = async({ message, dialogId, interlocutor }) => {
+    try {
+      axios.post('/api/messages', {
+        message,
+        dialogId,
+        interlocutor
+      });
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
+
+  removeMessage = async(id) => {
+    try {
+      return axios.delete(`/api/messages?id=${id}`);
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
 }
 
 export {

@@ -1,22 +1,23 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
 
 import * as actionTypes from 'constans';
+import { dialogsLoad } from 'actions/action_dialogs';
 import { API } from 'utils/api';
 
-function* fetchData() {
+function* fetchAllDialogs() {
   const api = new API();
 
   try {
-    const data = yield call(api.getAllDialogs);
+    const { data } = yield call(api.getAllDialogs);
 
-    yield put({ type: actionTypes.DIALOGS_LOAD_SUCCESS, payload: data });
-  } catch(e) {
-    console.log(e.message);
+    yield put(dialogsLoad(data));
+  } catch(err) {
+    console.log(err.message);
   }
 }
 
-function* watchFetchData() {
-  yield takeEvery(actionTypes.DEALOGS_REQUESTED, fetchData);
+function* watchForDialogs() {
+  yield takeEvery(actionTypes.DEALOGS_REQUESTED, fetchAllDialogs);
 }
 
-export default watchFetchData;
+export default watchForDialogs;

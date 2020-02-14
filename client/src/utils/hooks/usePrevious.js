@@ -9,4 +9,6 @@ const usePrevious = value => {
   return ref.current;
 }
 
-export default usePrevious;
+export {
+  usePrevious
+};

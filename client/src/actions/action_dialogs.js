@@ -6,14 +6,22 @@ const getAllDialogs = () => {
   }
 }
 
-const getDialogId = id => {
+const dialogsLoad = data => {
   return {
-    type: actionTypes.DIALOG_ID,
-    payload: id
+    type: actionTypes.DIALOGS_LOAD_SUCCESS,
+    payload: data
+  }
+}
+
+const setDialog = dialog => {
+  return {
+    type: actionTypes.SET_DIALOG,
+    payload: dialog
   }
 }
 
 export {
   getAllDialogs,
-  getDialogId
+  dialogsLoad,
+  setDialog
 }

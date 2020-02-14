@@ -1,42 +1,43 @@
-import React from 'react';
-import { Input, Button } from 'antd';
+import React, { useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Input, Form } from 'antd';
 
+import ButtonSend from 'components/buttons/buttonSend';
+import { sendMessage } from 'actions/action_messages';
+import { getUsersDialog } from 'utils/helpers';
 import './style.scss';
-const { TextArea } = Input;
+// const { TextArea } = Input;
 
-const SendPanel = () => {
+const SendPanel = ({ userId }) => {
+  const [value, setValue] = useState('');
+  const { dialogs } = useSelector(state => state.chat_dialogs);
+  const dispatch = useDispatch();
+
+  const addMessage = useCallback((message, dialogId, interlocutor) => dispatch(sendMessage(message, dialogId, interlocutor)), [dispatch]);
+  const handleSubmit = useCallback(evt => {
+    evt.preventDefault();
+
+    const dialog = getUsersDialog(dialogs, userId) || {};
+
+    addMessage(value, dialog._id, userId);
+    setValue('');
+  }, [addMessage, value, userId, dialogs]);
+
   return (
     <div className='send-filed_panel'>
-      <div className='attach-file'>
-        <svg height="36px" width="36px" viewBox="0 0 36 36">
-          <g fill="none" fillRule="evenodd">
-            <g id="Group"><polygon points="0 36 36 36 36 0 0 0"/>
-              <path d="M13.5,11 C12.1195,11 11,12.119 11,13.5 C11,14.881 12.1195,16 13.5,16 C14.8805,16 16,14.881 16,13.5 C16,12.119 14.8805,11 13.5,11 M26.638,21.467 L21.2375,18.767 C19.199,17.7485 16.801,17.7485 14.7625,18.767 L9.362,21.467 C9.1955,21.55 9,21.429 9,21.243 L9,11 C9,9.8955 9.8955,9 11,9 L25,9 C26.1045,9 27,9.8955 27,11 L27,21.243 C27,21.429 26.8045,21.55 26.638,21.467 M25,7 L11,7 C8.7905,7 7,8.791 7,11 L7,25 C7,27.209 8.7905,29 11,29 L25,29 C27.209,29 29,27.209 29,25 L29,11 C29,8.791 27.209,7 25,7" fill="#0099ff"></path>
-            </g>
-          </g>
-        </svg>
-      </div>
       <div className='send-field_wrap'>
-        <div className='emoji-insert_btn'>
-        <svg height="24px" width="24px" viewBox="0 0 26 26">
-          <g fill="none" fillRule="evenodd">
-            <polygon points="0,26 26,26 26,0 0,0 "/>
-            <path d="m19.1311,16.73095c-0.4325,-0.3545 -1.0775,-0.302 -1.441,0.122c-1.171,1.3615 -2.883,2.142 -4.697,2.142c-1.8135,0 -3.526,-0.7805 -4.697,-2.142c-0.363,-0.4225 -1.008,-0.4765 -1.441,-0.122c-0.432,0.355 -0.488,0.986 -0.1245,1.408c1.5605,1.8145 3.8435,2.855 6.2625,2.855c2.4195,0 4.702,-1.0405 6.2625,-2.855c0.3635,-0.422 0.3075,-1.053 -0.1245,-1.408m-2.1355,-7.731c-0.9375,0 -1.5,0.75 -1.5,2c0,1.25 0.5625,2 1.5,2c0.9375,0 1.5,-0.75 1.5,-2c0,-1.25 -0.5625,-2 -1.5,-2m-8,0c-0.9375,0 -1.5,0.75 -1.5,2c0,1.25 0.5625,2 1.5,2c0.9375,0 1.5,-0.75 1.5,-2c0,-1.25 -0.5625,-2 -1.5,-2m4.0045,16c-6.6275,0 -12,-5.3725 -12,-12c0,-6.6275 5.3725,-12 12,-12c6.6275,0 12,5.3725 12,12c0,6.6275 -5.3725,12 -12,12" fill="#0099ff"/>
-          </g>
-        </svg>
-        </div>
-        <TextArea autoSize={{ minRows: 1, maxRows: 6 }} className='send-textarea' placeholder='Type a message...'/>
+        <Form onSubmit={ handleSubmit }>
+          <Input
+            className='send-textarea'
+            placeholder='Type a message...'
+            value={ value }
+            onChange={ evt => setValue(evt.target.value) }
+          />
+        </Form>
       </div>
-      <Button className='message-send' type="link" size='large'>
-        <svg height="36px" width="36px" viewBox="0 0 36 36">
-          <g fill="none" fillRule="evenodd">
-            <g>
-              <polygon points="0 36 36 36 36 0 0 0"/>
-                <path d="M31.1059281,19.4468693 L10.3449666,29.8224462 C8.94594087,30.5217547 7.49043432,29.0215929 8.17420251,27.6529892 C8.17420251,27.6529892 10.7473302,22.456697 11.4550902,21.0955966 C12.1628503,19.7344961 12.9730756,19.4988922 20.4970248,18.5264632 C20.7754304,18.4904474 21.0033531,18.2803547 21.0033531,17.9997309 C21.0033531,17.7196073 20.7754304,17.5095146 20.4970248,17.4734988 C12.9730756,16.5010698 12.1628503,16.2654659 11.4550902,14.9043654 C10.7473302,13.5437652 8.17420251,8.34697281 8.17420251,8.34697281 C7.49043432,6.9788693 8.94594087,5.47820732 10.3449666,6.1775158 L31.1059281,16.553593 C32.298024,17.1488555 32.298024,18.8511065 31.1059281,19.4468693" fill="#0099ff"/>
-            </g>
-          </g>
-        </svg>
-      </Button>
+      <ButtonSend
+        onClick={ handleSubmit }
+      />
     </div>
   )
 };
