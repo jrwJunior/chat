@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { Typography } from 'antd';
+import { Emoji } from 'emoji-mart';
+import reactStringReplace from 'react-string-replace';
 
 import Avatar from 'components/avatar';
 import Time from 'components/time';
@@ -36,7 +38,10 @@ const Message = props => {
             removeMessage={ removeMessage }
           >
             <div className={classNames('message-bubble', { 'bubble-is-me' : isMe })}>
-              <Text className={classNames({ 'text-color_black' : !isMe })}>{ message }</Text>
+              {reactStringReplace(message, /:(.+?):/g, (match, i) => (
+                <Emoji key={ i } emoji={match} set='messenger' size={16} />
+              ))}
+              {/* <Text className={classNames({ 'text-color_black' : !isMe })}>{ message }</Text> */}
             </div>
           </Popover>
           <div className='message-create_date'>

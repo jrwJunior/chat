@@ -1,12 +1,28 @@
-.send-filed_panel {
+.editor {
   display: flex;
   align-items: center;
   padding: 5px 32px;
 }
 
-.send-field_wrap {
+.editor-inner {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   position: relative;
+  display: inline-block;
   width: 100%;
+  height: 35px;
+  padding: 4px 12px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  line-height: 26px;
+  background-image: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: all 0.3s;
+  background-color: #F7F8F9;
+  border-color: #F7F8F9;
+  border-radius: 35px;
 }
 
 .attach-file {
@@ -49,4 +65,9 @@
 .ant-input.send-textarea:focus {
   border-color: transparent;
   box-shadow: none;
+}
+
+.public-DraftEditorPlaceholder-root {
+  position: absolute;
+  pointer-events: none;
 }

@@ -4,6 +4,7 @@ import showNotify from './notofy';
 import isEmpty from './isEmptyObject';
 import getUsersDialog from './getUsersDialog';
 import confirmDelete from './confirmDelete'
+import emojiEncode from './emojiEncode';
 
 export {
   creatingAvatarsWithColors,
@@ -11,5 +12,6 @@ export {
   showNotify,
   isEmpty,
   getUsersDialog,
-  confirmDelete
+  confirmDelete,
+  emojiEncode
 }

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Spin, Icon } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import SendPanel from 'components/send_panel';
+import Editor from 'components/editor';
 import Message from 'components/message';
 import { getAllMessages } from 'actions/action_messages';
 import { getUsersDialog } from 'utils/helpers';
@@ -45,7 +45,7 @@ const HistoryMessages = props => {
             ))}
         </div>
       </Scrollbars>
-      <SendPanel
+      <Editor
         userId={ match.params.id }
       />
     </>

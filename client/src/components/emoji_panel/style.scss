@@ -1,0 +1,78 @@
+div .emoji-mart {
+  position: absolute;
+  bottom: 105px;
+  right: -15px;
+  border: 1px solid #e8e8e8;
+  border-radius: 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom: 0;
+}
+
+.emoji-mart-bar {
+  position: absolute;
+  left: -1px;
+  bottom: -44px;
+  width: 101%;
+  background-color: #fff;
+}
+
+.emoji-mart .emoji-mart-bar {
+  &:first-child {
+    border: 1px solid #e8e8e8;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+}
+
+.emoji-mart-anchor-bar {
+  background-color: #35a6ff !important;
+}
+
+.emoji-mart-anchors svg, .emoji-mart-anchors img {
+  fill: currentColor;
+  height: 16px !important;
+  width: 16px !important;
+}
+
+div .emoji-mart-search {
+  padding: 10px 0;
+  margin-top: 0;
+}
+
+
+div .emoji-mart-search input {
+  padding: 5px 30px 6px 15px;
+  border: 0;
+}
+
+div .emoji-mart-search button {
+  top: 15px;
+  right: 15px;
+}
+
+.composer_emoji_tooltip_tail {
+  position: absolute;
+  right: 11px;
+  bottom: 48px;
+  margin-left: 0;
+  overflow: hidden;
+  width: 26px;
+  height: 14px;
+}
+
+.icon-tooltip-tail {
+  background: #fff;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  border: 1px solid #e8e8e8;
+  border-width: 0 1px 1px 0;
+  border-radius: 2px;
+  position: relative;
+  top: -8px;
+  left: 4px;
+  transform: rotate(45deg);
+}
