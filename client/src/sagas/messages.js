@@ -1,6 +1,6 @@
-import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
+import { put, call, take, fork } from 'redux-saga/effects';
 
-import * as actionTypes from 'constans';
+import { MESSAGES_REQUESTED, CREATED_MESSAGE, DELETE_MESSAGE } from 'constans';
 import { loadMessages } from 'actions/action_messages';
 import { API } from 'utils/api';
 
@@ -33,9 +33,24 @@ function* fetchAllMessages(action) {
 }
 
 function* watchForMessages() {
-  yield takeEvery(actionTypes.MESSAGES_REQUESTED, fetchAllMessages);
-  yield takeLatest(actionTypes.SEND_MESSAGE, fetchMessage);
-  yield takeLatest(actionTypes.DELETE_MESSAGE, fetchRemoveMessage);
+  while(true) {
+    const action = yield take([
+      MESSAGES_REQUESTED,
+      CREATED_MESSAGE,
+      DELETE_MESSAGE
+    ]);
+
+    switch(action.type) {
+      case MESSAGES_REQUESTED:
+        yield fork(fetchAllMessages, action);
+        break;
+      case CREATED_MESSAGE:
+        yield fork(fetchMessage, action);
+        break;
+      default:
+        yield fork(fetchRemoveMessage, action);
+    }
+  }
 }
 
 export default watchForMessages;

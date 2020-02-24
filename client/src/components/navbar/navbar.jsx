@@ -1,25 +1,48 @@
-import React from 'react';
-import { Typography } from 'antd';
+import React, { useMemo, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+import Indicator from 'components/typing_indicator';
+import { getUsersDialog } from 'utils/helpers';
+import { socket } from 'utils/socket';
+import { socketEvents } from 'constans/socketEvents';
 import './style.scss';
-const { Title } = Typography;
 
-const Navbar = () => {
+const Navbar = props => {
+  const { typing } = useSelector(state => state.typingMessage);
+  const { dialogs } = useSelector(state => state.chat_dialogs);
+
+  const partnerId = props.location.pathname.split('/p/').join('');
+  const dialog = useMemo(() => getUsersDialog(dialogs, partnerId), [dialogs, partnerId]);
+  // eslint-disable-next-line
+  const isInterlocutor = Object.values(dialog || {}).filter(item => {
+    if (typeof item !== 'string' && item.hasOwnProperty('_id')) {
+      return item._id === partnerId;
+    }
+  });
+
+  useEffect(() => {
+    socket.emit(socketEvents.STATUS_ONLINE, partnerId);
+  }, [partnerId]);
+
   return (
     <header className='navbar'>
       <div className='navbar-profile'>
-        <Title level={ 2 } className='navbar-profile_title'>t_jane17</Title>
-        <div className='profile-status'>
-          <span className='online-status'/> online
+        <div className='navbar-profile_title'>
+          { isInterlocutor.map(item => (
+            <div key={ item._id }>
+              { `${item.firstName} ${item.surname}` }
+            </div>
+          ))}
+          { typing ? <Indicator/> : (
+            <div className='profile-status'>
+              online
+            </div>
+          )}
         </div>
-      </div>
-      <div className='navbar-dropdown'>
-        <svg className='dropdown-icon' height="18px" viewBox="0 0 515.555 515.555" width="18px" xmlns="http://www.w3.org/2000/svg">
-          <path d="M496.679 212.208c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138 65.971-25.167 91.138 0M303.347 212.208c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138 65.971-25.167 91.138 0M110.014 212.208c25.167 25.167 25.167 65.971 0 91.138s-65.971 25.167-91.138 0-25.167-65.971 0-91.138 65.971-25.167 91.138 0"/>
-        </svg>
       </div>
     </header>
   )
 };
 
-export default Navbar;
+export default withRouter(Navbar);

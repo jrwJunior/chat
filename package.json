@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
     "server": "nodemon --exec babel-node app.js",
     "client": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server --ignore\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
     "type": "git",

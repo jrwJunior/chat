@@ -1,31 +1,45 @@
-.indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 85px;
-  height: 45px;
-  background: #E5EDFF;
-  border-radius: 12px 12px 12px 0px;
+// .indicator {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 85px;
+//   height: 45px;
+//   background: #E5EDFF;
+//   border-radius: 12px 12px 12px 0px;
+// }
+
+.typing-text {
+  font-size: 13px;
+  color: #1583fb;
+  padding-left: 5px;
 }
 
-.indicator-dot {
-  width: 12px;
-  height: 12px;
-  margin: 5px 2px;
-  border-radius: 10px;
-  background-color: #A6BDF0;
-  transform: scale(0.75);
-  animation: typingIndicator 1s ease-in infinite;
-
-  &:nth-of-type(2) {
-    animation-delay: 0.15s;
-  }
-  &:nth-of-type(3) {
-    animation-delay: 0.3s;
-  }
+.typing-dot {
+  animation: dot ease-in-out 1s infinite;
+  background-color: #1583FB;
+  display: inline-block;
+  height: 5px;
+  margin: 1px;
+  width: 5px;
+  border-radius: 50%;
 }
 
-@keyframes typingIndicator {
-  0%, 70% { transform: scale(0.75); }
-  35% { transform: scale(1); }
+.typing-dot:nth-of-type(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-of-type(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes dot {
+  0% {
+    transform: scale(0.65); 
+  }
+  50% { 
+    transform: scale(1); 
+  }
+  100% {
+    transform: scale(0.65); 
+  }
 }

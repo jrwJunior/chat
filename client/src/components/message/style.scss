@@ -17,7 +17,7 @@
 .message-author {
   position: absolute;
   left: 0;
-  bottom: 27px;
+  bottom: 0;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -26,15 +26,17 @@
 
 .message-bubble {
   position: relative;
+  font-size: 13px;
+  color: #1b1b1b;
   display: inline-block;
   max-width: 400px;
   background: #f2f2f2;
   border-radius: 20px;
   padding: 8px 15px;
-  cursor: pointer;
 
   span {
-    color: initial;
+    color: #a2a2a2;
+    vertical-align: text-bottom;
   }
 
   &:before {
@@ -63,7 +65,10 @@
 }
 
 .message-create_date {
-  font-size: 12px;
+  font-size: 11px;
+  display: inline-block;
+  margin-bottom: -6px;
+  margin-left: 5px;
   margin-top: 8px;
 }
 
@@ -73,9 +78,11 @@
 
 .bubble-is-me {
   background: #1583FB;
+  color: #fff;
 
   span {
-    color: #fff;
+    color: #add4ff;
+    vertical-align: text-bottom;
   }
 
   &:before {

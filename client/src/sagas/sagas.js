@@ -3,7 +3,8 @@ import userData from './user';
 import dialogs from './dialogs';
 import messages from './messages';
 import contacts from './contacts';
-import socket from './channel';
+import channelMessage from './channelMesssage';
+import channelDialog from './channelDialog';
 
 export {
   login,
@@ -11,5 +12,6 @@ export {
   dialogs,
   messages,
   contacts,
-  socket
+  channelMessage,
+  channelDialog
 }

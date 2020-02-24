@@ -8,6 +8,8 @@ import HistoryMessages from 'components/messages';
 
 import { isEmpty } from 'utils/helpers';
 import { getUserData } from 'actions/action_user';
+import { socket } from 'utils/socket';
+import { socketEvents } from 'constans/socketEvents';
 
 import './style.scss';
 

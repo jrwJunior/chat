@@ -17,10 +17,19 @@ export default (state = initialState, action) => {
         dialogs: action.payload,
         loading: false
       }
+    case actionTypes.SET_LAST_MESSAGE:
+      return {
+        ...state,
+        dialogs: [
+          action.payload
+        ]
+      }
     case actionTypes.SET_DIALOG:
       return {
         ...state,
-        dialogs: state.dialogs.concat(action.payload)
+        dialogs: [
+          action.payload
+        ]
       }
     default:
       return state;

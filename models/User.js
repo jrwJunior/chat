@@ -13,12 +13,12 @@ const schema  = new Schema({
   timestamps: true
 });
 
-schema.virtual("isOnline").get(function() {
-  return differenceInMinutes(parseISO(new Date().toISOString()), this.last_seen) < 1;
-});
+// schema.virtual("isOnline").get(function() {
+//   return differenceInMinutes(parseISO(new Date().toISOString()), this.last_seen) < 1;
+// });
 
-schema.set("toJSON", {
-  virtuals: true
-});
+// schema.set("toJSON", {
+//   virtuals: true
+// });
 
 export default model('User', schema);

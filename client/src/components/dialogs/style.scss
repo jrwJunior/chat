@@ -62,6 +62,10 @@
 }
 
 .dialog-message_wrap {
+  font-size: 14px;
+  color: rgba(#202020, 0.6);
+  white-space: nowrap;
+  text-overflow: ellipsis;
   width: 100%;
   margin-left: 10px;
   overflow: hidden;
@@ -98,6 +102,7 @@
 }
 
 .dialog-meta {
+  position: relative;
   margin-left: 8px;
   text-align: right;
 }

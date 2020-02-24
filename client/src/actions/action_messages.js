@@ -16,9 +16,9 @@ const loadMessages = messages => {
   }
 }
 
-const sendMessage = (message, dialogId = null, interlocutor) => {
+const createdMessage = (message, dialogId = null, interlocutor) => {
   return {
-    type: actionTypes.SEND_MESSAGE,
+    type: actionTypes.CREATED_MESSAGE,
     payload: {
       message,
       dialogId,
@@ -27,9 +27,9 @@ const sendMessage = (message, dialogId = null, interlocutor) => {
   }
 }
 
-const getMessage = message => {
+const setMessage = message => {
   return {
-    type: actionTypes.GET_MESSAGE,
+    type: actionTypes.SET_MESSAGE,
     payload: message
   }
 }
@@ -41,10 +41,18 @@ const deleteMessage = messageId => {
   }
 };
 
+const messageReaded = readed => {
+  return {
+    type: actionTypes.MESSAGE_READED,
+    payload: readed
+  }
+}
+
 export {
   getAllMessages,
   loadMessages,
-  sendMessage,
-  getMessage,
+  createdMessage,
+  setMessage,
+  messageReaded,
   deleteMessage
 }

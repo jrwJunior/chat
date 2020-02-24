@@ -1,0 +1,21 @@
+.react-contextmenu-wrapper {
+  display: inline-block;
+}
+
+.react-contextmenu {
+  min-width: 160px;
+  padding: 10px 0;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 1px 1px rgba(218, 218, 218, 0.2);
+  z-index: 10;
+}
+
+.react-contextmenu-item {
+  font-size: 14px;
+  padding: 6px 10px;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+}

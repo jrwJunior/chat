@@ -5,9 +5,21 @@ class MessageController {
     this.socket = socket;
   }
 
+  readMessage = (res, userId, dialogId) => {
+    const filter = { dialog: dialogId, user: { $ne: userId } };
+
+    MessageModal.updateMany(filter, { $set: { readed: true } }, err => {
+      if (err) {
+        return res.status(500).json({ message: err });
+      }
+    });
+  }
+
   getMessages = async(req, res) => {
     const dialogId = req.query.dialog;
+    const userId = req.user._id;
 
+    this.readMessage(req, userId, dialogId);
     MessageModal
     .find({ dialog: dialogId })
     .populate("user")
@@ -17,6 +29,17 @@ class MessageController {
       }
 
       res.json(message);
+    });
+  }
+
+  getDialog = async(userId) => {
+    const query = [{owner: userId}, {interlocutor: userId}];
+
+    return await DialogModal.find().or(query)
+    .populate(["owner", "interlocutor"])
+    .populate({
+      path: "lastMessage",
+      populate: { path: "user" }
     });
   }
 
@@ -36,50 +59,38 @@ class MessageController {
   
           const msg = new MessageModal({ message, dialog: dialogObj._id, user: userId });
           const messageObj = await msg.save();
-
+          
           dialogObj.lastMessage = msg._id;
           await dialogObj.save();
-
-          const newDialog = await DialogModal.find()
-          .or([{owner: userId}, {interlocutor: userId}])
-          .populate(["owner", "interlocutor"])
-          .populate({
-            path: "lastMessage",
-            populate: {
-              path: "user"
-            }
-          });
+          const newObject = await this.getDialog(userId);
           
-          this.socket.emit('DIALOG_RECEIVED', newDialog);
+          this.socket.emit('DIALOG_RECEIVED', newObject);
           this.socket.emit('MESSAGE_RECEIVED', messageObj);
-
-          res.json(messageObj);
         } else {
           const msg = new MessageModal({ message, dialog: dialogId, user: userId });
           const messageObj = await msg.save();
-          
-          messageObj.populate(['dialog', 'user'], (err, message) => {
+
+          messageObj.populate('user', async(err, message) => {
             const query = { _id: dialogId };
             const update = { lastMessage: message._id };
-            const options = { upsert: true };
+            const options = { new: true, upsert: true };
 
             if (err) {
-              return res.status(500).json({
-                status: 'error',
-                message: err,
-              });
+              return res.status(500).json({ message: err});
             }
 
-            DialogModal.findOneAndUpdate(query, update, options, (err, dialog) => {
+            DialogModal.findOneAndUpdate(query, update, options, err => {
               if (err) {
                 return res.status(500).json({
                   message: err,
                 });
               }
             });
-
-            this.socket.emit('MESSAGE_RECEIVED', message);
-            res.json(message);
+            
+            // this.socket.emit('MESSAGE_RECEIVED', {
+            //   createMessage: message,
+            //   lastMessage: message
+            // });
           });
         }
       } catch(err) {
@@ -99,14 +110,33 @@ class MessageController {
 
         await message.remove();
 
-        MessageModal.findOne(query, {}, {sort: { _id : -1 }}, (err, lastMessage) => {
+        MessageModal.findOne(query, {}, {sort: { createdAt: -1 }}, (err, lastMessage) => {
+          if (err) {
+            return res.status(500).json({
+              message: err,
+            });
+          }
+
           DialogModal.findById(dialogId, (err, dialog) => {
+            if (err) {
+              return res.status(500).json({
+                message: err,
+              });
+            }
+
             dialog.lastMessage = lastMessage;
             dialog.save();
           });
-        });
 
-        res.json({message: 'Message deleted'});
+          this.socket.emit('DIALOG_RECEIVED', {lastMessage});
+
+          MessageModal
+          .find({ dialog: dialogId })
+          .populate("user")
+          .exec((err, messages) => {
+            this.socket.emit('MESSAGE_RECEIVED', {messages});
+          });
+        });
       } else {
         res.status(403).json({message: 'Not have permission'});
       }

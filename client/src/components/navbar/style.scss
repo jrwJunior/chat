@@ -9,24 +9,21 @@
 .navbar-profile {
   display: flex;
   flex-direction: column;
-  margin: auto;
+  margin: 0 auto;
 }
 
-.ant-typography.navbar-profile_title {
-  font-size: 16px;
+.navbar-profile_title {
+  font-size: 14px;
   font-weight: 500;
-  margin-bottom: 0;
+  color: #323232;
 }
 
 .profile-status {
   position: relative;
-  font-size: 12px;
+  font-size: 13px;
+  color: #1583fb;
+  font-weight: normal;
   text-align: center;
-  .online-status {
-    right: auto;
-    left: -2px;
-    bottom: calc(50% - 8px);
-  }
 }
 
 .navbar-dropdown {

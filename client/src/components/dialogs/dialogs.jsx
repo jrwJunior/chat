@@ -7,16 +7,17 @@ import DialogBanner from './banner';
 import DialogSearch from '../dialog_search';
 import DialogItem from '../dilaog_item';
 import Contacts from 'components/contacts';
+
 import './style.scss';
 
 const Dialogs = () => {
-  const { userData } = useSelector(state => state.user_auth);
   const { dialogs } = useSelector(state => state.chat_dialogs);
   const { contacts } = useSelector(state => state.dialogs_contacts);
+  const { typing } = useSelector(state => state.typingMessage);
+
   const dispatch = useDispatch();
-  
   const setDialogs = useCallback(() => dispatch(getAllDialogs()), [dispatch]);
-  
+
   useEffect(() => {
     setDialogs();
   }, [setDialogs]);
@@ -35,7 +36,7 @@ const Dialogs = () => {
             { dialogs.map(item => (
               <DialogItem 
                 key={ item._id }
-                isMe={ item.owner._id === userData._id }
+                isTyping={ typing }
                 { ...item }
               />
             ))}

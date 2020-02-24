@@ -4,7 +4,7 @@ import { Popover, Button } from 'antd';
 import { confirmDelete } from 'utils/helpers';
 import './style.scss';
 
-const PopoverBase = ({ children, removeMessage }) => {
+const PopoverBase = ({ children, deleteMessage, isMe }) => {
   const [ visible, setVisible ] = useState(false);
 
   const popoverContent = (
@@ -14,7 +14,7 @@ const PopoverBase = ({ children, removeMessage }) => {
       type="link"
       onClick={ () => {
         setVisible(false);
-        confirmDelete(removeMessage)
+        confirmDelete(deleteMessage);
       }}
     >
       Delete
@@ -24,11 +24,18 @@ const PopoverBase = ({ children, removeMessage }) => {
   return (
     <Popover
       content={ popoverContent }
-      visible={ visible }
+      visible={ isMe && visible }
       onVisibleChange={ visible => setVisible(visible) }
       trigger="click"
     >
-      { children }
+      { React.Children.map(children, child => (
+        React.cloneElement(child, {
+          style: { 
+            opacity: isMe && visible ? '0.4' : false,
+            cursor: isMe ? 'pointer' : 'default'
+          }
+        })
+      ))}
     </Popover>
   )
 };

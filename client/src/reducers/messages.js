@@ -17,13 +17,20 @@ export default (state = initialState, action) => {
         isLoading: false,
         messages: action.payload
       }
-    case actionTypes.GET_MESSAGE:
+    case actionTypes.SET_MESSAGE:
       return {
         ...state,
-        messages: [
-          ...state.messages,
-          action.payload
-        ]
+        messages: state.messages.concat(action.payload)
+      }
+    case actionTypes.MESSAGE_READED:
+      return {
+        ...state,
+        messages: state.messages.map(message => {
+          if (message.user._id !== action.payload.userId) {
+            message.readed = true;
+          }
+          return message;
+        })
       }
     case actionTypes.DELETE_MESSAGE:
       return {
