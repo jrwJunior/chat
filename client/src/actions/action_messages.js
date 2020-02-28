@@ -41,18 +41,10 @@ const deleteMessage = messageId => {
   }
 };
 
-const messageReaded = readed => {
-  return {
-    type: actionTypes.MESSAGE_READED,
-    payload: readed
-  }
-}
-
 export {
   getAllMessages,
   loadMessages,
   createdMessage,
   setMessage,
-  messageReaded,
   deleteMessage
 }

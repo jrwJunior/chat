@@ -86,11 +86,10 @@ class MessageController {
                 });
               }
             });
-            
-            // this.socket.emit('MESSAGE_RECEIVED', {
-            //   createMessage: message,
-            //   lastMessage: message
-            // });
+
+            this.socket.to('guys').emit('MESSAGE_RECEIVED', {
+              message
+            })
           });
         }
       } catch(err) {

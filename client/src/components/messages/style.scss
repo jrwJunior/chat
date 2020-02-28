@@ -2,3 +2,11 @@
   position: relative;
   padding: 25px 32px 15px 32px;
 }
+
+.messages-notfound {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  color: #999;
+  transform: translate(-50%, -50%);
+}

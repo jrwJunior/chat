@@ -5,6 +5,7 @@ import isEmpty from './isEmptyObject';
 import getUsersDialog from './getUsersDialog';
 import confirmDelete from './confirmDelete'
 import emojiEncode from './emojiEncode';
+import userLastSeen from './userLastSeen';
 
 export {
   creatingAvatarsWithColors,
@@ -13,5 +14,6 @@ export {
   isEmpty,
   getUsersDialog,
   confirmDelete,
-  emojiEncode
+  emojiEncode,
+  userLastSeen
 }

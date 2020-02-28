@@ -1,46 +1,67 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Skeleton } from 'antd';
 
 import Indicator from 'components/typing_indicator';
+import Avatar from 'components/avatar';
+
+import { userLastSeen } from 'utils/helpers';
 import { getUsersDialog } from 'utils/helpers';
-import { socket } from 'utils/socket';
-import { socketEvents } from 'constans/socketEvents';
+import { useOnlineStatus } from 'utils/hooks';
+
 import './style.scss';
+import 'style_components/skeleton/style.scss';
 
-const Navbar = props => {
-  const { typing } = useSelector(state => state.typingMessage);
-  const { dialogs } = useSelector(state => state.chat_dialogs);
-
-  const partnerId = props.location.pathname.split('/p/').join('');
-  const dialog = useMemo(() => getUsersDialog(dialogs, partnerId), [dialogs, partnerId]);
+const foo = (dialog, partnerId) => {
+  if (!dialog) {
+    return {};
+  }
   // eslint-disable-next-line
-  const isInterlocutor = Object.values(dialog || {}).filter(item => {
+  return Object.values(dialog).find(item => {
     if (typeof item !== 'string' && item.hasOwnProperty('_id')) {
       return item._id === partnerId;
     }
   });
+}
 
-  useEffect(() => {
-    socket.emit(socketEvents.STATUS_ONLINE, partnerId);
-  }, [partnerId]);
+const Navbar = props => {
+  const { typing } = useSelector(state => state.typingMessage);
+  const { dialogs, loading } = useSelector(state => state.chat_dialogs);
+
+  const partnerId = props.location.pathname.split('/p/').join('');
+  const dialog = useMemo(() => getUsersDialog(dialogs, partnerId), [dialogs, partnerId]);
+  const { online, lastSeen } = useOnlineStatus('guys');
+  const partner = foo(dialog, partnerId);
 
   return (
     <header className='navbar'>
-      <div className='navbar-profile'>
-        <div className='navbar-profile_title'>
-          { isInterlocutor.map(item => (
-            <div key={ item._id }>
-              { `${item.firstName} ${item.surname}` }
-            </div>
-          ))}
-          { typing ? <Indicator/> : (
-            <div className='profile-status'>
-              online
-            </div>
-          )}
+      <Skeleton 
+        loading={ loading } 
+        active 
+        avatar 
+        title={{width: '150px'}} 
+        paragraph={{rows: 1, width: '200px'}}
+      >
+        <div className='navbar-profile'>
+          <Avatar
+            userName={ partner.firstName }
+            avatar={ partner.avatar }
+            size={ 35 }
+          />
+          <div className='navbar-profile_title'>
+            { `${partner.firstName} ${partner.surname}` }
+            { typing ? <Indicator/> : (
+              <div 
+                className='profile-status' 
+                style={{ color: !online ? '#a9a9a9' : false }}
+              >
+                { online ? 'online' : userLastSeen(lastSeen || partner.last_seen)}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </Skeleton>
     </header>
   )
 };

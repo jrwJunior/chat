@@ -13,9 +13,13 @@
 
 .dialog-banner {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 18px;
   padding: 0 15px;
+
+  span {
+    display: block;
+    margin-right: 12px;
+  }
 }
 
 .dialogs_search {

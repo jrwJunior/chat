@@ -7,24 +7,33 @@ export default http => {
     socket.on('DIALOG_JOIN', roomId => {
       socket.join(roomId, () => {
         let rooms = Object.keys(socket.rooms);
-        console.log(socket.rooms, 'rooms')
+        // console.log(socket.rooms, 'rooms')
       });
     });
-
-    socket.on('MESSAGE_RECEIVED', data => (
-      io.to(data.roomId).emit('MESSAGE_RECEIVED', data)
-    ));
 
     socket.on('TYPING_MESSAGE', obj => {
       socket.broadcast.emit('TYPING_MESSAGE', obj);
     });
 
-    socket.on('STATUS_ONLINE', uid => {
-      io.of('/').in(uid).clients((error,clients) => {
-        if (clients.hasOwnProperty(uid), uid) {
-          console.log('foo')
+    socket.on('STATUS_ONLINE', roomId => {
+      io.of('/').in(roomId).clients((error, clients) => {
+        if (error) {
+          console.log(error);
         }
+
+        socket.broadcast.emit('STATUS_ONLINE', {
+          isOnline: clients.length > 0
+        });
       });
     })
+
+    socket.on('disconnect', () => {
+      socket.broadcast.emit('STATUS_ONLINE', {
+        isOnline: false,
+        lastSeen: new Date()
+      });
+    });
   });
+
+  return io;
 };

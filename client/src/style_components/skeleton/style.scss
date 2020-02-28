@@ -1,0 +1,15 @@
+.dialog-banner .ant-skeleton .ant-skeleton-header {
+  padding-right: 0;
+}
+
+.ant-skeleton.ant-skeleton-with-avatar .ant-skeleton-content .ant-skeleton-title {
+  margin-top: 0;
+}
+
+.dialog-banner .ant-skeleton.ant-skeleton-with-avatar .ant-skeleton-content .ant-skeleton-title {
+  margin-top: 12px;
+}
+
+.ant-skeleton.ant-skeleton-with-avatar .ant-skeleton-content .ant-skeleton-title + .ant-skeleton-paragraph {
+  margin-top: 0;
+}

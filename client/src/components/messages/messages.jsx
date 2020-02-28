@@ -8,6 +8,7 @@ import Editor from 'components/editor';
 import Message from 'components/message';
 import { getAllMessages, deleteMessage } from 'actions/action_messages';
 import { getUsersDialog, confirmDelete } from 'utils/helpers';
+
 import './style.scss';
 import 'style_components/indicator/style.scss';
 

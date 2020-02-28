@@ -71,7 +71,6 @@ const SendPanel = ({ userId }) => {
           onChange={ setEditorState }
           handleKeyCommand={ handleKeyCommand }
           keyBindingFn={ myKeyBindingFn }
-          onKeyUp={ () => console.log('keypress') }
           plugins={ [emojiPlugin] }
           placeholder='Type a message...'
         />

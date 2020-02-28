@@ -1,6 +1,6 @@
 import * as actionTypes from 'constans';
 
-import { setLoginData } from 'actions/action_auth'
+import { setLoginData } from 'actions/action_auth';
 
 export default () => next => action => {
   switch(action.type) {

@@ -9,8 +9,8 @@ export default (created_at) => {
   }
 
   if (isToday(isDate)) {
-    return format(isDate, 'H:mm')
+    return `last seen today at ${format(isDate, 'H:mm')}`;
   }
 
-  return format(isDate, 'dd.MM.yy')
+  return `last seen ${format(isDate, 'MMM dd')} at ${format(isDate, 'H:mm')}`;
 }

@@ -9,10 +9,8 @@ export default (req, _, next) => {
       {
         last_seen: new Date()
       },
-      { new: true },
-      (err, doc) => {
-        
-      }
+      // { new: true },
+      (err, doc) => {}
     );
   }
   next();

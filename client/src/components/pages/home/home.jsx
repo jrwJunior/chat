@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Dialogs from 'components/dialogs';
@@ -21,6 +21,7 @@ const Home = () => {
   useEffect(() => {
     if (isEmpty(userData)) {
       getUser();
+      socket.emit(socketEvents.DIALOG_JOIN, 'guys');
     }
   }, [getUser, userData]);
 
@@ -28,11 +29,19 @@ const Home = () => {
     <div className='layout'>
       <Dialogs/>
       <main className='content'>
-        <Navbar/>
         <Route
           path='/p/:id'
-          component={ HistoryMessages }
+          render={routeProps => (
+            <>
+              <Navbar/>
+              <HistoryMessages { ...routeProps } />
+            </>
+          )}
         />
+        <Route exact path='/' render={() => (
+          <div className='messages-notfound'>Please select a chat to start messaging</div>
+        )}/>
+        <Redirect to='/'/>
       </main>
     </div>
   )

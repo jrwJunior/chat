@@ -6,37 +6,33 @@ import { ContextMenuTrigger } from "react-contextmenu";
 import format from 'date-fns/format';
 import reactStringReplace from 'react-string-replace';
 
-import Avatar from 'components/avatar';
+import MessageDate from 'components/message_date';
 
 import './style.scss';
 import 'style_components/confirm/style.scss';
 import 'style_components/context_menu/style.scss';
 
 const Message = props => {
-  const { 
+  const {
+    _id,
+    user,
     message,
     createdAt,
-    user,
-    interlocutorId,
-    _id
+    interlocutorId
   } = props;
   const isMe = interlocutorId !== user._id;
 
   return (
     <>
       <div className={classNames('message', { 'pull-right' : isMe })}>
-        <div className="message-author">
-          { !isMe ? (
-            <Avatar 
-              userName={ `${ user.firstName }` }
-              avatar={ user.avatar }
-              size={ 30 }
-            />
-          ) : null }
-        </div>
         <div className="message-content">
+          <MessageDate
+            id={ _id }
+            createdAt={createdAt}
+          />
           <ContextMenuTrigger 
             id="some_unique_identifier"
+            disable={ !isMe }
           >
             <div 
               className={classNames('message-bubble', { 'bubble-is-me' : isMe })}

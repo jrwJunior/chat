@@ -1,6 +1,7 @@
 .navbar {
   position: relative;
   display: flex;
+  min-height: 65px;
   padding: 10px 35px;
   background-color: #fff;
   border-bottom: 1px solid #ececec;
@@ -8,14 +9,15 @@
 
 .navbar-profile {
   display: flex;
-  flex-direction: column;
-  margin: 0 auto;
+  align-items: center;
 }
 
 .navbar-profile_title {
   font-size: 14px;
   font-weight: 500;
+  line-height: 1.4;
   color: #323232;
+  margin-left: 12px;
 }
 
 .profile-status {

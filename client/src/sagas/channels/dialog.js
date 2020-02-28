@@ -17,13 +17,13 @@ function createChannel() {
   return eventChannel(subscribe);
 }
 
-function* updateLastMessage(lastMessage) {
-  if (lastMessage) {
+function* updateLastMessage(data) {
+  if (data.lastMessage) {
     const { dialogs } = yield select(state => state.chat_dialogs);
-    const item = dialogs.find(item => item._id === lastMessage.dialog);
+    const item = dialogs.find(item => item._id === data.lastMessage.dialog);
   
-    if (item.lastMessage._id !== lastMessage._id) {
-      item.lastMessage = lastMessage;
+    if (item.lastMessage._id !== data.lastMessage._id) {
+      item.lastMessage = data.lastMessage;
       yield put(setLastMessageChat(item));
     }
   }
@@ -33,8 +33,8 @@ function* connectChannel() {
   const channel = yield call(createChannel);
 
   while(true) {
-    const { lastMessage } = yield take(channel);
-    yield fork(updateLastMessage, lastMessage);
+    const data = yield take(channel);
+    yield fork(updateLastMessage, data);
   }
 }
 

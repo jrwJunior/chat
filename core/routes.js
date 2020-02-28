@@ -16,19 +16,19 @@ const createRoutes = (app, io) => {
   app.use(express.json({ extended: true }));
 
   // Route user
-  app.get('/api/user/me', verifyToken, getUser);
+  app.get('/api/user/me', [verifyToken, lastSeen], getUser);
   app.get('/api/user/search', verifyToken, findUser);
   app.post('/api/login', login);
   app.post('/api/register', createUser);
 
   // Route dialogs 
-  app.get('/api/dialogs', [verifyToken,lastSeen], getDialogs);
-  app.post('/api/dialogs', [verifyToken,lastSeen], createDialog);
+  app.get('/api/dialogs', verifyToken, getDialogs);
+  app.post('/api/dialogs', verifyToken, createDialog);
   app.delete('/api/dialogs/:id', verifyToken, deleteDialog);
 
   // Route Messages
-  app.get('/api/messages', [verifyToken,lastSeen], getMessages);
-  app.post('/api/messages', [verifyToken,lastSeen], createMessage);
+  app.get('/api/messages', verifyToken, getMessages);
+  app.post('/api/messages', verifyToken, createMessage);
   app.delete('/api/messages', verifyToken, deleteMessage);
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Badge } from 'antd';
@@ -10,9 +10,7 @@ import { Emoji } from 'emoji-mart';
 import Avatar from 'components/avatar';
 import Indicator from 'components/typing_indicator';
 import { messageTimeConvert } from 'utils/helpers';
-
-import { socket } from 'utils/socket';
-import { socketEvents } from 'constans/socketEvents';
+import { useOnlineStatus } from 'utils/hooks';
 
 const DialogsItem = props => {
   const {
@@ -21,14 +19,11 @@ const DialogsItem = props => {
     lastMessage,
     isTyping
   } = props;
+  
   const { userData } = useSelector(state => state.user_auth);
   const isInterlocutor = userData._id === owner._id ? interlocutor : owner;
   const userId = props.location.pathname.split('/p/').join('');
-
-  useEffect(() => {
-    const roomId = 'some room';
-    socket.emit(socketEvents.DIALOG_JOIN, roomId);
-  }, []);
+  const { online } = useOnlineStatus('guys');
 
   return (
     <li className={ classNames('dialog-wrap', {'is-active': isInterlocutor._id === userId}) } >
@@ -44,7 +39,7 @@ const DialogsItem = props => {
               size={ 40 }
             />
           </div>
-          {/* { isInterlocutor.isOnline ? <span className='online-status'/> : null } */}
+          { online ? <span className='online-status'/> : null }
         </div>
         <div className='dialog-message_wrap'>
           <div className="dialog-head">{ `${isInterlocutor.firstName} ${isInterlocutor.surname}` }</div>

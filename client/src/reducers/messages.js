@@ -22,16 +22,6 @@ export default (state = initialState, action) => {
         ...state,
         messages: state.messages.concat(action.payload)
       }
-    case actionTypes.MESSAGE_READED:
-      return {
-        ...state,
-        messages: state.messages.map(message => {
-          if (message.user._id !== action.payload.userId) {
-            message.readed = true;
-          }
-          return message;
-        })
-      }
     case actionTypes.DELETE_MESSAGE:
       return {
         ...state,

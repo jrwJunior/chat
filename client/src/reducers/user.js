@@ -3,7 +3,7 @@ import * as actionTypes from 'constans';
 const initialState = {
   userData: {},
   error: null,
-  isLoading: false,
+  loading: false,
   status: null,
   token: localStorage['_token']
 };
@@ -13,20 +13,26 @@ export default (state = initialState, action) => {
     case actionTypes.LOGIN_REQUESTED:
       return {
         ...state,
-        isLoading: true
+        loading: true
       }
     case actionTypes.LOGIN_SUCCESS:
       const { data, token } = action.payload;
       return {
         userData: data,
         error: null,
-        isLoading: false,
+        loading: false,
         status: data.status,
         token
+      }
+    case actionTypes.GET_USER_DATA:
+      return {
+        ...state,
+        loading: true
       }
     case actionTypes.SET_USER_DATA:
       return {
         ...state,
+        loading: false,
         userData: action.payload
       }
     case actionTypes.LOGIN_ERROR:
@@ -34,7 +40,7 @@ export default (state = initialState, action) => {
 
       return {
         ...state,
-        isLoading: false,
+        loading: false,
         token: null,
         error
       }
