@@ -11,9 +11,9 @@ import Contacts from 'components/contacts';
 import './style.scss';
 
 const Dialogs = () => {
-  const { dialogs } = useSelector(state => state.chat_dialogs);
-  const { contacts } = useSelector(state => state.dialogs_contacts);
-  const { typing } = useSelector(state => state.typingMessage);
+  const { dialogs } = useSelector(state => state.chatDialogs);
+  const { contacts } = useSelector(state => state.contacts);
+  const { typing } = useSelector(state => state.isTyping);
 
   const dispatch = useDispatch();
   const setDialogs = useCallback(() => dispatch(getAllDialogs()), [dispatch]);

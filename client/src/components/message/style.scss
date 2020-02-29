@@ -74,7 +74,7 @@
 }
 
 .bubble-is-me {
-  background: #1583FB;
+  background: #3796EE;
   color: #fff;
 
   span {
@@ -91,7 +91,7 @@
     left: auto;
     height: 20px;
     width: 20px;
-    background: #1583FB;
+    background: #3796EE;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 0;
   }
@@ -135,4 +135,48 @@
   text-align: center;
   color: #a9a9a9;
   margin-bottom: 8px;
+}
+
+.select-tick.ant-switch {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  min-width: 0;
+  width: 22px;
+  background-color: transparent;
+  border-color: rgba(0, 0, 0, 0.25);
+  margin-top: -11px;
+
+  &::after {
+    display: none;
+  }
+}
+
+.select-tick.ant-switch.ant-switch-checked {
+  background-color: #1890ff;
+  border-color: transparent;
+}
+
+.select-tick.ant-switch-checked .ant-switch-inner {
+  margin-left: 4px;
+}
+
+.icon-tick {
+  display: block;
+  width: 13px;
+  height: 13px;
+  background: url('../../img//check_white.svg') no-repeat center/contain;
+}
+
+.selected-bubble {
+  animation: tickTock 350ms ease-in;
+}
+
+@keyframes tickTock {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
+  }
 }

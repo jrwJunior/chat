@@ -6,14 +6,16 @@ import contacts from './contacts';
 import messages from './messages';
 import typingMessage from './typingMessage';
 import onlineStatus from './onlineStatus';
+import editPanel from './editPanel';
 
 const rootReducer = combineReducers({
   user_auth: user,
-  chat_dialogs: dialogs,
-  dialogs_contacts: contacts,
+  chatDialogs: dialogs,
+  contacts,
+  isTyping: typingMessage,
   chat_message: messages,
-  typingMessage,
-  onlineStatus
+  onlineStatus,
+  editPanel
 });
 
 export default rootReducer;

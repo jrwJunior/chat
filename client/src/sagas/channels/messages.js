@@ -30,9 +30,11 @@ function* connectChannel() {
       yield put(setMessage(data.message));
     }
 
-    yield put(typingMessage(data.typing));
-    yield delay(3000);
-    yield put(typingMessage());
+    if (!data.message) {
+      yield put(typingMessage(data.typing));
+      yield delay(3000);
+      yield put(typingMessage());
+    }
   }
 }
 

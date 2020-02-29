@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { Badge } from 'antd';
 import classNames from 'classnames';
 import uuidv5 from 'uuid/v5';
 import reactStringReplace from 'react-string-replace';
@@ -54,7 +53,6 @@ const DialogsItem = props => {
         </div>
         <div className="dialog-meta">
           <div className="dialog-date">{ messageTimeConvert(lastMessage.createdAt) }</div>
-          <Badge count={ 3 }/>
         </div>
       </Link>
     </li>

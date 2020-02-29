@@ -41,10 +41,18 @@ const deleteMessage = messageId => {
   }
 };
 
+const selectMessage = msgId => {
+  return {
+    type: actionTypes.SELECT_MESSAGE,
+    payload: msgId
+  }
+}
+
 export {
   getAllMessages,
   loadMessages,
   createdMessage,
   setMessage,
-  deleteMessage
+  deleteMessage,
+  selectMessage
 }

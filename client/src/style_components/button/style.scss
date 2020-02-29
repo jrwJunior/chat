@@ -32,12 +32,14 @@
 
 .ant-btn.button-emoji {
   position: absolute;
-  top: 0;
+  top: 50%;
   right: 10px;
   display: flex;
+  height: auto;
   padding: 0;
   border-color: transparent;
   background-color: transparent;
+  transform: translateY(-50%);
 
   &:hover {
     border-color: transparent;
@@ -55,4 +57,42 @@
     background-color: transparent;
     opacity: 0.2;
   }
+}
+
+.btn-delete {
+  position: relative;
+  font-size: 13px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: transparent url('../../img/basket.svg') no-repeat center/contain;
+  border: 0;
+  transition: opacity 0.15s;
+  cursor: pointer;
+
+  &:hover, &:active {
+    opacity: 0.8;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.ant-btn.cancel-btn {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1890ff;
+  border: 0;
+  box-shadow: none;
+  background: none;
+  border-color: transparent;
+  text-shadow: none;
+}
+
+.cancel-btn.ant-btn-primary:hover, .cancel-btn.ant-btn-primary:focus,
+.cancel-btn.ant-btn-primary:active, .ant-btn-primary.active {
+  color: lighten(#1890ff, 15%);
+  background-color: transparent;
+  border-color: transparent;
 }

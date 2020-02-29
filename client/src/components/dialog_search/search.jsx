@@ -10,7 +10,7 @@ const { Search } = Input;
 
 const DialogSearch = () => {
   const [value, setValue] = useState('');
-  const { loading, contacts } = useSelector(state => state.dialogs_contacts);
+  const { loading, contacts } = useSelector(state => state.contacts);
   const dispatch = useDispatch();
 
   const getUsers = useCallback(data => dispatch(getFoundByUsers(data)), [dispatch]);
