@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import classNames from 'classnames';
 import { Emoji } from 'emoji-mart';
-import uuidv5 from 'uuid/v5';
 import { ContextMenuTrigger } from "react-contextmenu";
 import format from 'date-fns/format';
 import reactStringReplace from 'react-string-replace';
-
-import MessageDate from 'components/message_date';
+import uuidv5 from 'uuid/v5';
 
 import './style.scss';
 import 'style_components/confirm/style.scss';
@@ -18,25 +16,43 @@ const Message = props => {
     user,
     message,
     createdAt,
-    interlocutorId
+    interlocutorId,
+    selectMessage,
+    selectedMessages,
+    isOpenPanel
   } = props;
+  const refNode = useRef(null);
   const isMe = interlocutorId !== user._id;
+
+  const haneleSelect = () => {
+    selectMessage(_id, isMe);
+
+    refNode.current.classList.add('selected-bubble');
+    setTimeout(() => refNode.current.classList.remove('selected-bubble'), 500);
+  }
 
   return (
     <>
-      <div className={classNames('message', { 'pull-right' : isMe })}>
+      <div 
+        className={classNames('message', { 'pull-right' : isMe })}
+        style={{paddingRight: isOpenPanel ? '35px' : false}}
+      >
         <div className="message-content">
-          <MessageDate
-            id={ _id }
-            createdAt={createdAt}
-          />
+          { isMe ? React.Children.map(props.children, child => (
+            React.cloneElement(child, {
+              onClick: haneleSelect,
+              checked: !!selectedMessages.includes(_id)
+            })
+          )) : null }
           <ContextMenuTrigger 
             id="some_unique_identifier"
-            disable={ !isMe }
+            disable={ !isMe || !!selectedMessages.includes(_id) }
           >
-            <div 
-              className={classNames('message-bubble', { 'bubble-is-me' : isMe })}
-              data-message-id={ _id }
+            <div
+              ref={ refNode }
+              className={classNames('message-bubble', { 'bubble-is-me' : isMe})}
+              data-msg-id={ _id }
+              onClick={ haneleSelect }
             >
               {reactStringReplace(message, /:(.+?):/g, match => (
                 <Emoji key={ uuidv5('guys.example.com', uuidv5.DNS) } emoji={match} set='messenger' size={16} />

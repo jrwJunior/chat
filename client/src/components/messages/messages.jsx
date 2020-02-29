@@ -1,32 +1,35 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Spin, Icon } from 'antd';
+import { Spin, Icon, Switch } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { ContextMenu, MenuItem } from "react-contextmenu";
+import ContextMenu from "components/context_menu";
 
 import Editor from 'components/editor';
 import Message from 'components/message';
-import { getAllMessages, deleteMessage } from 'actions/action_messages';
-import { getUsersDialog, confirmDelete } from 'utils/helpers';
+import { getUsersDialog } from 'utils/helpers';
+import { getAllMessages, selectMessage } from 'actions/action_messages';
 
 import './style.scss';
 import 'style_components/indicator/style.scss';
 
 const HistoryMessages = props => {
   const { match } = props;
-  const { messages, isLoading } = useSelector(state => state.chat_message);
-  const { dialogs } = useSelector(state => state.chat_dialogs);
+  const { messages, selectedMessages, isLoading } = useSelector(state => state.chat_message);
+  const { dialogs } = useSelector(state => state.chatDialogs);
+  const { openedPanel } = useSelector(state => state.editPanel);
 
   const dispatch = useDispatch();
   const getHistory = useCallback((dialogId, interlocutor) => dispatch(getAllMessages({ dialogId, interlocutor })), [dispatch]);
-  const removeMessage = useCallback(id => dispatch(deleteMessage(id)), [dispatch]);
+  const setSelectMessage = useCallback(id => dispatch(selectMessage(id)), [dispatch]);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
-  const handleDelete = (evt, data, child) => {
-    const messageId = child.lastChild.dataset.messageId;
+  const selectDeleteMessage = (id, authorMessage) => {
+    if (!openedPanel) {
+      return false;
+    }
 
-    confirmDelete(removeMessage, messageId);
+    authorMessage && setSelectMessage(id);
   }
 
   useEffect(() => {
@@ -49,19 +52,20 @@ const HistoryMessages = props => {
               <Message
                 key={ item._id }
                 interlocutorId={ match.params.id }
+                selectMessage={ selectDeleteMessage }
+                selectedMessages={ selectedMessages }
+                isOpenPanel={ openedPanel }
                 { ...item }
-              />
+              >
+                { openedPanel ? (
+                  <Switch
+                    className='select-tick'
+                    checkedChildren={ <span className='icon-tick'/> }
+                  />
+                ) : null}
+              </Message>
             ))}
-          <ContextMenu id="some_unique_identifier">
-            <MenuItem
-              onClick={ handleDelete }
-            >
-            Delete Message
-            </MenuItem>
-            <MenuItem>
-              Select Message
-            </MenuItem>
-          </ContextMenu>
+          <ContextMenu/>
         </div>
       </Scrollbars>
       <Editor

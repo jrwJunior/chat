@@ -1,0 +1,15 @@
+.ant-badge.ant-badge-not-a-wrapper {
+  position: absolute;
+  top: -5px;
+  left: -12px;
+}
+
+.ant-badge .ant-badge-count {
+  font-size: 11px;
+  line-height: 15px;
+  min-width: auto;
+  width: 15px;
+  height: 15px;
+  padding: 0 4px;
+  border-radius: 50%;
+}

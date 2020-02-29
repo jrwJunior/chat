@@ -15,7 +15,7 @@ const MessageDate = ({ createdAt, id }) => {
       setCreatedTodayMsg(true);
     }
     // eslint-disable-next-line
-  }, []);
+  });
 
   useEffect(() => {
     if (isTodayMessage > -1 && isTodayMessage < 1 && !localStorage['today_id_msg']) {
@@ -32,7 +32,7 @@ const MessageDate = ({ createdAt, id }) => {
     return <div className='message-date'>{ format(isDate, 'MMMM dd') }</div>
   }
 
-  if (isTodayMessage > 0) {
+  if (isTodayMessage > 0 && !createdTodayMsg) {
     return <div className='message-date'>{ format(isDate, 'MMMM dd') }</div>
   }
 
