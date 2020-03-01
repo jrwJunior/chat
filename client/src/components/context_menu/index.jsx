@@ -2,18 +2,18 @@ import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ContextMenu, MenuItem } from "react-contextmenu";
 
-import { openPanelEdit } from 'actions/action_editPanel';
-import { deleteMessage, selectMessage } from 'actions/action_messages';
+import { openDeletePanel } from 'actions/action_deletePanel';
+import { deleteMessage, flaggedMessage } from 'actions/action_messages';
 import { confirmDelete } from 'utils/helpers';
 
 export default () => {
-  const { openedPanel } = useSelector(state => state.editPanel);
-  const contextItemClass = {className: openedPanel ? 'react-contextmenu-item-disabled' : null};
+  const { isOpenPanel } = useSelector(state => state.deletePanel);
+  const contextItemClass = {className: isOpenPanel ? 'react-contextmenu-item-disabled' : null};
 
   const dispatch = useDispatch();
   const removeMessage = useCallback(id => dispatch(deleteMessage(id)), [dispatch]);
-  const setPanel = useCallback(close => dispatch(openPanelEdit(close)), [dispatch]);
-  const setSelectMessage = useCallback(id => dispatch(selectMessage(id)), [dispatch]);
+  const setPanel = useCallback(close => dispatch(openDeletePanel(close)), [dispatch]);
+  const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
 
   const handleDelete = (evt, data, child) => {
     const id = child.lastChild.dataset.msgId;
@@ -24,7 +24,7 @@ export default () => {
   const handleSelect = (evt, data, child) => {
     const id = child.lastChild.dataset.msgId;
 
-    setSelectMessage(id);
+    setFlaggedMessage(id);
     setPanel(true);
   }
 

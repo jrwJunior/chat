@@ -6,7 +6,7 @@ import contacts from './contacts';
 import messages from './messages';
 import typingMessage from './typingMessage';
 import onlineStatus from './onlineStatus';
-import editPanel from './editPanel';
+import deletePanel from './deletePanel';
 
 const rootReducer = combineReducers({
   user_auth: user,
@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   isTyping: typingMessage,
   chat_message: messages,
   onlineStatus,
-  editPanel
+  deletePanel
 });
 
 export default rootReducer;

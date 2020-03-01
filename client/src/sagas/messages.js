@@ -10,7 +10,7 @@ function* fetchRemoveMessage(action) {
   try {
     yield call(api.removeMessage, action.payload);
   } catch(err) {
-    console.log(err.message);
+    console.log(err.message); // implement error handling
   }
 }
 
@@ -18,7 +18,7 @@ function* fetchMessage(action) {
   try {
     yield call(api.createMessage, action.payload);
   } catch(err) {
-    console.log(err.message);
+    console.log(err.message); // implement error handling
   }
 }
 
@@ -28,7 +28,7 @@ function* fetchAllMessages(action) {
 
     yield put(loadMessages(data));
   } catch(err) {
-    console.log(err.message);
+    console.log(err.message); // implement error handling
   }
 }
 

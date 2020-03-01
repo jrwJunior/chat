@@ -70,9 +70,11 @@ class API {
     }
   }
 
-  removeMessage = async(id) => {
+  removeMessage = async(data) => {
     try {
-      axios.delete(`/api/messages?id=${id}`);
+      axios.delete('/api/messages', {
+        data
+      });
     } catch(error) {
       this.errorBoundary(error.response);
     }
