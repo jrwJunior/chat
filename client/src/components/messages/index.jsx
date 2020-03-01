@@ -7,29 +7,29 @@ import ContextMenu from "components/context_menu";
 import Editor from 'components/editor';
 import Message from 'components/message';
 import { getUsersDialog } from 'utils/helpers';
-import { getAllMessages, selectMessage } from 'actions/action_messages';
+import { getAllMessages, flaggedMessage } from 'actions/action_messages';
 
 import './style.scss';
 import 'style_components/indicator/style.scss';
 
 const HistoryMessages = props => {
   const { match } = props;
-  const { messages, selectedMessages, isLoading } = useSelector(state => state.chat_message);
+  const { messages, deletedMessages, isLoading } = useSelector(state => state.chat_message);
   const { dialogs } = useSelector(state => state.chatDialogs);
-  const { openedPanel } = useSelector(state => state.editPanel);
+  const { isOpenPanel } = useSelector(state => state.deletePanel);
 
   const dispatch = useDispatch();
   const getHistory = useCallback((dialogId, interlocutor) => dispatch(getAllMessages({ dialogId, interlocutor })), [dispatch]);
-  const setSelectMessage = useCallback(id => dispatch(selectMessage(id)), [dispatch]);
+  const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
-  const selectDeleteMessage = (id, authorMessage) => {
-    if (!openedPanel) {
+  const addFlaggedMessage = (id, authorMessage) => {
+    if (!isOpenPanel) {
       return false;
     }
 
-    authorMessage && setSelectMessage(id);
+    authorMessage && setFlaggedMessage(id);
   }
 
   useEffect(() => {
@@ -52,12 +52,12 @@ const HistoryMessages = props => {
               <Message
                 key={ item._id }
                 interlocutorId={ match.params.id }
-                selectMessage={ selectDeleteMessage }
-                selectedMessages={ selectedMessages }
-                isOpenPanel={ openedPanel }
+                flaggMessage={ addFlaggedMessage }
+                deletedMessages={ deletedMessages }
+                isOpenPanel={ isOpenPanel }
                 { ...item }
               >
-                { openedPanel ? (
+                { isOpenPanel ? (
                   <Switch
                     className='select-tick'
                     checkedChildren={ <span className='icon-tick'/> }

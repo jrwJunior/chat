@@ -1,14 +1,14 @@
 import * as actionTypes from 'constans';
 
 const initialState = {
-  openedPanel: false
+  isOpenPanel: false
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
-    case actionTypes.OPEN_PANEL_EDIT:
+    case actionTypes.TOGGLE_DELETE_PANEL:
       return {
-        openedPanel: action.payload
+        isOpenPanel: action.payload
       }
     default:
       return state;

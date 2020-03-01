@@ -17,15 +17,19 @@ const Message = props => {
     message,
     createdAt,
     interlocutorId,
-    selectMessage,
-    selectedMessages,
+    flaggMessage,
+    deletedMessages,
     isOpenPanel
   } = props;
   const refNode = useRef(null);
   const isMe = interlocutorId !== user._id;
 
   const haneleSelect = () => {
-    selectMessage(_id, isMe);
+    if (!isOpenPanel) {
+      return false;
+    }
+    
+    flaggMessage(_id, isMe);
 
     refNode.current.classList.add('selected-bubble');
     setTimeout(() => refNode.current.classList.remove('selected-bubble'), 500);
@@ -41,12 +45,12 @@ const Message = props => {
           { isMe ? React.Children.map(props.children, child => (
             React.cloneElement(child, {
               onClick: haneleSelect,
-              checked: !!selectedMessages.includes(_id)
+              checked: !!deletedMessages.includes(_id)
             })
           )) : null }
           <ContextMenuTrigger 
             id="some_unique_identifier"
-            disable={ !isMe || !!selectedMessages.includes(_id) }
+            disable={ !isMe || !!deletedMessages.includes(_id) }
           >
             <div
               ref={ refNode }

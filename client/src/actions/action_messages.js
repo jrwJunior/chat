@@ -34,14 +34,24 @@ const setMessage = message => {
   }
 }
 
-const deleteMessage = messageId => {
+const setMessages = messages => {
+  return {
+    type: actionTypes.SET_MESSAGES,
+    payload: messages
+  }
+}
+
+const deleteMessage = (messages, dialogId) => {
   return {
     type: actionTypes.DELETE_MESSAGE,
-    payload: messageId
+    payload: {
+      messages,
+      dialogId
+    }
   }
 };
 
-const selectMessage = msgId => {
+const flaggedMessage = msgId => {
   return {
     type: actionTypes.SELECT_MESSAGE,
     payload: msgId
@@ -53,6 +63,7 @@ export {
   loadMessages,
   createdMessage,
   setMessage,
+  setMessages,
   deleteMessage,
-  selectMessage
+  flaggedMessage
 }

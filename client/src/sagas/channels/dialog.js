@@ -19,7 +19,7 @@ function createChannel() {
 
 function* updateLastMessage(data) {
   if (data.lastMessage) {
-    const { dialogs } = yield select(state => state.chat_dialogs);
+    const { dialogs } = yield select(state => state.chatDialogs);
     const item = dialogs.find(item => item._id === data.lastMessage.dialog);
   
     if (item.lastMessage._id !== data.lastMessage._id) {
@@ -34,6 +34,7 @@ function* connectChannel() {
 
   while(true) {
     const data = yield take(channel);
+
     yield fork(updateLastMessage, data);
   }
 }
