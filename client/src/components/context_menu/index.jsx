@@ -12,20 +12,24 @@ export default () => {
 
   const dispatch = useDispatch();
   const removeMessage = useCallback(id => dispatch(deleteMessage(id)), [dispatch]);
-  const setPanel = useCallback(close => dispatch(openDeletePanel(close)), [dispatch]);
+  const setIsOpenPanel = useCallback(isOpen => dispatch(openDeletePanel(isOpen)), [dispatch]);
   const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
 
   const handleDelete = (evt, data, child) => {
-    const id = child.lastChild.dataset.msgId;
+    const deleteMessage = child.lastChild.dataset.msgId;
 
-    confirmDelete(removeMessage, id);
+    // confirmDelete({
+    //   removeMessage,
+    //   deleteMessage, 
+    //   dialogId
+    // });
   }
 
   const handleSelect = (evt, data, child) => {
     const id = child.lastChild.dataset.msgId;
 
     setFlaggedMessage(id);
-    setPanel(true);
+    setIsOpenPanel(true);
   }
 
   return (
