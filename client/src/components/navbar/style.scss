@@ -2,9 +2,11 @@
   position: relative;
   display: flex;
   min-height: 65px;
+  height: 65px;
   padding: 10px 35px;
   background-color: #fff;
   border-bottom: 1px solid #ececec;
+  overflow: hidden;
 }
 
 .navbar-peer {
@@ -25,4 +27,28 @@
   font-size: 13px;
   color: #1583fb;
   font-weight: normal;
+}
+
+.climb-up-enter {
+  transform: translateY(-65px);
+}
+.climb-up-enter-active {
+  transform: translateY(0);
+  transition: transform 150ms;
+}
+.climb-up-exit-active {
+  transform: translateY(-65px);
+  transition: transform 150ms;
+}
+
+.come-down-enter {
+  transform: translateY(65px);
+}
+.come-down-enter-active {
+  transform: translateY(0);
+  transition: transform 150ms;
+}
+.come-down-exit-active {
+  transform: translateY(65px);
+  transition: transform 150ms;
 }
