@@ -9,10 +9,10 @@ import { confirmDelete } from 'utils/helpers';
 import './style.scss';
 import 'style_components/badge/style.scss';
 
-export default props => {
+export default () => {
   const { deletedMessages } = useSelector(state => state.chat_message);
-  const { dialogId } = props;
-
+  const { dialogId } = useSelector(state => state.chatDialogs);
+  
   const dispatch = useDispatch();
   const setIsOpenPanel = useCallback(isOpen => dispatch(openDeletePanel(isOpen)), [dispatch]);
   const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);

@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { Emoji } from 'emoji-mart';
 import { ContextMenuTrigger } from "react-contextmenu";
 import format from 'date-fns/format';
-import reactStringReplace from 'react-string-replace';
 import uuidv5 from 'uuid/v5';
+import reactStringReplace from 'react-string-replace';
 
 import './style.scss';
 import 'style_components/confirm/style.scss';
@@ -26,7 +26,7 @@ const Message = props => {
 
   const haneleSelect = () => {
     if (!isOpenPanel) {
-      return false;
+      return;
     }
     
     flaggMessage(_id, isMe);

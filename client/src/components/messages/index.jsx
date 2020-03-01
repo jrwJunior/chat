@@ -6,20 +6,20 @@ import ContextMenu from "components/context_menu";
 
 import Editor from 'components/editor';
 import Message from 'components/message';
-import { getUsersDialog } from 'utils/helpers';
+
 import { getAllMessages, flaggedMessage } from 'actions/action_messages';
 
 import './style.scss';
 import 'style_components/indicator/style.scss';
 
 const HistoryMessages = props => {
-  const { match } = props;
+  const userId = props.match.params.id;
   const { messages, deletedMessages, isLoading } = useSelector(state => state.chat_message);
-  const { dialogs } = useSelector(state => state.chatDialogs);
+  const { dialogId } = useSelector(state => state.chatDialogs);
   const { isOpenPanel } = useSelector(state => state.deletePanel);
 
   const dispatch = useDispatch();
-  const getHistory = useCallback((dialogId, interlocutor) => dispatch(getAllMessages({ dialogId, interlocutor })), [dispatch]);
+  const setMessages = useCallback((dialogId, interlocutor) => dispatch(getAllMessages({ dialogId, interlocutor })), [dispatch]);
   const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
@@ -33,12 +33,10 @@ const HistoryMessages = props => {
   }
 
   useEffect(() => {
-    if (dialogs.length && !messages.length) {
-      const dialog = getUsersDialog( dialogs, match.params.id) || {};
-
-      getHistory(dialog._id, match.params.id);
+    if (dialogId) {
+      setMessages(dialogId, userId);
     }
-  }, [getHistory, dialogs, messages, match.params.id]);
+  }, [dialogId, userId, setMessages]);
 
   return (
     <>
@@ -51,7 +49,7 @@ const HistoryMessages = props => {
             ) : messages.map(item => (
               <Message
                 key={ item._id }
-                interlocutorId={ match.params.id }
+                interlocutorId={ userId }
                 flaggMessage={ addFlaggedMessage }
                 deletedMessages={ deletedMessages }
                 isOpenPanel={ isOpenPanel }
@@ -69,7 +67,7 @@ const HistoryMessages = props => {
         </div>
       </Scrollbars>
       <Editor
-        userId={ match.params.id }
+        userId={ userId }
       />
     </>
   )

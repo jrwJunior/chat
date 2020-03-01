@@ -7,8 +7,7 @@ import Avatar from 'components/avatar';
 import { userLastSeen } from 'utils/helpers';
 import { useOnlineStatus } from 'utils/hooks';
 
-const NavbarInfo = props => {
-  const { partner } = props
+const NavbarInfo = ({partner}) => {
   const { typing } = useSelector(state => state.isTyping);
   const { online, lastSeen } = useOnlineStatus('guys');
 

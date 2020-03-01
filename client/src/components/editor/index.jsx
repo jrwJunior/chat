@@ -7,10 +7,12 @@ import data from 'emoji-mart/data/messenger.json';
 
 import EmojiPanel from 'components/emoji_panel';
 import EditorButton from 'components/buttons/editorButton';
+
 import { createdMessage } from 'actions/action_messages';
-import { getUsersDialog, emojiEncode } from 'utils/helpers';
+import { emojiEncode } from 'utils/helpers';
 import { socket } from 'utils/socket';
 import { socketEvents } from 'constans/socketEvents';
+
 import './style.scss';
 
 const emojiPlugin = createEmojiMartPlugin({
@@ -23,7 +25,7 @@ const { Picker } = emojiPlugin;
 const SendPanel = ({ userId }) => {
   const [editorState, setEditorState] = useState(createEditorStateWithText(''));
 
-  const { dialogs } = useSelector(state => state.chatDialogs);
+  const { dialogId } = useSelector(state => state.chatDialogs);
   const dispatch = useDispatch();
 
   const addMessage = useCallback((message, dialogId, interlocutor) => dispatch(createdMessage(message, dialogId, interlocutor)), [dispatch]);
@@ -32,12 +34,11 @@ const SendPanel = ({ userId }) => {
       evt.preventDefault();
     }
 
-    const dialog = getUsersDialog(dialogs, userId) || {};
     const messageEncode = emojiEncode(editorState.getCurrentContent().getPlainText('\u0001'));
 
-    addMessage(messageEncode, dialog._id, userId);
+    addMessage(messageEncode, dialogId, userId);
     setEditorState(createEditorStateWithText(''));
-  }, [addMessage, editorState, userId, dialogs]);
+  }, [addMessage, editorState, userId, dialogId]);
 
   const myKeyBindingFn = evt => {
     const { hasCommandModifier } = KeyBindingUtil;

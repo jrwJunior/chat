@@ -2,6 +2,7 @@ import * as actionTypes from 'constans';
 
 const initialState = {
   dialogs: [],
+  dialogId: null,
   loading: false
 };
 
@@ -30,6 +31,11 @@ export default (state = initialState, action) => {
         dialogs: [
           action.payload
         ]
+      }
+    case actionTypes.SET_DIALOG_ID:
+      return {
+        ...state,
+        dialogId: action.payload
       }
     default:
       return state;

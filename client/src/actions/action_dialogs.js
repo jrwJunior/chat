@@ -20,6 +20,13 @@ const setDialog = dialog => {
   }
 }
 
+const setDialogId = id => {
+  return {
+    type: actionTypes.SET_DIALOG_ID,
+    payload: id
+  }
+} 
+
 const setLastMessageChat = message => {
   return {
     type: actionTypes.SET_LAST_MESSAGE,
@@ -31,5 +38,6 @@ export {
   getAllDialogs,
   dialogsLoad,
   setDialog,
+  setDialogId,
   setLastMessageChat
 }
