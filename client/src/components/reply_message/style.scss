@@ -1,0 +1,32 @@
+.reply-wrap {
+  position: relative;
+  margin: 5px 0 8px 0;
+  border-left: 2px solid #3796ee;
+  padding-left: 12px;
+}
+
+.reply-cancel {
+  position: absolute;
+  top: 5px;
+  right: 55px;
+  font-size: 0px !important;
+  display: block;
+  width: 13px;
+  height: 13px;
+  background: transparent url('../../img/close.svg') no-repeat center/contain;
+  border: 0;
+  opacity: 0.5;
+  outline: none;
+  transition: opacity 0.15s;
+  cursor: pointer;
+
+  &:hover, &:active {
+    opacity: 0.8;
+  }
+}
+
+.message-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3796ee;
+}

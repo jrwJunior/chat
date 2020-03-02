@@ -54,8 +54,8 @@ const Message = props => {
           >
             <div
               ref={ refNode }
-              className={classNames('message-bubble', { 'bubble-is-me' : isMe})}
-              data-msg-id={ _id.slice(-4) }
+              className={classNames('message-bubble message-text', { 'bubble-is-me' : isMe})}
+              data-msg-id={ _id }
               onClick={ haneleSelect }
             >
               {reactStringReplace(message, /:(.+?):/g, match => (

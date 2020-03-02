@@ -33,9 +33,16 @@ export default () => {
     setIsOpenPanel(true);
   }
 
+  const handleEdit = (evt, data, child) => {
+    console.log(child.lastChild);
+  }
+
   return (
     <ContextMenu id="some_unique_identifier">
-      <MenuItem attributes={contextItemClass}>
+      <MenuItem 
+        attributes={contextItemClass}
+        onClick={ handleEdit }
+      >
         Edit
       </MenuItem>
       <MenuItem
