@@ -15,7 +15,7 @@ import 'style_components/indicator/style.scss';
 const HistoryMessages = props => {
   const userId = props.match.params.id;
   const { messages, deletedMessages, isLoading } = useSelector(state => state.chat_message);
-  const { dialogId } = useSelector(state => state.chatDialogs);
+  const { dialogId } = useSelector(state => state.dialog);
   const { isOpenPanel } = useSelector(state => state.deletePanel);
 
   const dispatch = useDispatch();

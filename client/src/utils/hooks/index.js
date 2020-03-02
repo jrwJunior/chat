@@ -3,7 +3,7 @@ import { useAuth } from './useAuth';
 import { useOnlineStatus } from './useOnlineStatus';
 
 export {
-  usePrevious,
   useAuth,
+  usePrevious,
   useOnlineStatus
 }

@@ -2,7 +2,6 @@ import * as actionTypes from 'constans';
 
 const initialState = {
   dialogs: [],
-  dialogId: null,
   loading: false
 };
 
@@ -19,23 +18,12 @@ export default (state = initialState, action) => {
         loading: false
       }
     case actionTypes.SET_LAST_MESSAGE:
-      return {
-        ...state,
-        dialogs: [
-          action.payload
-        ]
-      }
     case actionTypes.SET_DIALOG:
       return {
         ...state,
         dialogs: [
           action.payload
         ]
-      }
-    case actionTypes.SET_DIALOG_ID:
-      return {
-        ...state,
-        dialogId: action.payload
       }
     default:
       return state;
