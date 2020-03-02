@@ -25,7 +25,7 @@ const { Picker } = emojiPlugin;
 const SendPanel = ({ userId }) => {
   const [editorState, setEditorState] = useState(createEditorStateWithText(''));
 
-  const { dialogId } = useSelector(state => state.chatDialogs);
+  const { dialogId } = useSelector(state => state.dialog);
   const dispatch = useDispatch();
 
   const addMessage = useCallback((message, dialogId, interlocutor) => dispatch(createdMessage(message, dialogId, interlocutor)), [dispatch]);

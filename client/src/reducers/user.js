@@ -24,11 +24,6 @@ export default (state = initialState, action) => {
         status: data.status,
         token
       }
-    case actionTypes.GET_USER_DATA:
-      return {
-        ...state,
-        loading: true
-      }
     case actionTypes.SET_USER_DATA:
       return {
         ...state,

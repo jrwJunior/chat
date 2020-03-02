@@ -28,7 +28,8 @@ class API {
 
   getUser = async() => {
     try {
-      return await axios.get('/api/user/me');
+      const { data } = await axios.get('/api/user/me');
+      return data;
     } catch(error) {
       this.errorBoundary(error.response);
     }
@@ -44,7 +45,8 @@ class API {
 
   getAllDialogs = async() => {
     try {
-      return await axios.get('/api/dialogs');
+      const { data } = await axios.get('/api/dialogs');
+      return data;
     } catch(error) {
       this.errorBoundary(error.response);
     }

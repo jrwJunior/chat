@@ -8,6 +8,7 @@ import { confirmDelete } from 'utils/helpers';
 
 export default () => {
   const { isOpenPanel } = useSelector(state => state.deletePanel);
+  const { dialogId } = useSelector(state => state.dialog);
   const contextItemClass = {className: isOpenPanel ? 'react-contextmenu-item-disabled' : null};
 
   const dispatch = useDispatch();
@@ -18,11 +19,11 @@ export default () => {
   const handleDelete = (evt, data, child) => {
     const deleteMessage = child.lastChild.dataset.msgId;
 
-    // confirmDelete({
-    //   removeMessage,
-    //   deleteMessage, 
-    //   dialogId
-    // });
+    confirmDelete({
+      removeMessage,
+      deleteMessage, 
+      dialogId
+    });
   }
 
   const handleSelect = (evt, data, child) => {

@@ -11,8 +11,7 @@
   display: flex;
 }
 
-.dialog-banner {
-  display: flex;
+.dialogs-head {
   margin-bottom: 18px;
   padding: 0 15px;
 
@@ -20,6 +19,12 @@
     display: block;
     margin-right: 12px;
   }
+}
+
+.dialogs-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #323232;
 }
 
 .dialogs_search {

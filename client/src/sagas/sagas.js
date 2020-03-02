@@ -1,14 +1,12 @@
 import login from './login';
-import userData from './user';
-import dialogs from './dialogs';
+import chatUsers from './chatUsers';
 import messages from './messages';
 import contacts from './contacts';
 import { channelDialog, channelMessage, channelOnlineStatus } from './channels';
 
 export {
   login,
-  userData,
-  dialogs,
+  chatUsers,
   messages,
   contacts,
   channelDialog,
