@@ -41,7 +41,7 @@ const HistoryMessages = props => {
   return (
     <>
       <Scrollbars
-        style={{ height: 'calc(100% - 110px)' }}
+        style={{ height: 'calc(100% - 9em)' }}
       >
         <div className='history-messages'>
           { isLoading ? (

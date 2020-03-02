@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDefaultKeyBinding, KeyBindingUtil } from 'draft-js';
 import Editor, { createEditorStateWithText  } from 'draft-js-plugins-editor';
@@ -7,6 +8,7 @@ import data from 'emoji-mart/data/messenger.json';
 
 import EmojiPanel from 'components/emoji_panel';
 import EditorButton from 'components/buttons/editorButton';
+import ReplyMessage from 'components/reply_message';
 
 import { createdMessage } from 'actions/action_messages';
 import { emojiEncode } from 'utils/helpers';
@@ -66,20 +68,27 @@ const SendPanel = ({ userId }) => {
 
   return (
     <div className='editor'>
-      <div className='editor-inner'>
-        <Editor 
-          editorState={ editorState }
-          onChange={ setEditorState }
-          handleKeyCommand={ handleKeyCommand }
-          keyBindingFn={ myKeyBindingFn }
-          plugins={ [emojiPlugin] }
-          placeholder='Type a message...'
-        />
-        <EmojiPanel Picker={ Picker } />
+      <ReplyMessage/>
+      <div className='editor-wrap'>
+        <div className='editor-inner'>
+          <Editor 
+            editorState={ editorState }
+            onChange={ setEditorState }
+            handleKeyCommand={ handleKeyCommand }
+            keyBindingFn={ myKeyBindingFn }
+            plugins={ [emojiPlugin] }
+            placeholder='Type a message...'
+          />
+          <EmojiPanel Picker={ Picker } />
+        </div>
+        <EditorButton onClick={ handleSubmit } />
       </div>
-      <EditorButton onClick={ handleSubmit } />
     </div>
   )
 };
+
+SendPanel.propTypes = {
+  userId: PropTypes.string
+}
 
 export default SendPanel;

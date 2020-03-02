@@ -1,7 +1,10 @@
 .editor {
+  padding: 5px 32px;
+}
+
+.editor-wrap {
   display: flex;
   align-items: center;
-  padding: 5px 32px;
 }
 
 .editor-inner {
