@@ -9,16 +9,21 @@ import { closeReplyMessage } from 'actions/action_reply';
 
 import './style.scss';
 
-const ReplyMessage = ({replyMessage}) => {
+const ReplyMessage = ({replyMessage, clearEditorState}) => {
   const dispatch = useDispatch();
   const setCloseReplyMessage = useCallback(() => dispatch(closeReplyMessage()), [dispatch]);
+
+  const handleCancel = () => {
+    setCloseReplyMessage();
+    clearEditorState();
+  }
 
   return (
     <div className='reply-wrap'>
       <button 
         type='button' 
         className='reply-cancel'
-        onClick={ setCloseReplyMessage }
+        onClick={ handleCancel }
       >
         Remove
       </button>
@@ -37,7 +42,8 @@ const ReplyMessage = ({replyMessage}) => {
 };
 
 ReplyMessage.propTypes = {
-  replyMessage: PropTypes.object
+  replyMessage: PropTypes.object,
+  clearEditorState: PropTypes.func
 }
 
 export default ReplyMessage;

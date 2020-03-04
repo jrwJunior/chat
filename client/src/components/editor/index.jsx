@@ -12,7 +12,6 @@ import ReplyMessage from 'components/reply_message';
 
 import { createdMessage } from 'actions/action_messages';
 import { emojiEncode, insertReplyText } from 'utils/helpers';
-import { usePrevious } from 'utils/hooks';
 import { socket } from 'utils/socket';
 import { socketEvents } from 'constans/socketEvents';
 
@@ -30,7 +29,7 @@ const SendPanel = ({ userId }) => {
 
   const { dialogId } = useSelector(state => state.dialog);
   const { replyMessage, isOpen } = useSelector(state => state.replyMessage);
-  const prevProps = usePrevious(isOpen);
+
   const dispatch = useDispatch();
 
   const addMessage = useCallback((message, dialogId, interlocutor) => dispatch(createdMessage(message, dialogId, interlocutor)), [dispatch]);
@@ -69,11 +68,11 @@ const SendPanel = ({ userId }) => {
     return 'not-handled';
   }
 
-  useEffect(() => {
-    if (!!prevProps !== isOpen && !isOpen) {
-      setEditorState(EditorState.createEmpty());
-    }
+  const handleClearEditorState = () => {
+    setEditorState(EditorState.createEmpty());
+  }
 
+  useEffect(() => {
     if (isOpen) {
       const newEditorState = insertReplyText(editorState, replyMessage);
       setEditorState(newEditorState);
@@ -85,6 +84,7 @@ const SendPanel = ({ userId }) => {
     <div className='editor'>
       { isOpen ? (
         <ReplyMessage
+          clearEditorState={ handleClearEditorState }
           replyMessage={ replyMessage }
         />
       ) : null }
