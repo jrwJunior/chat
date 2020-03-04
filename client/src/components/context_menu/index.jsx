@@ -4,17 +4,20 @@ import { ContextMenu, MenuItem } from "react-contextmenu";
 
 import { openDeletePanel } from 'actions/action_deletePanel';
 import { deleteMessage, flaggedMessage } from 'actions/action_messages';
+import { replyMessage } from 'actions/action_reply';
 import { confirmDelete } from 'utils/helpers';
 
 export default () => {
   const { isOpenPanel } = useSelector(state => state.deletePanel);
   const { dialogId } = useSelector(state => state.dialog);
+  const { messages } = useSelector(state => state.chat_message);
   const contextItemClass = {className: isOpenPanel ? 'react-contextmenu-item-disabled' : null};
 
   const dispatch = useDispatch();
   const removeMessage = useCallback(id => dispatch(deleteMessage(id)), [dispatch]);
   const setIsOpenPanel = useCallback(isOpen => dispatch(openDeletePanel(isOpen)), [dispatch]);
   const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
+  const setReplyMessage = useCallback(id => dispatch(replyMessage(id)), [dispatch]);
 
   const handleDelete = (evt, data, child) => {
     const deleteMessage = child.lastChild.dataset.msgId;
@@ -34,7 +37,15 @@ export default () => {
   }
 
   const handleEdit = (evt, data, child) => {
-    console.log(child.lastChild);
+    const id = child.lastChild.dataset.msgId;
+    // eslint-disable-next-line
+    const { message } = messages.find(message => {
+      if (message._id.indexOf(id) >= 0) {
+        return message;
+      }
+    });
+    
+    setReplyMessage(message);
   }
 
   return (
