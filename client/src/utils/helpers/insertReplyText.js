@@ -1,8 +1,8 @@
 import { Modifier, EditorState } from 'draft-js';
 import emojiDecode from './emojiDecode';
 
-export default (editorState, { message }) => {
-  const replyText = message.match(/:(.+?):/g) ? emojiDecode(message) : message;
+export default (editorState, message) => {
+  const replyText = message && message.match(/:(.+?):/g) ? emojiDecode(message) : message;
 
   let contentState = editorState.getCurrentContent();
   const selectionState = editorState.getSelection();

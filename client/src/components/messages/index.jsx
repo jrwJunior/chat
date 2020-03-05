@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spin, Icon, Switch } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -14,9 +14,13 @@ import 'style_components/indicator/style.scss';
 
 const HistoryMessages = props => {
   const userId = props.match.params.id;
+
   const { messages, deletedMessages, isLoading } = useSelector(state => state.chat_message);
   const { dialogId } = useSelector(state => state.dialog);
   const { isOpenPanel } = useSelector(state => state.deletePanel);
+
+  const editorNode = useRef();
+  const messagesNode = useRef();
 
   const dispatch = useDispatch();
   const setMessages = useCallback((dialogId, interlocutor) => dispatch(getAllMessages({ dialogId, interlocutor })), [dispatch]);
@@ -32,6 +36,32 @@ const HistoryMessages = props => {
     authorMessage && setFlaggedMessage(id);
   }
 
+  const handleResizeBodyHeight = useCallback(() => {
+    const resizeObserver = new ResizeObserver(entries => {
+      const target = entries[0].contentRect.height;
+      const offsetHeight = editorNode.current.offsetHeight;
+
+      messagesNode.current.style = `height: ${target - offsetHeight - 65}px`;
+    });
+
+    resizeObserver.observe(document.body);
+  }, []);
+
+  const handleResizeEditor = useCallback(() => {
+    const resizeObserver = new ResizeObserver(entries => {
+      const target = entries[0].contentRect.height + 10;
+      const offsetHeight = window.innerHeight - target - 65;
+      
+      messagesNode.current.style = `height: ${offsetHeight}px`;
+    });
+    resizeObserver.observe(editorNode.current);
+  }, []);
+
+  useEffect(() => {
+    handleResizeBodyHeight();
+    handleResizeEditor();
+  }, [handleResizeBodyHeight, handleResizeEditor]);
+
   useEffect(() => {
     if (dialogId) {
       setMessages(dialogId, userId);
@@ -39,9 +69,9 @@ const HistoryMessages = props => {
   }, [dialogId, userId, setMessages]);
 
   return (
-    <>
+    <div ref={ messagesNode }>
       <Scrollbars
-        style={{ height: 'calc(100% - 9em)' }}
+        style={{ height: '100%' }}
       >
         <div className='history-messages'>
           { isLoading ? (
@@ -67,9 +97,10 @@ const HistoryMessages = props => {
         </div>
       </Scrollbars>
       <Editor
+        ref={ editorNode }
         userId={ userId }
       />
-    </>
+    </div>
   )
 };
 
