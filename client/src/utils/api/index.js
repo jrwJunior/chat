@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class API {
   constructor() {
-    axios.defaults.headers.common['authorization'] = localStorage['_token'];
+    axios.defaults.headers.common['authorization'] = localStorage['token'];
   }
 
   errorBoundary(error) {
@@ -71,6 +71,16 @@ class API {
       this.errorBoundary(error.response);
     }
   }
+
+  // editedMessage = () => {
+  //   try {
+  //     axios.delete('/api/messages', {
+  //       data
+  //     });
+  //   } catch(error) {
+  //     this.errorBoundary(error.response);
+  //   }
+  // };
 
   removeMessage = async(data) => {
     try {

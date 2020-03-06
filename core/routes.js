@@ -11,7 +11,7 @@ import {
 const createRoutes = (app, io) => {
   const { getUser, findUser, createUser, login } = new UserController(io);
   const { getDialogs, createDialog, deleteDialog } = new DialogController(io);
-  const { getMessages, createMessage, deleteMessage } = new MessageController(io);
+  const { getMessages, createMessage, deleteMessage, editMessage } = new MessageController(io);
 
   app.use(express.json({ extended: true }));
 
@@ -30,6 +30,7 @@ const createRoutes = (app, io) => {
   app.get('/api/messages', verifyToken, getMessages);
   app.post('/api/messages', verifyToken, createMessage);
   app.delete('/api/messages', verifyToken, deleteMessage);
+  app.delete('/api/edited', verifyToken, editMessage);
 }
 
 

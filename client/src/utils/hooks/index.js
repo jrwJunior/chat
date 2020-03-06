@@ -1,9 +1,9 @@
 import { usePrevious } from './usePrevious';
-import { useAuth } from './useAuth';
+import { useAuthentication } from './userAuthentication';
 import { useOnlineStatus } from './useOnlineStatus';
 
 export {
-  useAuth,
+  useAuthentication,
   usePrevious,
   useOnlineStatus
 }

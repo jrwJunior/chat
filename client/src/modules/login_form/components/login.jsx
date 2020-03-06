@@ -1,18 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Button, Spin, Icon } from 'antd';
 
 import Field from 'modules/form_field';
-import { useAuth } from 'utils/hooks';
+import { useAuthentication } from 'utils/hooks';
 import 'style_components/button/style.scss';
 
 const Login = props => {
-  const { isValid, isSubmitting, history, handleSubmit, setSubmitting } = props;
+  const { isValid, isSubmitting, handleSubmit, setSubmitting } = props;
   const { isLoading } = useSelector(state => state.user_auth);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 25 }} spin />;
-  useAuth(isSubmitting, setSubmitting, history);
+  useAuthentication(isSubmitting, setSubmitting, props.history);
 
   return (
     <Form className="login-form" onSubmit={ handleSubmit }>
@@ -53,5 +54,12 @@ const Login = props => {
     </Form>
   )
 };
+
+Login.propTypes = {
+  isValid: PropTypes.bool,
+  isSubmitting: PropTypes.bool,
+  handleSubmit: PropTypes.func,
+  setSubmitting: PropTypes.func
+}
 
 export default Login;

@@ -45,7 +45,7 @@ export default () => {
       }
     });
     
-    setReplyMessage(message);
+    setReplyMessage(message.trim());
   }
 
   return (

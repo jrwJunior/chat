@@ -74,6 +74,7 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
 
   useEffect(() => {
     if (isOpenPanel) {
+      console.log('effect')
       const newEditorState = insertReplyText(editorState, message);
       setEditorState(newEditorState);
     }

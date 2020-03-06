@@ -4,8 +4,7 @@ const initialState = {
   userData: {},
   error: null,
   loading: false,
-  status: null,
-  token: localStorage['_token']
+  status: null
 };
 
 export default (state = initialState, action) => {
@@ -16,13 +15,13 @@ export default (state = initialState, action) => {
         loading: true
       }
     case actionTypes.LOGIN_SUCCESS:
-      const { data, token } = action.payload;
+      const { data } = action.payload;
+
       return {
         userData: data,
         error: null,
         loading: false,
-        status: data.status,
-        token
+        status: data.status
       }
     case actionTypes.SET_USER_DATA:
       return {
@@ -36,7 +35,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        token: null,
         error
       }
     case actionTypes.CLEAR_ERROR_USER:
