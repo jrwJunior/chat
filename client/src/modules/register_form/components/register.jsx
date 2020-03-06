@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Form, Button, Icon, Spin } from 'antd';
 
 import Field from '../../form_field';
-import { useAuth } from 'utils/hooks';
+// import { useAuth } from 'utils/hooks';
 import 'style_components/button/style.scss';
 
 const Register = props => {
@@ -13,7 +13,7 @@ const Register = props => {
 
   const antIcon = <Icon type="loading" style={{ fontSize: 25 }} spin />;
 
-  useAuth(isSubmitting, setSubmitting, history);
+  // useAuth(isSubmitting, setSubmitting, history);
 
   return (
     <Form className="register-form" onSubmit={ handleSubmit }>

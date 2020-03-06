@@ -1,23 +1,27 @@
 import * as actionTypes from 'constans';
 
 const initialState = {
-  replyMessage: {},
-  isOpen: false
+  message: null,
+  isOpenPanel: false
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
     case actionTypes.SET_REPLY_MESSAGE:
+      const equal = Object.is(state.message,action.payload);
+
+      if (equal) {
+        return state;
+      }
+
       return {
-        isOpen: true,
-        replyMessage: {
-          message: action.payload
-        }
+        isOpenPanel: true,
+        message: action.payload
       }
     case actionTypes.CLOSE_REPLY_MESSAGE:
       return {
-        replyMessage: {},
-        isOpen: false
+        message: null,
+        isOpenPanel: false
       }
     default:
       return state;

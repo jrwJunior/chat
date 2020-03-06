@@ -1,12 +1,15 @@
 import React, { useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { Typography, Alert } from 'antd';
 
 import { LoginForm, RegisterForm } from 'modules';
+
 import { clearError } from 'actions/action_auth';
 import { usePrevious } from 'utils/hooks/usePrevious';
 import { showNotify } from 'utils/helpers';
+
 import './style.scss';
 
 const { Title, Text } = Typography;
@@ -14,6 +17,7 @@ const { Title, Text } = Typography;
 const Auth = ({ location }) => {
   const { error, status } = useSelector(state => state.user_auth);
   const prevPath = usePrevious(location.pathname);
+
   const dispatch = useDispatch();
   const setInitialState = useCallback(() => dispatch(clearError()), [dispatch]);
 
@@ -22,13 +26,18 @@ const Auth = ({ location }) => {
   }
 
   useEffect(() => {
+    if (status !== 'success') {
+      document.body.classList.add('no-logged');
+    }
+
     if (status === 'success') {
-      showNotify({type: status})
+      showNotify({type: status});
+      document.body.classList.add('loggedIn');
     }
   }, [status]);
 
   return (
-    <div className="auth-container">
+    <div className='auth-container'>
       <div className='wrapper-auth'>
         <Title>Be together, whenever.</Title>
         <Text className='text'>A simple way to text, audio chat and plan things all in one place.</Text>
@@ -48,5 +57,9 @@ const Auth = ({ location }) => {
     </div>
   );
 };
+
+Auth.propTypes = {
+  location: PropTypes.object
+}
 
 export default withRouter(Auth);

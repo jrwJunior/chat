@@ -6,14 +6,14 @@ export default () => next => action => {
   switch(action.type) {
     case actionTypes.LOGIN_SUCCESS:
       const { headers, data } = action.payload;
-      const token = localStorage['_token'];
+      const isLoggedIn = localStorage['token'];
       
-      if (!token || token !== headers.authorization) {
-        localStorage.setItem('_token', headers.authorization);
+      if (!isLoggedIn) {
+        localStorage.setItem('token', headers.authorization);
+        localStorage.setItem('authentication', true);
 
         return next(setLoginData({
-          data,
-          token: headers.authorization
+          data
         }));
       }
 

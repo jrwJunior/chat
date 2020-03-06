@@ -5,15 +5,15 @@ class MessageController {
     this.socket = socket;
   }
 
-  // readMessage = (res, userId, dialogId) => {
-  //   const filter = { dialog: dialogId, user: { $ne: userId } };
+  editMessage = (req, res) => {
+    const filter = { dialog: dialogId, user: { $ne: userId } };
 
-  //   MessageModal.updateMany(filter, { $set: { readed: true } }, err => {
-  //     if (err) {
-  //       return res.status(500).json({ message: err });
-  //     }
-  //   });
-  // }
+    MessageModal.updateMany(filter, { $set: { edited: true } }, err => {
+      if (err) {
+        return res.status(500).json({ message: err });
+      }
+    });
+  }
 
   getMessages = async(req, res) => {
     const dialogId = req.query.dialog;

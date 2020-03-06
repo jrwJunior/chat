@@ -24,11 +24,11 @@ const emojiPlugin = createEmojiMartPlugin({
 
 const { Picker } = emojiPlugin;
 
-const SendPanel = ({ userId }) => {
+const SendPanel = React.forwardRef(({ userId }, ref) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const { dialogId } = useSelector(state => state.dialog);
-  const { replyMessage, isOpen } = useSelector(state => state.replyMessage);
+  const { message, isOpenPanel } = useSelector(state => state.replyMessage);
 
   const dispatch = useDispatch();
 
@@ -73,19 +73,20 @@ const SendPanel = ({ userId }) => {
   }
 
   useEffect(() => {
-    if (isOpen) {
-      const newEditorState = insertReplyText(editorState, replyMessage);
+    if (isOpenPanel) {
+      console.log('effect')
+      const newEditorState = insertReplyText(editorState, message);
       setEditorState(newEditorState);
     }
     // eslint-disable-next-line
-  }, [isOpen, replyMessage]);
+  }, [isOpenPanel, message]);
 
   return (
-    <div className='editor'>
-      { isOpen ? (
+    <div className='editor' ref={ ref } style={{ boxShadow: isOpenPanel ? '0 0 0 1px #ECECEC' : false }}>
+      { isOpenPanel ? (
         <ReplyMessage
           clearEditorState={ handleClearEditorState }
-          replyMessage={ replyMessage }
+          replyMessage={ message }
         />
       ) : null }
       <div className='editor-wrap'>
@@ -104,7 +105,7 @@ const SendPanel = ({ userId }) => {
       </div>
     </div>
   )
-};
+});
 
 SendPanel.propTypes = {
   userId: PropTypes.string

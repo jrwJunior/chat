@@ -32,7 +32,7 @@ const ReplyMessage = ({replyMessage, clearEditorState}) => {
       </div>
       <div className='reply-body'>
         <div className='message-text'>
-          {reactStringReplace(replyMessage.message, /:(.+?):/g, match => (
+          {reactStringReplace(replyMessage, /:(.+?):/g, match => (
             <Emoji key={ uuidv5('guys.example.com', uuidv5.DNS) } emoji={match} set='messenger' size={16} />
           ))}
         </div>
@@ -42,7 +42,7 @@ const ReplyMessage = ({replyMessage, clearEditorState}) => {
 };
 
 ReplyMessage.propTypes = {
-  replyMessage: PropTypes.object,
+  replyMessage: PropTypes.string,
   clearEditorState: PropTypes.func
 }
 
