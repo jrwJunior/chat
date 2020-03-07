@@ -6,12 +6,16 @@ class MessageController {
   }
 
   editMessage = (req, res) => {
-    const filter = { dialog: dialogId, user: { $ne: userId } };
+    const { id, message } = req.body;
 
-    MessageModal.updateMany(filter, { $set: { edited: true } }, err => {
+    MessageModal.findByIdAndUpdate({_id: id}, {edited: true, message}, { new: true }, (err, _message) => {
       if (err) {
-        return res.status(500).json({ message: err });
+        return res.json(err);
       }
+      console.log(_message)
+      this.socket.to('guys').emit('MESSAGE_EDITING', {
+        edited: _message
+      });
     });
   }
 
