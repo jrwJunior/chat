@@ -29,8 +29,8 @@ const createRoutes = (app, io) => {
   // Route Messages
   app.get('/api/messages', verifyToken, getMessages);
   app.post('/api/messages', verifyToken, createMessage);
+  app.put('/api/edited', verifyToken, editMessage);
   app.delete('/api/messages', verifyToken, deleteMessage);
-  app.delete('/api/edited', verifyToken, editMessage);
 }
 
 
