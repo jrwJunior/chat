@@ -8,12 +8,6 @@ const initialState = {
 export default (state = initialState, action) => {
   switch(action.type) {
     case actionTypes.SET_REPLY_MESSAGE:
-      const equal = Object.is(state.message,action.payload);
-
-      if (equal) {
-        return state;
-      }
-
       return {
         isOpenPanel: true,
         message: action.payload

@@ -30,7 +30,6 @@ const Message = props => {
     }
     
     flaggMessage(_id, isMe);
-
     refNode.current.classList.add('selected-bubble');
     setTimeout(() => refNode.current.classList.remove('selected-bubble'), 500);
   }
