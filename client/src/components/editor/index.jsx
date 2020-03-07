@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { getDefaultKeyBinding, KeyBindingUtil, EditorState } from 'draft-js';
+import { getDefaultKeyBinding, KeyBindingUtil, EditorState, ContentState } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createEmojiMartPlugin from 'draft-js-emoji-mart-plugin';
 import data from 'emoji-mart/data/messenger.json';
@@ -39,9 +39,10 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
     }
 
     const messageEncode = emojiEncode(editorState.getCurrentContent().getPlainText('\u0001'));
+    const clearEditorState = EditorState.push(editorState, ContentState.createFromText(''));
 
     addMessage(messageEncode, dialogId, userId);
-    setEditorState(EditorState.createEmpty());
+    setEditorState(clearEditorState);
   }, [addMessage, editorState, userId, dialogId]);
 
   const myKeyBindingFn = evt => {
@@ -69,17 +70,19 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
   }
 
   const handleClearEditorState = () => {
-    setEditorState(EditorState.createEmpty());
+    const clearEditorState = EditorState.push(editorState, ContentState.createFromText(''), 'remove-range');
+    setEditorState(clearEditorState);
   }
 
   useEffect(() => {
     if (isOpenPanel) {
-      console.log('effect')
       const newEditorState = insertReplyText(editorState, message);
       setEditorState(newEditorState);
     }
     // eslint-disable-next-line
-  }, [isOpenPanel, message]);
+  }, [message, isOpenPanel]);
+
+  // TODO: fixed edit message
 
   return (
     <div className='editor' ref={ ref } style={{ boxShadow: isOpenPanel ? '0 0 0 1px #ECECEC' : false }}>
@@ -101,7 +104,13 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
           />
           <EmojiPanel Picker={ Picker } />
         </div>
-        <EditorButton onClick={ handleSubmit } />
+        { !isOpenPanel ? (
+          <EditorButton onClick={ handleSubmit } />
+        ) : (
+          <button className='edit-message' type='button'>
+            <span className='icon-tick'/>
+          </button>
+        )}
       </div>
     </div>
   )
