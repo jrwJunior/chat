@@ -5,20 +5,6 @@ class MessageController {
     this.socket = socket;
   }
 
-  editMessage = (req, res) => {
-    const { id, message } = req.body;
-
-    MessageModal.findByIdAndUpdate({_id: id}, {edited: true, message}, { new: true }, (err, _message) => {
-      if (err) {
-        return res.json(err);
-      }
-      console.log(_message)
-      this.socket.to('guys').emit('MESSAGE_EDITING', {
-        edited: _message
-      });
-    });
-  }
-
   getMessages = async(req, res) => {
     const dialogId = req.query.dialog;
 
@@ -72,7 +58,7 @@ class MessageController {
           const msg = new MessageModal({ message, dialog: dialogId, user: userId });
           const messageObj = await msg.save();
 
-          messageObj.populate('user', async(err, message) => {
+          messageObj.populate('user', (err, message) => {
             const query = { _id: dialogId };
             const update = { lastMessage: message._id };
             const options = { new: true, upsert: true };
@@ -100,12 +86,35 @@ class MessageController {
     });
   }
 
+  editMessage = (req, res) => {
+    const { id, message } = req.body;
+
+    MessageModal.findByIdAndUpdate({_id: id}, {edited: true, message}, { new: true }, err => {
+      if (err) {
+        return res.json(err);
+      }
+    });
+
+    MessageModal
+    .findById(id)
+    .populate("user")
+    .exec((err, message) => {
+      if (err) {
+        return res.json({message: "Messages not found"});
+      }
+
+      this.socket.to('guys').emit('MESSAGE_EDITING', {
+        editedMessage: message
+      });
+    });
+  }
+
   updateMessages = dialogId => {
     MessageModal
       .find({ dialog: dialogId })
       .populate("user")
       .exec((err, messages) => {
-        this.socket.to('guys').emit('MESSAGE_RECEIVED', {
+        this.socket.to('guys').emit('MESSAGES_RECEIVED', {
           messages
         });
       });
