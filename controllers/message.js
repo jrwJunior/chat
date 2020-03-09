@@ -75,9 +75,8 @@ class MessageController {
               }
             });
 
-            this.socket.to('guys').emit('MESSAGE_RECEIVED', {
-              message
-            })
+            this.socket.to('guys').emit('MESSAGE_RECEIVED', {message});
+            this.socket.to('guys').emit('LAST_MESSAGE', {lastMessage: message});
           });
         }
       } catch(err) {
@@ -96,17 +95,17 @@ class MessageController {
     });
 
     MessageModal
-    .findById(id)
-    .populate("user")
-    .exec((err, message) => {
-      if (err) {
-        return res.json({message: "Messages not found"});
-      }
+      .findById(id)
+      .populate("user")
+      .exec((err, message) => {
+        if (err) {
+          return res.json({message: "Messages not found"});
+        }
 
-      this.socket.to('guys').emit('MESSAGE_EDITING', {
-        editedMessage: message
+        this.socket.to('guys').emit('MESSAGE_EDITING', {
+          editedMessage: message
+        });
       });
-    });
   }
 
   updateMessages = dialogId => {
@@ -114,8 +113,8 @@ class MessageController {
       .find({ dialog: dialogId })
       .populate("user")
       .exec((err, messages) => {
-        this.socket.to('guys').emit('MESSAGES_RECEIVED', {
-          messages
+        this.socket.to('guys').emit('DELETE_MESSAGE', {
+          deleteMessage: messages
         });
       });
   }
@@ -146,15 +145,15 @@ class MessageController {
   deleteMessage = (req, res) => {
     const { messages, dialogId } = req.body;
 
-    MessageModal.deleteMany({_id: {$in: messages}}, err => {
+    MessageModal.deleteMany({_id: {$in: messages}}, (err, doc) => {
       if (err) {
         return res.status(500).json({
           message: err,
         });
       }
-
+      console.log(doc);
       this.updateLastMessage(dialogId);
-      this.updateMessages(dialogId);
+      // this.updateMessages(dialogId);
     });
   }
 }
