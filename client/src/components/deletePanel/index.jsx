@@ -11,7 +11,7 @@ import 'style_components/badge/style.scss';
 
 export default () => {
   const { deletedMessages } = useSelector(state => state.chat_message);
-  const { dialogId } = useSelector(state => state.chatDialogs);
+  const { dialogId } = useSelector(state => state.dialog);
   
   const dispatch = useDispatch();
   const setIsOpenPanel = useCallback(isOpen => dispatch(openDeletePanel(isOpen)), [dispatch]);

@@ -2,7 +2,7 @@ import { eventChannel } from 'redux-saga';
 import { fork, all } from 'redux-saga/effects';
 
 import { socket } from 'utils/socket';
-import * as messages from './messages';
+import connectedChannels from '../connectedChannels';
 
 export function createChannel(socketEvent) {
   const subscribe = emitter => {
@@ -18,7 +18,7 @@ export function createChannel(socketEvent) {
 
 function* mySaga() {
   yield all([
-    ...Object.values(messages)
+    ...Object.values(connectedChannels)
   ].map(fork));
 }
 

@@ -108,16 +108,16 @@ class MessageController {
       });
   }
 
-  updateMessages = dialogId => {
-    MessageModal
-      .find({ dialog: dialogId })
-      .populate("user")
-      .exec((err, messages) => {
-        this.socket.to('guys').emit('DELETE_MESSAGE', {
-          deleteMessage: messages
-        });
-      });
-  }
+  // updateMessages = dialogId => {
+  //   MessageModal
+  //     .find({ dialog: dialogId })
+  //     .populate("user")
+  //     .exec((err, messages) => {
+  //       this.socket.to('guys').emit('DELETE_MESSAGE', {
+  //         deleteMessage: messages
+  //       });
+  //     });
+  // }
 
   updateLastMessage = dialogId => {
     MessageModal.findOne({ dialog: dialogId }, {}, {sort: { createdAt: -1 }}, (err, lastMessage) => {
@@ -138,22 +138,24 @@ class MessageController {
         dialog.save();
       });
 
-      this.socket.emit('DIALOG_RECEIVED', {lastMessage});
+      this.socket.to('guys').emit('LAST_MESSAGE', {lastMessage});
     });
   }
 
   deleteMessage = (req, res) => {
     const { messages, dialogId } = req.body;
 
-    MessageModal.deleteMany({_id: {$in: messages}}, (err, doc) => {
+    MessageModal.deleteMany({_id: {$in: messages}}, err => {
       if (err) {
         return res.status(500).json({
           message: err,
         });
       }
-      console.log(doc);
+      
       this.updateLastMessage(dialogId);
-      // this.updateMessages(dialogId);
+      this.socket.to('guys').emit('DELETE_MESSAGE', {
+        deleteMessage: messages
+      });
     });
   }
 }
