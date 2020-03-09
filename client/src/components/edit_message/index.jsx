@@ -5,11 +5,11 @@ import { Emoji } from 'emoji-mart';
 import uuidv5 from 'uuid/v5';
 import reactStringReplace from 'react-string-replace';
 
-import { closeReplyMessage } from 'actions/action_reply';
+import { closeReplyMessage } from 'actions/action_editMessage';
 
 import './style.scss';
 
-const ReplyMessage = ({replyMessage, clearEditorState}) => {
+const EditMessage = ({replyMessage, clearEditorState}) => {
   const dispatch = useDispatch();
   const setCloseReplyMessage = useCallback(() => dispatch(closeReplyMessage()), [dispatch]);
 
@@ -41,9 +41,9 @@ const ReplyMessage = ({replyMessage, clearEditorState}) => {
   )
 };
 
-ReplyMessage.propTypes = {
+EditMessage.propTypes = {
   replyMessage: PropTypes.string,
   clearEditorState: PropTypes.func
 }
 
-export default ReplyMessage;
+export default EditMessage;

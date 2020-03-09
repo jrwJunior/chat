@@ -15,13 +15,14 @@ const Message = props => {
     _id,
     user,
     message,
+    edited,
     createdAt,
     interlocutorId,
     flaggMessage,
     deletedMessages,
     isOpenPanel
   } = props;
-  const refNode = useRef(null);
+  const refBubble = useRef(null);
   const isMe = interlocutorId !== user._id;
 
   const haneleSelect = () => {
@@ -29,9 +30,10 @@ const Message = props => {
       return;
     }
     
+    refBubble.current.classList.add('selected-bubble');
+    
     flaggMessage(_id, isMe);
-    refNode.current.classList.add('selected-bubble');
-    setTimeout(() => refNode.current.classList.remove('selected-bubble'), 500);
+    setTimeout(() => refBubble.current.classList.remove('selected-bubble'), 500);
   }
 
   return (
@@ -52,7 +54,7 @@ const Message = props => {
             disable={ !isMe || !!deletedMessages.includes(_id) }
           >
             <div
-              ref={ refNode }
+              ref={ refBubble }
               className={classNames('message-bubble message-text', { 'bubble-is-me' : isMe})}
               data-msg-id={ _id }
               onClick={ haneleSelect }
@@ -60,8 +62,11 @@ const Message = props => {
               {reactStringReplace(message, /:(.+?):/g, match => (
                 <Emoji key={ uuidv5('guys.example.com', uuidv5.DNS) } emoji={match} set='messenger' size={16} />
               ))}
-              <span className='message-create_date'>
-                { format(new Date(createdAt), 'H:mm') }
+              <span className='message-meta'>
+                { edited ? <span className='message-edit'>edited</span> : null }
+                <span className='message-create_date'>
+                  { format(new Date(createdAt), 'H:mm') }
+                </span>
               </span>
             </div>
           </ContextMenuTrigger>

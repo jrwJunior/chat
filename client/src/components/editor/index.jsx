@@ -8,9 +8,10 @@ import data from 'emoji-mart/data/messenger.json';
 
 import EmojiPanel from 'components/emoji_panel';
 import EditorButton from 'components/buttons/editorButton';
-import ReplyMessage from 'components/reply_message';
+import ReplyMessage from 'components/edit_message';
 
 import { createdMessage } from 'actions/action_messages';
+import { saveMessage } from 'actions/action_editMessage';
 import { emojiEncode, insertReplyText } from 'utils/helpers';
 import { socket } from 'utils/socket';
 import { socketEvents } from 'constans/socketEvents';
@@ -33,6 +34,7 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
   const dispatch = useDispatch();
 
   const addMessage = useCallback((message, dialogId, interlocutor) => dispatch(createdMessage(message, dialogId, interlocutor)), [dispatch]);
+  const setSaveMessage = useCallback(message => dispatch(saveMessage(message)), [dispatch]);
   const handleSubmit = useCallback(evt => {
     if (evt && evt.preventDefault) {
       evt.preventDefault();
@@ -74,6 +76,13 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
     setEditorState(clearEditorState);
   }
 
+  const handleSave = () => {
+    const message = emojiEncode(editorState.getCurrentContent().getPlainText());
+    
+    setSaveMessage(message);
+    handleClearEditorState();
+  }
+
   useEffect(() => {
     if (isOpenPanel) {
       const newEditorState = insertReplyText(editorState, message);
@@ -107,7 +116,7 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
         { !isOpenPanel ? (
           <EditorButton onClick={ handleSubmit } />
         ) : (
-          <button className='edit-message' type='button'>
+          <button onClick={ handleSave } className='edit-message' type='button'>
             <span className='icon-tick'/>
           </button>
         )}

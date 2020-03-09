@@ -75,9 +75,8 @@ class MessageController {
               }
             });
 
-            this.socket.to('guys').emit('MESSAGE_RECEIVED', {
-              message
-            })
+            this.socket.to('guys').emit('MESSAGE_RECEIVED', {message});
+            this.socket.to('guys').emit('LAST_MESSAGE', {lastMessage: message});
           });
         }
       } catch(err) {
@@ -96,29 +95,29 @@ class MessageController {
     });
 
     MessageModal
-    .findById(id)
-    .populate("user")
-    .exec((err, message) => {
-      if (err) {
-        return res.json({message: "Messages not found"});
-      }
-
-      this.socket.to('guys').emit('MESSAGE_EDITING', {
-        editedMessage: message
-      });
-    });
-  }
-
-  updateMessages = dialogId => {
-    MessageModal
-      .find({ dialog: dialogId })
+      .findById(id)
       .populate("user")
-      .exec((err, messages) => {
-        this.socket.to('guys').emit('MESSAGES_RECEIVED', {
-          messages
+      .exec((err, message) => {
+        if (err) {
+          return res.json({message: "Messages not found"});
+        }
+
+        this.socket.to('guys').emit('MESSAGE_EDITING', {
+          editedMessage: message
         });
       });
   }
+
+  // updateMessages = dialogId => {
+  //   MessageModal
+  //     .find({ dialog: dialogId })
+  //     .populate("user")
+  //     .exec((err, messages) => {
+  //       this.socket.to('guys').emit('DELETE_MESSAGE', {
+  //         deleteMessage: messages
+  //       });
+  //     });
+  // }
 
   updateLastMessage = dialogId => {
     MessageModal.findOne({ dialog: dialogId }, {}, {sort: { createdAt: -1 }}, (err, lastMessage) => {
@@ -139,7 +138,7 @@ class MessageController {
         dialog.save();
       });
 
-      this.socket.emit('DIALOG_RECEIVED', {lastMessage});
+      this.socket.to('guys').emit('LAST_MESSAGE', {lastMessage});
     });
   }
 
@@ -152,9 +151,11 @@ class MessageController {
           message: err,
         });
       }
-
+      
       this.updateLastMessage(dialogId);
-      this.updateMessages(dialogId);
+      this.socket.to('guys').emit('DELETE_MESSAGE', {
+        deleteMessage: messages
+      });
     });
   }
 }

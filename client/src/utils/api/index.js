@@ -72,15 +72,13 @@ class API {
     }
   }
 
-  // editedMessage = () => {
-  //   try {
-  //     axios.delete('/api/messages', {
-  //       data
-  //     });
-  //   } catch(error) {
-  //     this.errorBoundary(error.response);
-  //   }
-  // };
+  editedMessage = data => {
+    try {
+      axios.put('/api/edited', data);
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  };
 
   removeMessage = async(data) => {
     try {
