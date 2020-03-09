@@ -65,12 +65,18 @@
   color: #1b1b1b;
 }
 
-.message-create_date {
-  font-size: 11px;
+.message-edit {
+  margin-right: 5px;
+}
+
+.message-meta {
   display: inline-block;
   margin-bottom: -6px;
   margin-left: 5px;
-  margin-top: 8px;
+}
+
+.message-create_date {
+  font-size: 11px;
 }
 
 .pull-right {
@@ -82,7 +88,7 @@
   color: #fff;
 
   span {
-    color: #add4ff;
+    color: #b3d7ff;
     vertical-align: text-bottom;
   }
 

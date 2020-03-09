@@ -41,6 +41,13 @@ const setMessages = messages => {
   }
 }
 
+const editingMessages = editingMessages => {
+  return {
+    type: actionTypes.EDITING_MESSAGES,
+    payload: editingMessages
+  }
+}
+
 const deleteMessage = (messages, dialogId) => {
   return {
     type: actionTypes.DELETE_MESSAGE,
@@ -64,6 +71,7 @@ export {
   createdMessage,
   setMessage,
   setMessages,
+  editingMessages,
   deleteMessage,
   flaggedMessage
 }

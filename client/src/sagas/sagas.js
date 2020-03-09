@@ -1,15 +1,19 @@
 import login from './login';
 import chatUsers from './chatUsers';
 import messages from './messages';
+import message from './message';
+import deleteMessage from './deleteMessage';
+import editMessage from './messageEdit';
 import contacts from './contacts';
-import { channelDialog, channelMessage, channelOnlineStatus } from './channels';
+import channel from './channels/channel';
 
 export {
   login,
   chatUsers,
   messages,
+  message,
+  deleteMessage,
+  editMessage,
   contacts,
-  channelDialog,
-  channelMessage,
-  channelOnlineStatus
+  channel
 }

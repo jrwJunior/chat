@@ -1,6 +1,6 @@
 import { put, call, all, takeEvery } from 'redux-saga/effects';
 
-import * as actionTypes from 'constans';
+import { DEALOGS_REQUESTED } from 'constans';
 import { setUserData } from 'actions/action_user';
 import { dialogsLoad } from 'actions/action_dialogs';
 import { API } from 'utils/api';
@@ -22,7 +22,7 @@ function* fetchChatUsers() {
 }
 
 function* watchForDialogs() {
-  yield takeEvery(actionTypes.DEALOGS_REQUESTED, fetchChatUsers);
+  yield takeEvery(DEALOGS_REQUESTED, fetchChatUsers);
 }
 
 export default watchForDialogs;

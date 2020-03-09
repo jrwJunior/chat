@@ -1,47 +1,47 @@
-import { eventChannel } from 'redux-saga';
-import { take, call, put, fork, delay } from 'redux-saga/effects';
+import { take, call, put, select, all } from 'redux-saga/effects';
 
-import { socket } from 'utils/socket';
+import { setMessage, editingMessages } from 'actions/action_messages';
+import { setLastMessageReceived } from 'actions/action_dialogs';
 import { socketEvents } from 'constans/socketEvents';
-import { setMessage, setMessages } from 'actions/action_messages';
-import { typingMessage } from 'actions/action_typing';
+import { createChannel } from './channel';
 
-function createChannel() {
-  const subscribe = emitter => {
-    socket.on(socketEvents.MESSAGE_RECEIVED, emitter);
-    socket.on(socketEvents.TYPING_MESSAGE, emitter);
-
-    return () => {
-      socket.removeListener(socketEvents.MESSAGE_RECEIVED, emitter);
-      socket.removeListener(socketEvents.TYPING_MESSAGE, emitter);
-    }
-  }
-
-  return eventChannel(subscribe);
-}
-
-function* connectChannel() {
-  const channel = yield call(createChannel);
+export function* messageReceived() {
+  const { messageChannel, lastMessageChannel } = yield all({
+    messageChannel: call(createChannel, socketEvents.MESSAGE_RECEIVED),
+    lastMessageChannel: call(createChannel, socketEvents.LAST_MESSAGE)
+  });
 
   while(true) {
-    const data = yield take(channel);
+    const { message } = yield take(messageChannel);
+    const { lastMessage } = yield take(lastMessageChannel);
 
-    if (data.message) {
-      yield put(setMessage(data.message));
-    } else if (data.messages) {
-      yield put(setMessages(data.messages));
-    }
+    yield put(setMessage(message));
 
-    if (data.typing) {
-      yield put(typingMessage(data.typing));
-      yield delay(3000);
-      yield put(typingMessage());
+    const { dialogs } = yield select(state => state.chatDialogs);
+    const item = dialogs.find(item => item._id === lastMessage.dialog);
+  
+    if (item.lastMessage._id !== lastMessage._id) {
+      item.lastMessage = lastMessage;
+      yield put(setLastMessageReceived(item));
     }
   }
 }
 
-function* mySaga() {
-  yield fork(connectChannel);
-}
+export function* messageEdited() {
+  const channel = yield call(createChannel, socketEvents.MESSAGE_EDITING);
 
-export default mySaga;
+  while(true) {
+    const { editedMessage } = yield take(channel);
+    const { messages } = yield select(state => state.chat_message);
+
+    const newMessages = messages.map(item => {
+      if (item._id === editedMessage._id) {
+        return { ...item, ...editedMessage };
+      }
+
+      return item;
+    });
+
+    yield put(editingMessages(newMessages));
+  }
+}

@@ -14,6 +14,7 @@ export default (state = initialState, action) => {
         isLoading: true
       }
     case actionTypes.MESSAGES_LOAD_SUCCESS:
+    case actionTypes.EDITING_MESSAGES:
       return {
         ...state,
         isLoading: false,
@@ -24,7 +25,7 @@ export default (state = initialState, action) => {
         ...state,
         messages: state.messages.concat(action.payload)
       }
-    case actionTypes.SET_MESSAGES: 
+    case actionTypes.SET_MESSAGES:
       return {
         ...state,
         messages: action.payload

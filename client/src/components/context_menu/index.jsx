@@ -4,7 +4,7 @@ import { ContextMenu, MenuItem } from "react-contextmenu";
 
 import { openDeletePanel } from 'actions/action_deletePanel';
 import { deleteMessage, flaggedMessage } from 'actions/action_messages';
-import { replyMessage } from 'actions/action_reply';
+import { editMessage } from 'actions/action_editMessage';
 import { confirmDelete } from 'utils/helpers';
 
 export default () => {
@@ -17,7 +17,7 @@ export default () => {
   const removeMessage = useCallback(id => dispatch(deleteMessage(id)), [dispatch]);
   const setIsOpenPanel = useCallback(isOpen => dispatch(openDeletePanel(isOpen)), [dispatch]);
   const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
-  const setReplyMessage = useCallback(id => dispatch(replyMessage(id)), [dispatch]);
+  const setEditMessage = useCallback(id => dispatch(editMessage(id)), [dispatch]);
 
   const handleDelete = (evt, data, child) => {
     const deleteMessage = child.lastChild.dataset.msgId;
@@ -45,7 +45,7 @@ export default () => {
       }
     });
     
-    setReplyMessage(message.trim());
+    setEditMessage({id, message});
   }
 
   return (
