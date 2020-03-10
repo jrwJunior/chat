@@ -48,13 +48,9 @@ const editingMessages = editingMessages => {
   }
 }
 
-const deleteMessage = (messages, dialogId) => {
+const deleteMessage = () => {
   return {
-    type: actionTypes.DELETE_MESSAGE,
-    payload: {
-      messages,
-      dialogId
-    }
+    type: actionTypes.DELETE_MESSAGE
   }
 };
 

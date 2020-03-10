@@ -1,9 +1,9 @@
 import { call, takeEvery, take, put, select } from 'redux-saga/effects';
 
 import { SAVE_EDITED_MESSAGE } from 'constans';
-import { editingMessages } from 'actions/action_messages';
+import { setMessages } from 'actions/action_messages';
 import { socketEvents } from 'constans/socketEvents';
-import { createChannel } from './channels/channel';
+import { createChannel } from './createChannel';
 import { API } from 'utils/api';
 
 function* fetchEditedMessage() {
@@ -39,7 +39,7 @@ export function* messageEdited() {
       return item;
     });
 
-    yield put(editingMessages(newMessages));
+    yield put(setMessages(newMessages));
   }
 }
 

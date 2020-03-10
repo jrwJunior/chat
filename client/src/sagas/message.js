@@ -3,7 +3,7 @@ import { call, take, put, takeEvery } from 'redux-saga/effects';
 import { CREATED_MESSAGE } from 'constans';
 import { setMessage } from 'actions/action_messages';
 import { socketEvents } from 'constans/socketEvents';
-import { createChannel } from './channels/channel';
+import { createChannel } from './createChannel';
 import { API } from 'utils/api';
 
 function* fetchMessage(action) {

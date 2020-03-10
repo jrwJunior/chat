@@ -41,7 +41,9 @@ const HistoryMessages = props => {
       const target = entries[0].contentRect.height;
       const offsetHeight = editorNode.current.offsetHeight;
 
-      messagesNode.current.style = `height: ${target - offsetHeight - 65}px`;
+      if (messagesNode.current) {
+        messagesNode.current.style = `height: ${target - offsetHeight - 65}px`;
+      }
     });
 
     resizeObserver.observe(document.body);
@@ -51,8 +53,10 @@ const HistoryMessages = props => {
     const resizeObserver = new ResizeObserver(entries => {
       const target = entries[0].contentRect.height + 10;
       const offsetHeight = window.innerHeight - target - 65;
-      
-      messagesNode.current.style = `height: ${offsetHeight}px`;
+
+      if (messagesNode.current) {
+        messagesNode.current.style = `height: ${offsetHeight}px`;
+      }
     });
     resizeObserver.observe(editorNode.current);
   }, []);

@@ -14,7 +14,7 @@ export default (state = initialState, action) => {
         isLoading: true
       }
     case actionTypes.MESSAGES_LOAD_SUCCESS:
-    case actionTypes.EDITING_MESSAGES:
+    case actionTypes.SET_MESSAGES:
       return {
         ...state,
         isLoading: false,
@@ -24,11 +24,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         messages: state.messages.concat(action.payload)
-      }
-    case actionTypes.SET_MESSAGES:
-      return {
-        ...state,
-        messages: action.payload
       }
     case actionTypes.SELECT_MESSAGE:
       const { deletedMessages } = state;
@@ -55,8 +50,7 @@ export default (state = initialState, action) => {
     case actionTypes.DELETE_MESSAGE:
       return {
         ...state,
-        deletedMessages: [],
-        messages: state.messages.filter(item => item._id !== action.payload)
+        deletedMessages: []
       }
     default:
       return state;
