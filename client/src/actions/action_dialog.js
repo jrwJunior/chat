@@ -1,6 +1,6 @@
 import * as actionTypes from 'constans';
 
-const setDialogId = id => {
+const dialogId = id => {
   return {
     type: actionTypes.SET_DIALOG_ID,
     payload: id
@@ -15,6 +15,6 @@ const setDialogPartner = partner => {
 }
 
 export {
-  setDialogId,
+  dialogId,
   setDialogPartner
 }

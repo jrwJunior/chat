@@ -1,12 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { Spin, Icon } from 'antd';
 
 import Search from '../search';
 import DialogItem from '../dilaog_item';
 
-import { getAllDialogs } from 'actions/action_dialogs';
 // import Contacts from 'components/contacts';
 
 import './style.scss';
@@ -17,13 +16,6 @@ const Dialogs = () => {
   const { typing } = useSelector(state => state.isTyping);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
-  const dispatch = useDispatch();
-  const setDialogs = useCallback(() => dispatch(getAllDialogs()), [dispatch]);
-
-  useEffect(() => {
-    setDialogs();
-  }, [setDialogs]);
 
   return (
     <aside className='dialogs-panel'>

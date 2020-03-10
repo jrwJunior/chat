@@ -31,7 +31,6 @@ const Message = props => {
     }
     
     refBubble.current.classList.add('selected-bubble');
-    
     flaggMessage(_id, isMe);
     setTimeout(() => refBubble.current.classList.remove('selected-bubble'), 500);
   }

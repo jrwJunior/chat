@@ -11,7 +11,7 @@ import Indicator from 'components/typing_indicator';
 
 import { messageTimeConvert, getPartnerData } from 'utils/helpers';
 import { useOnlineStatus } from 'utils/hooks';
-import { setDialogId, setDialogPartner } from 'actions/action_dialog';
+import { dialogId, setDialogPartner } from 'actions/action_dialog';
 
 const DialogsItem = props => {
   const {
@@ -30,7 +30,7 @@ const DialogsItem = props => {
   const { online } = useOnlineStatus('guys');
 
   const dispatch = useDispatch();
-  const $setDialogId = useCallback(id => dispatch(setDialogId(id)), [dispatch]);
+  const setDialogId = useCallback(id => dispatch(dialogId(id)), [dispatch]);
   const $setDialogPartner = useCallback(partner => dispatch(setDialogPartner(partner)), [dispatch]);
 
   useEffect(() => {
@@ -39,9 +39,9 @@ const DialogsItem = props => {
 
   useEffect(() => {
     if (isSelectedDialog) {
-      $setDialogId(_id);
+      setDialogId(_id);
     }
-  }, [isSelectedDialog, _id, $setDialogId]);
+  }, [isSelectedDialog, _id, setDialogId]);
 
   return (
     <li 

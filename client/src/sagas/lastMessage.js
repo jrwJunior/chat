@@ -2,7 +2,7 @@ import { take, call, put, select } from 'redux-saga/effects';
 
 import { setLastMessageReceived } from 'actions/action_dialogs';
 import { socketEvents } from 'constans/socketEvents';
-import { createChannel } from './channel';
+import { createChannel } from './createChannel';
 
 export function* lastMessageReceived() {
   const channel = yield call(createChannel, socketEvents.LAST_MESSAGE);

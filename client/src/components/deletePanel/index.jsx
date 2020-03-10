@@ -16,7 +16,7 @@ export default () => {
   const dispatch = useDispatch();
   const setIsOpenPanel = useCallback(isOpen => dispatch(openDeletePanel(isOpen)), [dispatch]);
   const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
-  const removeMessage = useCallback((messages, dialogId) => dispatch(deleteMessage(messages, dialogId)), [dispatch]);
+  const removeMessage = useCallback(() => dispatch(deleteMessage()), [dispatch]);
 
   const handleCancel = () => {
     setIsOpenPanel(false);

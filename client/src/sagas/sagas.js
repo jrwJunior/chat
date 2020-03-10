@@ -1,19 +1,21 @@
-import login from './login';
-import chatUsers from './chatUsers';
+import auth from './auth';
+import user from './user';
+import dialogs from './dialogs';
 import messages from './messages';
 import message from './message';
 import deleteMessage from './deleteMessage';
 import editMessage from './messageEdit';
 import contacts from './contacts';
-import channel from './channels/channel';
+import createChannel from './createChannel';
 
 export {
-  login,
-  chatUsers,
+  auth,
+  user,
+  dialogs,
   messages,
   message,
   deleteMessage,
   editMessage,
   contacts,
-  channel
+  createChannel
 }
