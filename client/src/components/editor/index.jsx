@@ -56,19 +56,15 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
     
     socket.emit(socketEvents.TYPING_MESSAGE, { typing: true });
 
+    if (!evt.shiftKey && isOpenPanel && evt.key === 'Enter' && !hasCommandModifier(evt)) {
+      return 'edited-save';
+    }
+
     if (!evt.shiftKey && evt.key === 'Enter' && !hasCommandModifier(evt)) {
       return 'myeditor-save';
     }
 
     return getDefaultKeyBinding(evt);
-  }
-
-  const handleKeyCommand = command => {
-    if (command === 'myeditor-save') {
-      handleSubmit();
-      return 'handled';
-    }
-    return 'not-handled';
   }
 
   const handleClearEditorState = () => {
@@ -81,6 +77,19 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
     
     setSaveMessage(message);
     handleClearEditorState();
+  }
+
+  const handleKeyCommand = command => {
+    if (command === 'edited-save') {
+      handleSave();
+      return 'handled';
+    }
+
+    if (command === 'myeditor-save') {
+      handleSubmit();
+      return 'handled';
+    }
+    return 'not-handled';
   }
 
   useEffect(() => {

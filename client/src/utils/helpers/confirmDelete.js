@@ -14,6 +14,8 @@ export default ({
     okText: 'Delete',
     okType: 'danger',
     cancelText: 'Cancel',
+    cancelButtonProps: {className: 'btn-cancel'},
+    okButtonProps: {className: 'btn-del'},
     onOk() {
       removeMessage(deleteMessage, dialogId);
     }
