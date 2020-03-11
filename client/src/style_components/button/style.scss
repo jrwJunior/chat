@@ -65,6 +65,7 @@
   display: block;
   width: 16px;
   height: 16px;
+  margin-right: 8px;
   background: transparent url('../../img/basket.svg') no-repeat center/contain;
   border: 0;
   transition: opacity 0.15s;
@@ -79,9 +80,10 @@
   }
 }
 
-.ant-btn.cancel-btn {
+.ant-btn.btn-cancel,
+.ant-btn.btn-del {
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   color: #3796ee;
   border: 0;
   box-shadow: none;
@@ -90,9 +92,32 @@
   text-shadow: none;
 }
 
-.cancel-btn.ant-btn-primary:hover, .cancel-btn.ant-btn-primary:focus,
-.cancel-btn.ant-btn-primary:active, .ant-btn-primary.active {
-  color: lighten(#1890ff, 15%);
+.ant-btn.btn-cancel:hover, .ant-btn.btn-cancel:focus {
+  background-color: #f2f6fa;
+}
+
+.ant-btn.btn-cancel:active, .ant-btn.btn-cancel.active {
+  color: #3796ee;
+  background-color: darken(#f2f6fa, 4%);
+  border-color: transparent;
+}
+
+.ant-modal-confirm-btns .ant-btn.ant-btn-danger {
   background-color: transparent;
+  color: #f03d25;
+}
+
+.ant-modal.ant-modal-confirm .ant-modal-confirm-btns button + button {
+  margin-left: 0;
+}
+
+.ant-btn.ant-btn-danger.btn-del:hover {
+  color: #f03d25;
+  background-color: #ffefef;
+}
+
+.ant-btn.ant-btn-danger.btn-del:active, .ant-btn.ant-btn-danger.btn-del.active {
+  color: #f03d25;
+  background-color: darken(#ffefef, 4%);
   border-color: transparent;
 }

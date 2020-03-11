@@ -50,7 +50,7 @@ export default () => {
         >
           <Badge count={ deletedMessages.length }/>
         </button>
-        <Button type="primary" className='cancel-btn' onClick={ handleCancel }>Cancel</Button>
+        <Button className='btn-cancel' onClick={ handleCancel }>Cancel</Button>
       </div>
     </div>
   )

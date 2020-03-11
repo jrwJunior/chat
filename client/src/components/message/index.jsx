@@ -7,7 +7,6 @@ import uuidv5 from 'uuid/v5';
 import reactStringReplace from 'react-string-replace';
 
 import './style.scss';
-import 'style_components/confirm/style.scss';
 import 'style_components/context_menu/style.scss';
 
 const Message = props => {

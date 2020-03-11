@@ -1,38 +1,32 @@
-import { eventChannel } from 'redux-saga';
-import { take, call, put, fork } from 'redux-saga/effects';
+import { take, call, put } from 'redux-saga/effects';
 
-import { socket } from 'utils/socket';
 import { socketEvents } from 'constans/socketEvents';
+import { createChannel } from './createChannel';
 import { userIsOnline, userLastSeen } from 'actions/action_online';
 
-function createChannel() {
-  const subscribe = emitter => {
-    socket.on(socketEvents.STATUS_ONLINE, emitter);
-
-    return () => {
-      socket.removeListener(socketEvents.STATUS_ONLINE, emitter);
-    }
-  }
-
-  return eventChannel(subscribe);
-}
-
-function* connectChannel() {
-  const channel = yield call(createChannel);
+export function* onlineStatus() {
+  const channel = yield call(createChannel, socketEvents.STATUS_ONLINE);
 
   while(true) {
-    const data = yield take(channel);
-
-    if (data.lastSeen) {
-      yield put(userLastSeen(data.lastSeen));
-    }
+    const { isOnline, lastSeen } = yield take(channel);
+    yield put(userIsOnline(isOnline));
     
-    yield put(userIsOnline(data.isOnline));
+    if (lastSeen) {
+      yield put(userLastSeen(lastSeen));
+    }
   }
 }
 
-function* mySaga() {
-  yield fork(connectChannel);
-}
+// function* connectChannel() {
+//   const channel = yield call(createChannel);
 
-export default mySaga;
+//   while(true) {
+//     const data = yield take(channel);
+
+//     if (data.lastSeen) {
+//       yield put(userLastSeen(data.lastSeen));
+//     }
+    
+//     yield put(userIsOnline(data.isOnline));
+//   }
+// }
