@@ -3,17 +3,16 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Button, Icon, Spin } from 'antd';
 
-import Field from '../../form_field';
-// import { useAuth } from 'utils/hooks';
+import Field from 'components/form_field';
+import { useAuthentication } from 'utils/hooks';
 import 'style_components/button/style.scss';
 
 const Register = props => {
-  const { isValid, isSubmitting, history, setSubmitting, handleSubmit } = props;
+  const { isValid, isSubmitting, setSubmitting, handleSubmit } = props;
   const { isLoading } = useSelector(state => state.user_auth);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 25 }} spin />;
-
-  // useAuth(isSubmitting, setSubmitting, history);
+  useAuthentication(isSubmitting, setSubmitting, props.history);
 
   return (
     <Form className="register-form" onSubmit={ handleSubmit }>

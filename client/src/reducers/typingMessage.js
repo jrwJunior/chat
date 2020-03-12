@@ -9,7 +9,7 @@ export default (state = initialState, action) => {
     case actionTypes.TYPING_MESSAGE:
       return {
         ...state,
-        typing: !state.typing
+        typing: action.payload
       }
     default:
       return state;

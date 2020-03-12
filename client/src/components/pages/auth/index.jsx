@@ -40,7 +40,9 @@ const Auth = ({ location }) => {
     <div className='auth-container'>
       <div className='wrapper-auth'>
         <Title>Be together, whenever.</Title>
-        <Text className='text'>A simple way to text, audio chat and plan things all in one place.</Text>
+        <div style={{display: 'flex'}}>
+          <Text className='text'>A simple way to text</Text>
+        </div>
         <Switch>
           <Route exact path='/login' component={ LoginForm } />
           <Route path='/register' component={ RegisterForm } />

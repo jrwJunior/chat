@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Button, Spin, Icon } from 'antd';
 
-import Field from 'modules/form_field';
+import Field from 'components/form_field';
 import { useAuthentication } from 'utils/hooks';
 import 'style_components/button/style.scss';
 
@@ -13,7 +13,7 @@ const Login = props => {
   const { isLoading } = useSelector(state => state.user_auth);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 25 }} spin />;
-  useAuthentication(isSubmitting, setSubmitting, props.history);
+  useAuthentication(setSubmitting, props.history);
 
   return (
     <Form className="login-form" onSubmit={ handleSubmit }>
