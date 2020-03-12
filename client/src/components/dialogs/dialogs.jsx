@@ -20,7 +20,7 @@ const Dialogs = () => {
   return (
     <aside className='dialogs-panel'>
       <div className='dialogs-head'>
-        <h1 className='dialogs-title'>Chats</h1>
+        <h1 className='dialogs-title'>Chat</h1>
       </div>
       <Search/>
       <Scrollbars

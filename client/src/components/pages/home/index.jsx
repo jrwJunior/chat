@@ -23,7 +23,7 @@ const Home = () => {
     setUser();
     setDialogs();
     // eslint-disable-next-line
-  }, [])
+  }, []);
 
   return (
     <div className='layout'>

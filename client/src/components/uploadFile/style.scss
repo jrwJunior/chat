@@ -1,0 +1,18 @@
+.avatar-uploader .ant-upload.ant-upload-select-picture-card {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  border: 0;
+  background-color: #1FA7F5;
+}
+
+.avatar-uploader.ant-upload-picture-card-wrapper {
+  width: auto;
+}
+
+.foo {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background: url('../../img/photo-camera.svg') no-repeat center/contain;
+}

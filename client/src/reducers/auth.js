@@ -23,19 +23,20 @@ export default (state = initialState, action) => {
         loading: false,
         status: data.status
       }
+    case actionTypes.LOGIN_ERROR:
+      const { error, status } = action.payload;
+
+      return {
+        ...state,
+        loading: false,
+        status,
+        error
+      }
     case actionTypes.SET_USER_DATA:
       return {
         ...state,
         loading: false,
         userData: action.payload
-      }
-    case actionTypes.LOGIN_ERROR:
-      const { error } = action.payload;
-
-      return {
-        ...state,
-        loading: false,
-        error
       }
     case actionTypes.CLEAR_ERROR_USER:
       return initialState;

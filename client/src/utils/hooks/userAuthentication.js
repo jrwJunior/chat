@@ -1,19 +1,18 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-const useAuthentication = (isSubmitting, setSubmitting, history) => {
-  const { isLoading, status } = useSelector(state => state.user_auth);
+const useAuthentication = (setSubmitting, history) => {
+  const { status } = useSelector(state => state.user_auth);
 
   useEffect(() => {
-    if (isSubmitting && !isLoading) {
-      setSubmitting(false);
-    }
-
     if (status === 'success') {
       history.push('/');
+      setSubmitting(false);
+    } else if (status === 'error') {
+      setSubmitting(false);
     }
     // eslint-disable-next-line
-  }, [isLoading, status, setSubmitting]);
+  }, [status]);
 }
 
 export {
