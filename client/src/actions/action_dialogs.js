@@ -20,10 +20,17 @@ const setDialog = dialog => {
   }
 }
 
-const setLastMessageReceived = message => {
+const setLastMessage = message => {
   return {
     type: actionTypes.SET_LAST_MESSAGE,
     payload: message
+  }
+}
+
+const setReadedLastMessage = data => {
+  return {
+    type: actionTypes.READED_LAST_MESSAGE,
+    payload: data
   }
 }
 
@@ -31,5 +38,6 @@ export {
   getAllDialogs,
   dialogsLoad,
   setDialog,
-  setLastMessageReceived
+  setLastMessage,
+  setReadedLastMessage
 }

@@ -1,21 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import classNames from 'classnames';
+import { Link, withRouter } from 'react-router-dom';
 
 import Avatar from 'components/avatar';
-import { messageTimeConvert } from 'utils/helpers';
+
+import { useOnlineStatus } from 'utils/hooks';
 
 const ContactsItem = props => {
   const { 
     _id,
-    createdAt,
     avatar,
     firstName,
-    surname,
-    isOnline
+    surname
   } = props;
+  const { online } = useOnlineStatus(_id);
+  const foo = props.location.pathname.split('/p/').join('') === _id;
 
   return (
-    <li className='dialog-wrap' >
+    <li
+      className={ classNames('dialog-wrap', 
+        {'is-active': foo}) 
+      }
+    >
       <Link
         to={`/p/${_id}`}
         className='dialog'
@@ -28,17 +34,14 @@ const ContactsItem = props => {
               size={ 40 }
             />
           </div>
-          { isOnline ? <span className='online-status'/> : null }
+          { online ? <span className='online-status'/> : null }
         </div>
         <div className='dialog-message_wrap'>
           <div className="dialog-head">{ `${firstName} ${surname}` }</div>
-        </div>
-        <div className="dialog-meta">
-          <div className="dialog-date">{ messageTimeConvert(createdAt) }</div>
         </div>
       </Link>
     </li>
   )
 };
 
-export default ContactsItem;
+export default withRouter(ContactsItem);

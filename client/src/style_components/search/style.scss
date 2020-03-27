@@ -10,9 +10,19 @@
   }
 }
 
-.ant-input-search.ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
-  border-color: transparent;
+.ant-input-search .ant-input:focus {
+  background-color: #fff;
 }
+
+// .ant-input-search.ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled) {
+//   border-color: transparent;
+// }
+
+// .ant-input-affix-wrapper
+// .ant-input:focus {
+//   border-color: transparent;
+//   box-shadow: none;
+// }
 
 .ant-input-affix-wrapper {
   height: 40px;

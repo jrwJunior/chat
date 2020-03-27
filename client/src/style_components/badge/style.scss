@@ -1,3 +1,9 @@
+.notif-badge {
+  position: absolute;
+  right: 8px;
+  bottom: 15px;
+}
+
 .ant-badge.ant-badge-not-a-wrapper {
   position: absolute;
   top: -5px;
@@ -5,11 +11,12 @@
 }
 
 .ant-badge .ant-badge-count {
-  font-size: 11px;
-  line-height: 15px;
+  font-size: 13px;
+  line-height: 18px;
   min-width: auto;
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
   padding: 0 4px;
   border-radius: 50%;
+  background: #3796ee;
 }

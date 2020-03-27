@@ -178,6 +178,29 @@
   background: url('../../img//check_white.svg') no-repeat center/contain;
 }
 
+.readed {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin: 0 0 3px 5px;
+}
+
+.icon-noread {
+  background: url('../../img/check_white.svg') no-repeat center/contain;
+}
+
+.icon-readed {
+  background: url('../../img/dubble-check_white.svg') no-repeat center/contain;
+}
+
+.icon-noread.icon-blue {
+  background: url('../../img/check.svg') no-repeat center/contain;
+}
+
+.icon-readed.icon-blue {
+  background: url('../../img/dubble_check.svg') no-repeat center/contain;
+}
+
 .selected-bubble {
   animation: tickTock 350ms ease-in;
 }

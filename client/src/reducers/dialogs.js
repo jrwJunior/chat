@@ -18,11 +18,36 @@ export default (state = initialState, action) => {
         loading: false
       }
     case actionTypes.SET_LAST_MESSAGE:
+      const lastMessage = action.payload;
+
+      return {
+        ...state,
+        dialogs: state.dialogs.map(item => {
+          if (item.lastMessage._id !== lastMessage._id) {
+            item.lastMessage = lastMessage;
+          }
+  
+          return item;
+        })
+      }
+    case actionTypes.READED_LAST_MESSAGE:
+        const { readed, dialogId } = action.payload;
+
+        return {
+          ...state,
+          dialogs: state.dialogs.map(item => {
+            if (item.lastMessage.dialog === dialogId) {
+              item.lastMessage.readed = readed;
+            }
+  
+            return item;
+          })
+        }
     case actionTypes.SET_DIALOG:
       return {
         ...state,
         dialogs: [
-          action.payload
+          ...action.payload
         ]
       }
     default:

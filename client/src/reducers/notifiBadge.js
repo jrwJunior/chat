@@ -1,15 +1,19 @@
 import * as actionTypes from 'constans';
 
 const initialState = {
-  dialogId: null
+  count: 0
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
-    case actionTypes.SET_DIALOG_ID:
+    case actionTypes.NOTIF_BADGE:
+      const { unread } = action.payload;
+
       return {
-        dialogId: action.payload
+        count: unread
       }
+    case actionTypes.DELETE_NOTIF_BADGE:
+      return initialState;
     default:
       return state;
   }

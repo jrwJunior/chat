@@ -12,17 +12,16 @@ import 'style_components/context_menu/style.scss';
 const Message = props => {
   const {
     _id,
-    user,
     message,
+    ownerMessage,
     edited,
+    readed,
     createdAt,
-    interlocutorId,
     flaggMessage,
     deletedMessages,
     isOpenPanel
   } = props;
   const refBubble = useRef(null);
-  const isMe = interlocutorId !== user._id;
 
   const haneleSelect = () => {
     if (!isOpenPanel) {
@@ -30,18 +29,18 @@ const Message = props => {
     }
     
     refBubble.current.classList.add('selected-bubble');
-    flaggMessage(_id, isMe);
+    flaggMessage(_id, ownerMessage);
     setTimeout(() => refBubble.current.classList.remove('selected-bubble'), 500);
   }
 
   return (
     <>
       <div 
-        className={classNames('message', { 'pull-right' : isMe })}
+        className={classNames('message', { 'pull-right' : ownerMessage })}
         style={{paddingRight: isOpenPanel ? '35px' : false}}
       >
         <div className="message-content">
-          { isMe ? React.Children.map(props.children, child => (
+          { ownerMessage ? React.Children.map(props.children, child => (
             React.cloneElement(child, {
               onClick: haneleSelect,
               checked: !!deletedMessages.includes(_id)
@@ -49,11 +48,11 @@ const Message = props => {
           )) : null }
           <ContextMenuTrigger 
             id="some_unique_identifier"
-            disable={ !isMe || !!deletedMessages.includes(_id) }
+            disable={ !ownerMessage || !!deletedMessages.includes(_id) }
           >
             <div
               ref={ refBubble }
-              className={classNames('message-bubble message-text', { 'bubble-is-me' : isMe})}
+              className={classNames('message-bubble message-text', { 'bubble-is-me' : ownerMessage})}
               data-msg-id={ _id }
               onClick={ haneleSelect }
             >
@@ -65,6 +64,9 @@ const Message = props => {
                 <span className='message-create_date'>
                   { format(new Date(createdAt), 'H:mm') }
                 </span>
+                { ownerMessage ? (
+                  readed ? <span className='icon-readed readed'/> : <span className='icon-noread readed'/>
+                ) : null }
               </span>
             </div>
           </ContextMenuTrigger>

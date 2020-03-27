@@ -1,19 +1,35 @@
 import * as actionTypes from 'constans';
 
-const getUserData = () => {
+const getAuthorizedUser = () => {
   return {
-    type: actionTypes.GET_USER_DATA
+    type: actionTypes.GET_AUTHORIZED_USER
   }
 }
 
-const setUserData = data => {
+const setAuthorizedUser = data => {
   return {
-    type: actionTypes.SET_USER_DATA,
+    type: actionTypes.SET_AUTHORIZED_USER,
     payload: data
   }
 }
 
+const getUser = id => {
+  return {
+    type: actionTypes.GET_USER,
+    payload: id
+  }
+}
+
+const setUser = user => {
+  return {
+    type: actionTypes.SET_USER,
+    payload: user
+  }
+}
+
 export {
-  getUserData,
-  setUserData
+  getAuthorizedUser,
+  setAuthorizedUser,
+  getUser,
+  setUser
 }

@@ -6,8 +6,8 @@ import confirmDelete from './confirmDelete'
 import emojiEncode from './emojiEncode';
 import emojiDecode from './emojiDecode';
 import userLastSeen from './userLastSeen';
-import getPartnerData from './getPartnerData';
 import insertReplyText from './insertReplyText';
+import { resizeBodyHeight, resizeEditor } from './resizeObserver';
 
 export {
   creatingAvatarsWithColors,
@@ -18,6 +18,7 @@ export {
   emojiEncode,
   emojiDecode,
   userLastSeen,
-  getPartnerData,
-  insertReplyText
+  insertReplyText,
+  resizeBodyHeight,
+  resizeEditor
 }

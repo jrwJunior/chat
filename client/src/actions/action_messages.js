@@ -1,11 +1,8 @@
 import * as actionTypes from 'constans';
 
-const getAllMessages = data => {
+const getAllMessages = () => {
   return {
-    type: actionTypes.MESSAGES_REQUESTED,
-    payload: {
-      ...data
-    }
+    type: actionTypes.MESSAGES_REQUESTED
   }
 }
 
@@ -61,6 +58,13 @@ const flaggedMessage = msgId => {
   }
 }
 
+const setReadedMessages = data => {
+  return {
+    type: actionTypes.READED_MESSAGES,
+    payload: data
+  }
+}
+
 export {
   getAllMessages,
   loadMessages,
@@ -69,5 +73,6 @@ export {
   setMessages,
   editingMessages,
   deleteMessage,
-  flaggedMessage
+  flaggedMessage,
+  setReadedMessages
 }

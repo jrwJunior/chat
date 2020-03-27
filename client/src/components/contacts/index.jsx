@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import ContactsItem from 'components/contacts_item';
 
 const Contacts = () => {
-  const { contacts } = useSelector(state => state.dialogs_contacts);
+  const { contacts } = useSelector(state => state.contacts);
 
   return (
     <div className='dialogs-contacs'>

@@ -32,12 +32,6 @@ export default (state = initialState, action) => {
         status,
         error
       }
-    case actionTypes.SET_USER_DATA:
-      return {
-        ...state,
-        loading: false,
-        userData: action.payload
-      }
     case actionTypes.CLEAR_ERROR_USER:
       return initialState;
     default:

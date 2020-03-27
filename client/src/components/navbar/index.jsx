@@ -12,8 +12,9 @@ import 'style_components/skeleton/style.scss';
 const Navbar = () => {
   const [showInfoPanel, setShowInfoPanel] = useState(true);
 
-  const { loading } = useSelector(state => state.chatDialogs);
+  // const { loading } = useSelector(state => state.chatDialogs);
   const { isOpenPanel } = useSelector(state => state.deletePanel);
+  const { user, loading } = useSelector(state => state.user);
 
   return (
     <header className='navbar'>
@@ -30,7 +31,7 @@ const Navbar = () => {
           classNames="come-down"
           unmountOnExit
         >
-          <NavbarInfo/>
+          <NavbarInfo data={ user } />
         </CSSTransition>
         <CSSTransition
           in={ isOpenPanel }
