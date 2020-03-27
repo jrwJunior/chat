@@ -1,88 +1,145 @@
 import { MessageModal, DialogModal } from '../models';
+import DialogController from './dialog';
 
 class MessageController {
   constructor(socket) {
     this.socket = socket;
+    this.dialog = new DialogController(socket);
+  }
+  
+  messageRead = (req, res) => {
+    const userId = req.user._id;
+    const dialogId = req.query.dialog;
+
+    MessageModal.updateMany(
+      { dialog: dialogId, user: { $ne: userId } },
+      { $set: { readed: true } },
+      { "multi": true },
+      err => {
+        if (err) {
+          return res.status(500).json({
+            status: 'error',
+            message: err,
+          });
+        }
+
+        MessageModal
+        .findOne()
+        .sort({createdAt: -1})
+        .exec((err, message) => {
+          if (err) {
+            return res.json(err);
+          }
+    
+          this.socket.to('guys').emit('MESSAGES_READED', {
+            dialogId: message.dialog,
+            readed: message.readed
+          });
+        });
+      }
+    );
+  };
+
+  getMessagesNoRead = () => {
+    MessageModal.find({readed: {$in: false}}).countDocuments((err, count) => {
+      if (err) {
+        return res.status(500).json({
+          message: err,
+        });
+      }
+
+      this.socket.emit('MESSAGES_NO_READ', {unread: count});
+    })
   }
 
   getMessages = async(req, res) => {
-    const dialogId = req.query.dialog;
+    const userId = req.user._id;
+    const query = [{author: userId},{partner: userId}];
 
-    MessageModal
-    .find({ dialog: dialogId })
-    .populate("user")
-    .exec((err, message) => {
+    DialogModal
+    .findOne()
+    .or(query)
+    .exec(async(err, dialog) => {
       if (err) {
-        return  res.json({message: "Messages not found"});
+        return res.json(err);
       }
 
-      res.json(message);
-    });
-  }
+      MessageModal
+      .find({dialog: dialog._id})
+      .populate('user')
+      .exec((err, messages) => {
+        if (err) {
+          return  res.json({message: "Messages not found"});
+        }
 
-  getDialog = async(userId) => {
-    const query = [{owner: userId}, {interlocutor: userId}];
-
-    return await DialogModal.find().or(query)
-    .populate(["owner", "interlocutor"])
-    .populate({
-      path: "lastMessage",
-      populate: { path: "user" }
+        res.json(messages);
+      });
     });
   }
 
   createMessage = async(req, res) => {
     const userId = req.user._id;
-    const { message, interlocutor, dialogId } = req.body;
+    const { message, interlocutor } = req.body;
+    const query = [{author: userId},{partner:userId}];
 
-    DialogModal.findById(dialogId, async(err, dialog) => {
-      if (err) {
-        return res.json(err);
-      }
+    DialogModal
+      .findOne()
+      .or(query)
+      .exec(async(err, dialog) => {
+        if (err) {
+          return res.json(err);
+        }
 
-      try {
-        if (!dialog) {
-          const dialog = new DialogModal({ owner: req.user._id, interlocutor });
-          const dialogObj = await dialog.save();
-  
-          const msg = new MessageModal({ message, dialog: dialogObj._id, user: userId });
-          const messageObj = await msg.save();
-          
-          dialogObj.lastMessage = msg._id;
-          await dialogObj.save();
-          const newObject = await this.getDialog(userId);
-          
-          this.socket.emit('DIALOG_RECEIVED', newObject);
-          this.socket.emit('MESSAGE_RECEIVED', messageObj);
-        } else {
-          const msg = new MessageModal({ message, dialog: dialogId, user: userId });
-          const messageObj = await msg.save();
+        try {
+          if (!dialog) {
+            const dialog = new DialogModal({ author: userId, partner: interlocutor });
+            const dialogObj = await dialog.save();
+    
+            const msg = new MessageModal({ message, dialog: dialogObj._id, user: userId });
+            const messageObj = await msg.save();
 
-          messageObj.populate('user', (err, message) => {
-            const query = { _id: dialogId };
-            const update = { lastMessage: message._id };
-            const options = { new: true, upsert: true };
-
-            if (err) {
-              return res.status(500).json({ message: err});
-            }
-
-            DialogModal.findOneAndUpdate(query, update, options, err => {
+            messageObj.populate('user', async(err, message) => {
               if (err) {
-                return res.status(500).json({
-                  message: err,
-                });
+                return res.status(500).json({ message: err});
               }
+
+              dialogObj.lastMessage = msg._id;
+              await dialogObj.save();
+              this.dialog.getDialog(userId, this.socket);
+
+              this.socket.to('guys').emit('MESSAGE_RECEIVED', {message});
+            });
+          } else {
+            const msg = new MessageModal({ message, dialog: dialog._id, user: userId });
+            const messageObj = await msg.save();
+
+            messageObj.populate('user', (err, message) => {
+              const query = { _id: dialog._id };
+              const update = { lastMessage: message._id };
+              const options = { new: true, upsert: true };
+  
+              if (err) {
+                return res.status(500).json({ message: err});
+              }
+  
+              DialogModal.findOneAndUpdate(query, update, options, err => {
+                if (err) {
+                  return res.status(500).json({
+                    message: err,
+                  });
+                }
+              });
+
+              this.socket.to('guys').emit('MESSAGE_RECEIVED', {message});
+              this.getMessagesNoRead();
             });
 
-            this.socket.to('guys').emit('MESSAGE_RECEIVED', {message});
-            this.socket.to('guys').emit('LAST_MESSAGE', {lastMessage: message});
-          });
+            this.socket.emit('LAST_MESSAGE', {lastMessage: messageObj});
+          }
+        } catch(err) {
+          res.json(err);
         }
-      } catch(err) {
-        res.json(err);
-      }
-    });
+      });
   }
 
   editMessage = (req, res) => {
@@ -107,17 +164,6 @@ class MessageController {
         });
       });
   }
-
-  // updateMessages = dialogId => {
-  //   MessageModal
-  //     .find({ dialog: dialogId })
-  //     .populate("user")
-  //     .exec((err, messages) => {
-  //       this.socket.to('guys').emit('DELETE_MESSAGE', {
-  //         deleteMessage: messages
-  //       });
-  //     });
-  // }
 
   updateLastMessage = dialogId => {
     MessageModal.findOne({ dialog: dialogId }, {}, {sort: { createdAt: -1 }}, (err, lastMessage) => {

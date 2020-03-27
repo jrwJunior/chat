@@ -28,7 +28,16 @@ class API {
 
   getUser = async() => {
     try {
-      return await axios.get('/api/user/me');
+      const { data } = await axios.get('/api/user/me');
+      return data;
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
+
+  getContact = async(id) => {
+    try {
+      return await axios.get(`/api/user/p/${id}`);
     } catch(error) {
       this.errorBoundary(error.response);
     }
@@ -44,15 +53,25 @@ class API {
 
   getAllDialogs = async() => {
     try {
-      return await axios.get('/api/dialogs');
+      const { data } = await axios.get('/api/dialogs');
+      return data;
     } catch(error) {
       this.errorBoundary(error.response);
     }
   }
 
-  getMessages = async({ dialogId }) => {
+  getMessages = async() => {
     try {
-      return await axios.get(`/api/messages?dialog=${dialogId}`);
+      const { data } = await axios.get('/api/messages');
+      return data;
+    } catch(error) {
+      this.errorBoundary(error.response);
+    }
+  }
+
+  getMessagesRead = async({dialogId}) => {
+    try {
+      axios.put(`/api/readed?dialog=${dialogId}`);
     } catch(error) {
       this.errorBoundary(error.response);
     }

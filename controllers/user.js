@@ -23,9 +23,28 @@ class UserController {
     });
   }
 
+  foo(req, res) {
+    const id = req.params.id;
+
+    UserModal.findById(id, (err, user) => {
+      if (err) {
+        return res.status(404).json({
+          message: err
+        });
+      }
+
+      res.json(user);
+    })
+  }
+
   findUser(req, res) {
     const { query } = req.query;
     const id = req.user._id;
+    const foundUsers = [];
+
+    if (!query) {
+      return res.json(foundUsers);
+    }
 
     UserModal.find()
     .or([
@@ -34,15 +53,13 @@ class UserController {
       { email: new RegExp(query, 'i') },
     ])
     .then(users => {
-      const newUsers = [];
-
       users.forEach(item => {
         if (item._id != id) {
-          newUsers.push(item);
+          foundUsers.push(item);
         }
       });
       
-      res.json(newUsers);
+      res.json(foundUsers);
     })
     .catch(err => res.status(404).json({message: err}));
   }

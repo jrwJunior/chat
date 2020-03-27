@@ -1,19 +1,18 @@
-import { DialogModal, MessageModal } from '../models';
+import { DialogModal } from '../models';
+import MessageController from './message';
 
 class DialogController {
   constructor(socket) {
     this.socket = socket;
   }
 
-  getDialogs = async(req, res) => {
-    const userId = req.user._id;
+  getDialogs = (_, res) => {
+    const messageController = new MessageController(this.socket);
 
     DialogModal.find()
-    .or([{owner: userId}, {interlocutor: userId}])
-    .populate(["owner", "interlocutor"])
+    .populate(["author", "partner"])
     .populate({
-      path: "lastMessage",
-      populate: { path: "user" }
+      path: "lastMessage"
     })
     .exec((err, dialogs) => {
       if (err) {
@@ -24,40 +23,62 @@ class DialogController {
 
       res.json(dialogs);
     });
+
+    messageController.getMessagesNoRead();
   }
 
-  createDialog = async(req, res) => {
-    const { interlocutor, message } = req.body;
+  getDialog = userId => {
+    const query = [{author: userId}, {partner: userId}];
 
-    // DialogModal.findOne({ owner: req.user._id, interlocutor }, async(err, user) => {
-      // if (err) {
-      //   return res.status(500).json({message: err});
-      // }
-
-      // if (user) {
-      //   return res.status(403).json({message: 'Such a dialogue already exists'});
-      // }
-
-      const dialog = new DialogModal({ owner: req.user._id, interlocutor });
-
-      try {
-        const dialogObj = await dialog.save();
-        const msg = new MessageModal({ user: req.user._id, message, dialog: dialogObj._id });
-        
-        await msg.save();
-        dialogObj.lastMessage = msg._id;
-        await dialogObj.save();
-        res.json(dialogObj);
-        this.socket.emit('DIALOG_RECEIVED', {
-          owner: req.user._id,
-          interlocutor,
-          dialog: dialogObj
+    DialogModal.find().or(query)
+    .populate(["author", "partner"])
+    .populate({
+      path: "lastMessage",
+      populate: { path: "user" }
+    })
+    .exec((err, dialog) => {
+      if (err) {
+        return res.status(404).json({
+          message: 'Dialog not found',
         });
-      } catch(err) {
-        res.json(err);
       }
-    // });
+
+      this.socket.emit('DIALOG_RECEIVED', {dialog});
+    })
   }
+
+  // createDialog = async(req, res) => {
+  //   const { interlocutor, message } = req.body;
+
+  //   // DialogModal.findOne({ owner: req.user._id, interlocutor }, async(err, user) => {
+  //     // if (err) {
+  //     //   return res.status(500).json({message: err});
+  //     // }
+
+  //     // if (user) {
+  //     //   return res.status(403).json({message: 'Such a dialogue already exists'});
+  //     // }
+
+  //     const dialog = new DialogModal({ owner: req.user._id, interlocutor });
+
+  //     try {
+  //       const dialogObj = await dialog.save();
+  //       const msg = new MessageModal({ user: req.user._id, message, dialog: dialogObj._id });
+        
+  //       await msg.save();
+  //       dialogObj.lastMessage = msg._id;
+  //       await dialogObj.save();
+  //       res.json(dialogObj);
+  //       this.socket.emit('DIALOG_RECEIVED', {
+  //         owner: req.user._id,
+  //         interlocutor,
+  //         dialog: dialogObj
+  //       });
+  //     } catch(err) {
+  //       res.json(err);
+  //     }
+  //   // });
+  // }
 
   async deleteDialog(req, res) {
     const { id: _id } = req.params;

@@ -1,6 +1,4 @@
 import { Schema, model } from 'mongoose';
-import differenceInMinutes from "date-fns/differenceInMinutes";
-import parseISO from 'date-fns/parseISO';
 
 const schema  = new Schema({
   email: { type: String, unique: true, required: true },
@@ -8,6 +6,7 @@ const schema  = new Schema({
   firstName: { type: String, required: true, },
   surname: { type: String, required: true, },
   avatar: String,
+  userName: String,
   last_seen: { type: Date, default: new Date() }
 }, {
   timestamps: true

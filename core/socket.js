@@ -5,10 +5,7 @@ export default http => {
 
   io.on("connection", socket => {
     socket.on('DIALOG_JOIN', roomId => {
-      socket.join(roomId, () => {
-        let rooms = Object.keys(socket.rooms);
-        // console.log(socket.rooms, 'rooms')
-      });
+      socket.join(roomId);
     });
 
     socket.on('TYPING_MESSAGE', obj => {

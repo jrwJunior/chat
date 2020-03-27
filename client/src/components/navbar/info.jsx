@@ -7,27 +7,25 @@ import Avatar from 'components/avatar';
 import { userLastSeen } from 'utils/helpers';
 import { useOnlineStatus } from 'utils/hooks';
 
-const NavbarInfo = () => {
+const NavbarInfo = ({ data }) => {
   const { typing } = useSelector(state => state.isTyping);
-  const { dialogPartner: partner } = useSelector(state => state.dialog);
-  
   const { online, lastSeen } = useOnlineStatus('guys');
 
   return (
     <div className='navbar-peer'>
       <Avatar
-        userName={ partner.firstName }
-        avatar={ partner.avatar }
+        userName={ data.firstName }
+        avatar={ data.avatar }
         size={ 35 }
       />
       <div className='navbar-peer-title'>
-        { `${partner.firstName} ${partner.surname}` }
+        { `${data.firstName} ${data.surname}` }
         { typing ? <Indicator/> : (
           <div 
             className='profile-peer-status' 
             style={{ color: !online ? '#a9a9a9' : false }}
           >
-            { online ? 'online' : userLastSeen(lastSeen || partner.last_seen)}
+            { online ? 'online' : userLastSeen(lastSeen || data.last_seen)}
           </div>
         )}
       </div>

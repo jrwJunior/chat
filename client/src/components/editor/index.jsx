@@ -57,12 +57,12 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
     if (!evt.shiftKey && isOpenPanel && evt.key === 'Enter' && !hasCommandModifier(evt)) {
       return 'edited-save';
     }
-
-    socket.emit(socketEvents.TYPING_MESSAGE, { typing: true });
     
     if (!evt.shiftKey && evt.key === 'Enter' && !hasCommandModifier(evt)) {
       return 'myeditor-save';
     }
+
+    socket.emit(socketEvents.TYPING_MESSAGE, { typing: true });
 
     return getDefaultKeyBinding(evt);
   }

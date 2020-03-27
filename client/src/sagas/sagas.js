@@ -1,6 +1,6 @@
 import auth from './auth';
 import user from './user';
-import dialogs from './dialogs';
+import root from './root';
 import messages from './messages';
 import message from './message';
 import deleteMessage from './deleteMessage';
@@ -11,7 +11,7 @@ import createChannel from './createChannel';
 export {
   auth,
   user,
-  dialogs,
+  root,
   messages,
   message,
   deleteMessage,
