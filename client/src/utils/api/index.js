@@ -77,12 +77,13 @@ class API {
     }
   }
 
-  createMessage = async({ message, dialogId, interlocutor }) => {
+  createMessage = async({ message, user, author, replyMessage }) => {
     try {
       axios.post('/api/messages', {
         message,
-        dialogId,
-        interlocutor
+        user,
+        author,
+        replyMessage
       });
     } catch(error) {
       this.errorBoundary(error.response);
