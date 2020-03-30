@@ -11,7 +11,7 @@ import EditorButton from 'components/buttons/editorButton';
 import ReplyMessage from 'components/edit_message';
 
 import { createdMessage } from 'actions/action_messages';
-import { saveMessage } from 'actions/action_editMessage';
+import { saveMessage, closeReplyMessage } from 'actions/action_editMessage';
 import { emojiEncode, insertReplyText } from 'utils/helpers';
 import { socket } from 'utils/socket';
 import { socketEvents } from 'constans/socketEvents';
@@ -27,25 +27,29 @@ const { Picker } = emojiPlugin;
 
 const SendPanel = React.forwardRef(({ userId }, ref) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-
-  const { dialogId } = useSelector(state => state.dialog);
-  const { message, isOpenPanel } = useSelector(state => state.replyMessage);
+  const { message, author, showReply, editing } = useSelector(state => state.replyMessage);
 
   const dispatch = useDispatch();
 
-  const addMessage = useCallback((message, dialogId, interlocutor) => dispatch(createdMessage(message, dialogId, interlocutor)), [dispatch]);
+  const addMessage = useCallback((message, user, author, replyMessage) => dispatch(createdMessage(message, user, author, replyMessage)), [dispatch]);
+  const setCloseReplyMessage = useCallback(() => dispatch(closeReplyMessage()), [dispatch]);
   const setSaveMessage = useCallback(message => dispatch(saveMessage(message)), [dispatch]);
   const handleSubmit = useCallback(evt => {
     if (evt && evt.preventDefault) {
       evt.preventDefault();
     }
 
+    if (showReply) {
+      setCloseReplyMessage();
+    }
+
     const messageEncode = emojiEncode(editorState.getCurrentContent().getPlainText('\u0001'));
     const clearEditorState = EditorState.push(editorState, ContentState.createFromText(''));
 
-    addMessage(messageEncode, dialogId, userId);
+    addMessage(messageEncode, userId, author, message);
     setEditorState(clearEditorState);
-  }, [addMessage, editorState, userId, dialogId]);
+    // eslint-disable-next-line
+  }, [addMessage, editorState, userId, message, author]);
 
   const myKeyBindingFn = evt => {
     const { hasCommandModifier } = KeyBindingUtil;
@@ -54,12 +58,12 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
       return;
     }
 
-    if (!evt.shiftKey && isOpenPanel && evt.key === 'Enter' && !hasCommandModifier(evt)) {
-      return 'edited-save';
-    }
-    
     if (!evt.shiftKey && evt.key === 'Enter' && !hasCommandModifier(evt)) {
       return 'myeditor-save';
+    }
+
+    if (!evt.shiftKey && showReply && evt.key === 'Enter' && !hasCommandModifier(evt)) {
+      return 'edited-save';
     }
 
     socket.emit(socketEvents.TYPING_MESSAGE, { typing: true });
@@ -87,27 +91,29 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
 
     if (command === 'myeditor-save') {
       handleSubmit();
+
       return 'handled';
     }
     return 'not-handled';
   }
 
   useEffect(() => {
-    if (isOpenPanel) {
+    if (showReply) {
       const newEditorState = insertReplyText(editorState, message);
       setEditorState(newEditorState);
     }
     // eslint-disable-next-line
-  }, [message, isOpenPanel]);
+  }, [message, showReply]);
 
   // TODO: fixed edit message
 
   return (
-    <div className='editor' ref={ ref } style={{ boxShadow: isOpenPanel ? '0 0 0 1px #ECECEC' : false }}>
-      { isOpenPanel ? (
+    <div className='editor' ref={ ref } style={{ boxShadow: showReply ? '0 0 0 1px #ECECEC' : false }}>
+      { showReply ? (
         <ReplyMessage
           clearEditorState={ handleClearEditorState }
-          replyMessage={ message }
+          author={ author }
+          text={ message }
         />
       ) : null }
       <div className='editor-wrap'>
@@ -122,7 +128,7 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
           />
           <EmojiPanel Picker={ Picker } />
         </div>
-        { !isOpenPanel ? (
+        { !editing ? (
           <EditorButton onClick={ handleSubmit } />
         ) : (
           <button onClick={ handleSave } className='edit-message' type='button'>

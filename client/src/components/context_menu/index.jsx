@@ -43,8 +43,8 @@ export default () => {
         return message;
       }
     });
-    console.log(message);
-    setEditMessage({id, message});
+
+    setEditMessage({id, message, author: 'Edit Message', editing: true});
   }
 
   return (

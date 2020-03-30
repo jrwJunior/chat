@@ -69,6 +69,29 @@
   margin-right: 5px;
 }
 
+.message-reply {
+  text-align: left;
+  margin-bottom: 5px;
+  padding-left: 12px;
+}
+
+.message-reply_border {
+  position: absolute;
+  top: 10px;
+  height: 30px;
+  width: 2px;
+  margin-left: -12px;
+  background-color: #fff;
+}
+
+.message-reply_author {
+  font-weight: 500;
+}
+
+.message-reply_body {
+  font-size: 11px;
+}
+
 .message-meta {
   display: inline-block;
   margin-bottom: -6px;
