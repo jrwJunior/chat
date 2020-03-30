@@ -3,11 +3,11 @@ import { Modal } from 'antd';
 const { confirm } = Modal;
 
 export default ({
-  removeMessage,
-  deleteMessage, 
-  dialogId, 
+  onDelete,
+  deleted,
   count = '1'
 }) => {
+
   confirm({
     title: 'Remove for everyone',
     content: `Are you sure you want to delete ${ count } message?`,
@@ -17,7 +17,7 @@ export default ({
     cancelButtonProps: {className: 'btn-cancel'},
     okButtonProps: {className: 'btn-del'},
     onOk() {
-      removeMessage(deleteMessage, dialogId);
+      onDelete(deleted);
     }
   })
 }

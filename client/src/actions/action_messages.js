@@ -13,13 +13,14 @@ const loadMessages = messages => {
   }
 }
 
-const createdMessage = (message, dialogId = null, interlocutor) => {
+const createdMessage = (message, user, author, replyMessage) => {
   return {
     type: actionTypes.CREATED_MESSAGE,
     payload: {
       message,
-      dialogId,
-      interlocutor
+      user,
+      author,
+      replyMessage
     }
   }
 }
@@ -45,9 +46,10 @@ const editingMessages = editingMessages => {
   }
 }
 
-const deleteMessage = () => {
+const deleteMessage = id => {
   return {
-    type: actionTypes.DELETE_MESSAGE
+    type: actionTypes.DELETE_MESSAGE,
+    payload: id
   }
 };
 

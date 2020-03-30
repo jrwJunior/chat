@@ -8,16 +8,11 @@ import { API } from 'utils/api';
 
 const api = new API();
 
-function* fetchDeleteMessage() {
-  const { dialogId, messages } = yield select(state => (
-    {
-      dialogId: state.dialog.dialogId,
-      messages: state.chat_message.deletedMessages
-    }
-  ));
+function* fetchDeleteMessage(action) {
+  const { dialogId } = yield select(state => state.dialog);
 
   try {
-    yield call(api.removeMessage, {dialogId, messages});
+    yield call(api.removeMessage, {dialogId, messages: action.payload});
   } catch(err) {
     console.log(err.message); // implement error handling
   }

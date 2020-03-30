@@ -8,6 +8,7 @@ import emojiDecode from './emojiDecode';
 import userLastSeen from './userLastSeen';
 import insertReplyText from './insertReplyText';
 import { resizeBodyHeight, resizeEditor } from './resizeObserver';
+import compareDate from './compareDate';
 
 export {
   creatingAvatarsWithColors,
@@ -20,5 +21,6 @@ export {
   userLastSeen,
   insertReplyText,
   resizeBodyHeight,
-  resizeEditor
+  resizeEditor,
+  compareDate
 }

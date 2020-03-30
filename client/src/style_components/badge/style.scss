@@ -10,7 +10,16 @@
   left: -12px;
 }
 
-.ant-badge .ant-badge-count {
+.badge-slc_msg.ant-badge .ant-badge-count {
+  font-size: 11px;
+  line-height: 15px;
+  min-width: auto;
+  width: 14px;
+  height: 14px;
+  padding: 0 4px;
+}
+
+.unread-msg_badge.ant-badge .ant-badge-count {
   font-size: 13px;
   line-height: 18px;
   min-width: auto;
