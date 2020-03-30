@@ -18,9 +18,11 @@ const Message = props => {
     _id,
     message,
     ownerMessage,
+    user,
     edited,
     readed,
     createdAt,
+    replyMessage,
     selectedMessage,
     deletedMessages,
     isOpenPanel,
@@ -43,7 +45,12 @@ const Message = props => {
     const id = evt.target.dataset.msgId;
 
     if (!isOpenPanel) {
-      setEditMessage({id, message});
+      setEditMessage({
+        message,
+        id,
+        author: `${user.firstName} ${user.surname}`,
+        editing: false
+      });
     }
   }
   return (
@@ -62,7 +69,6 @@ const Message = props => {
           )) : null }
           <ContextMenuTrigger 
             id="some_unique_identifier"
-            disable={ !ownerMessage || !!deletedMessages.includes(_id) }
           >
             <div
               ref={ msgRef }
@@ -71,6 +77,20 @@ const Message = props => {
               onClick={ haneleSelect }
               onDoubleClick={ handleReplyMsg }
             >
+              { replyMessage.map(({ author, message, _id }) => (
+                <div 
+                  className='message-reply' 
+                  key={ _id }
+                >
+                  <div className='message-reply_border' style={{backgroundColor: !ownerMessage ? '#3796EE' : false}}/>
+                  <div className='message-reply_author' style={{color: !ownerMessage ? '#3796EE' : false}}>
+                    { author }
+                  </div>
+                  <div className='message-reply_body'>
+                    { message }
+                  </div>
+                </div>
+              )) }
               {reactStringReplace(message, /:(.+?):/g, match => (
                 <Emoji key={ uuidv5('guys.example.com', uuidv5.DNS) } emoji={match} set='messenger' size={16} />
               ))}

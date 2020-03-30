@@ -9,7 +9,7 @@ import { closeReplyMessage } from 'actions/action_editMessage';
 
 import './style.scss';
 
-const EditMessage = ({replyMessage, clearEditorState}) => {
+const EditMessage = ({text, author, clearEditorState}) => {
   const dispatch = useDispatch();
   const setCloseReplyMessage = useCallback(() => dispatch(closeReplyMessage()), [dispatch]);
 
@@ -27,12 +27,10 @@ const EditMessage = ({replyMessage, clearEditorState}) => {
       >
         Remove
       </button>
-      <div className='message-reply'>
-        <div className='message-title'>Edit Message</div>
-      </div>
+      <div className='message-title'>{ author }</div>
       <div className='reply-body'>
         <div className='message-text'>
-          {reactStringReplace(replyMessage, /:(.+?):/g, match => (
+          {reactStringReplace(text, /:(.+?):/g, match => (
             <Emoji key={ uuidv5('guys.example.com', uuidv5.DNS) } emoji={match} set='messenger' size={16} />
           ))}
         </div>
