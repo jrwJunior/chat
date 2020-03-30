@@ -9,7 +9,8 @@ import { useOnlineStatus } from 'utils/hooks';
 
 const NavbarInfo = ({ data }) => {
   const { typing } = useSelector(state => state.isTyping);
-  const { online, lastSeen } = useOnlineStatus('guys');
+  const { dialogId } = useSelector(state => state.dialog);
+  const { online, lastSeen } = useOnlineStatus(dialogId);
 
   return (
     <div className='navbar-peer'>

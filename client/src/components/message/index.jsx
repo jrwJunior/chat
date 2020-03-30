@@ -1,10 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { Emoji } from 'emoji-mart';
 import { ContextMenuTrigger } from "react-contextmenu";
 import format from 'date-fns/format';
 import uuidv5 from 'uuid/v5';
 import reactStringReplace from 'react-string-replace';
+
+import { editMessage } from 'actions/action_editMessage';
+import createdDateMsg from './createdDate';
 
 import './style.scss';
 import 'style_components/context_menu/style.scss';
@@ -17,28 +21,38 @@ const Message = props => {
     edited,
     readed,
     createdAt,
-    flaggMessage,
+    selectedMessage,
     deletedMessages,
-    isOpenPanel
+    isOpenPanel,
+    createdDate
   } = props;
-  const refBubble = useRef(null);
+  const msgRef = useRef(null);
+
+  const dispatch = useDispatch();
+  const setEditMessage = useCallback(id => dispatch(editMessage(id)), [dispatch]);
 
   const haneleSelect = () => {
-    if (!isOpenPanel) {
-      return;
+    if (isOpenPanel) {
+      msgRef.current.classList.add('selected-bubble');
+      selectedMessage(_id, ownerMessage);
+      setTimeout(() => msgRef.current.classList.remove('selected-bubble'), 500);
     }
-    
-    refBubble.current.classList.add('selected-bubble');
-    flaggMessage(_id, ownerMessage);
-    setTimeout(() => refBubble.current.classList.remove('selected-bubble'), 500);
   }
 
+  const handleReplyMsg = evt => {
+    const id = evt.target.dataset.msgId;
+
+    if (!isOpenPanel) {
+      setEditMessage({id, message});
+    }
+  }
   return (
     <>
       <div 
         className={classNames('message', { 'pull-right' : ownerMessage })}
         style={{paddingRight: isOpenPanel ? '35px' : false}}
       >
+        { createdDateMsg({createdDate, createdAt}) }
         <div className="message-content">
           { ownerMessage ? React.Children.map(props.children, child => (
             React.cloneElement(child, {
@@ -51,10 +65,11 @@ const Message = props => {
             disable={ !ownerMessage || !!deletedMessages.includes(_id) }
           >
             <div
-              ref={ refBubble }
+              ref={ msgRef }
               className={classNames('message-bubble message-text', { 'bubble-is-me' : ownerMessage})}
               data-msg-id={ _id }
               onClick={ haneleSelect }
+              onDoubleClick={ handleReplyMsg }
             >
               {reactStringReplace(message, /:(.+?):/g, match => (
                 <Emoji key={ uuidv5('guys.example.com', uuidv5.DNS) } emoji={match} set='messenger' size={16} />

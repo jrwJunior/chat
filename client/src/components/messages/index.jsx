@@ -9,7 +9,7 @@ import Message from 'components/message';
 
 import { getAllMessages, flaggedMessage } from 'actions/action_messages';
 import { getUser } from 'actions/action_user';
-import { resizeBodyHeight, resizeEditor, isEmpty } from 'utils/helpers';
+import { resizeBodyHeight, resizeEditor, isEmpty, compareDate } from 'utils/helpers';
 
 import './style.scss';
 import 'style_components/indicator/style.scss';
@@ -69,23 +69,29 @@ const HistoryMessages = props => {
         <div className='history-messages'>
           { isLoading ? (
             <Spin indicator={ antIcon }/>
-            ) : messages.map(item => (
-              <Message
-                key={ item._id }
-                ownerMessage={ authorizedUser._id === item.user._id }
-                flaggMessage={ addFlaggedMessage }
-                deletedMessages={ deletedMessages }
-                isOpenPanel={ isOpenPanel }
-                { ...item }
-              >
-                { isOpenPanel ? (
-                  <Switch
-                    className='select-tick'
-                    checkedChildren={ <span className='icon-tick'/> }
-                  />
-                ) : null}
-              </Message>
-            ))}
+            ) : messages.map((item, idx, arr) => {
+              const nextItem = !arr[idx-1] ? arr[idx+1] : arr[idx-1];
+              const createdDate = compareDate(item.createdAt, nextItem.createdAt);
+
+              return (
+                <Message
+                  key={ item._id }
+                  ownerMessage={ authorizedUser._id === item.user._id }
+                  selectedMessage={ addFlaggedMessage }
+                  deletedMessages={ deletedMessages }
+                  isOpenPanel={ isOpenPanel }
+                  createdDate={ createdDate }
+                  { ...item }
+                >
+                  { isOpenPanel ? (
+                    <Switch
+                      className='select-tick'
+                      checkedChildren={ <span className='icon-tick'/> }
+                    />
+                  ) : null}
+                </Message>
+              )
+            })}
           <ContextMenu/>
         </div>
       </Scrollbars>
