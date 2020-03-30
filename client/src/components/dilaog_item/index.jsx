@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
@@ -32,6 +32,7 @@ const DialogsItem = props => {
   const paramsId = props.location.pathname.split('/p/').join('');
   const isActive = paramsId === user._id;
   const noSender = lastMessage.user !== authorizedUser._id;
+  const muteNotify = useMemo(() => localStorage['mute_notify'], []);
 
   const dispatch = useDispatch();
   const setIdDialog = useCallback(id => dispatch(setDialogId(id)), [dispatch]);
@@ -45,12 +46,12 @@ const DialogsItem = props => {
   useEffect(() => {
     if (paramsId === user._id && !dialogId) {
       setIdDialog(_id);
-      socket.emit(socketEvents.DIALOG_JOIN, 'guys');
+      socket.emit(socketEvents.DIALOG_JOIN, _id);
     }
 
-    if (count > 0 && noSender) {
+    if (count > 0 && noSender && !muteNotify) {
       new Audio('/sound/sound_a.mp3').autoplay = 'true';
-      document.title = `${count} ${count < 2 ? 'unread message' : 'unread messages'}`;
+      localStorage.setItem('mute_notify', false);
     }
     // eslint-disable-next-line
   }, [_id, paramsId, user, count, setIdDialog]);
@@ -97,7 +98,7 @@ const DialogsItem = props => {
           ) : null }
           { noSender && count > 0 ? (
             <div className='notif-badge'>
-              <Badge count={count}/>
+              <Badge className='unread-msg_badge' count={count}/>
             </div>
           ) : null }
         </div>

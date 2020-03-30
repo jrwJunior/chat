@@ -11,12 +11,11 @@ import 'style_components/badge/style.scss';
 
 export default () => {
   const { deletedMessages } = useSelector(state => state.chat_message);
-  const { dialogId } = useSelector(state => state.dialog);
   
   const dispatch = useDispatch();
   const setIsOpenPanel = useCallback(isOpen => dispatch(openDeletePanel(isOpen)), [dispatch]);
-  const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
-  const removeMessage = useCallback(() => dispatch(deleteMessage()), [dispatch]);
+  const setFlaggedMessage = useCallback(data => dispatch(flaggedMessage(data)), [dispatch]);
+  const removeMessage = useCallback(data => dispatch(deleteMessage(data)), [dispatch]);
 
   const handleCancel = () => {
     setIsOpenPanel(false);
@@ -28,9 +27,8 @@ export default () => {
     const deleteMessage = deletedMessages;
 
     confirmDelete({
-      removeMessage,
-      deleteMessage, 
-      dialogId,
+      onDelete: removeMessage,
+      deleted: deleteMessage,
       count
     });
   }
@@ -48,7 +46,7 @@ export default () => {
           className='btn-delete'
           onClick={ handleDelete }
         >
-          <Badge count={ deletedMessages.length }/>
+          <Badge className='badge-slc_msg' count={ deletedMessages.length }/>
         </button>
         <Button className='btn-cancel' onClick={ handleCancel }>Cancel</Button>
       </div>

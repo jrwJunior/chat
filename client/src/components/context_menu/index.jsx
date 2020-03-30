@@ -9,12 +9,11 @@ import { confirmDelete } from 'utils/helpers';
 
 export default () => {
   const { isOpenPanel } = useSelector(state => state.deletePanel);
-  const { dialogId } = useSelector(state => state.dialog);
   const { messages } = useSelector(state => state.chat_message);
   const contextItemClass = {className: isOpenPanel ? 'react-contextmenu-item-disabled' : null};
 
   const dispatch = useDispatch();
-  const removeMessage = useCallback(id => dispatch(deleteMessage(id)), [dispatch]);
+  const removeMessage = useCallback(data => dispatch(deleteMessage(data)), [dispatch]);
   const setIsOpenPanel = useCallback(isOpen => dispatch(openDeletePanel(isOpen)), [dispatch]);
   const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
   const setEditMessage = useCallback(id => dispatch(editMessage(id)), [dispatch]);
@@ -23,9 +22,9 @@ export default () => {
     const deleteMessage = child.lastChild.dataset.msgId;
 
     confirmDelete({
-      removeMessage,
-      deleteMessage, 
-      dialogId
+      onDelete: removeMessage,
+      onClose: null,
+      deleted: deleteMessage
     });
   }
 
@@ -44,7 +43,7 @@ export default () => {
         return message;
       }
     });
-    
+    console.log(message);
     setEditMessage({id, message});
   }
 
