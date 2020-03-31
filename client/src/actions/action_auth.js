@@ -31,6 +31,12 @@ const createAccount = data => {
   }
 }
 
+const logOut = () => {
+  return {
+    type: actionTypes.LOG_OUT
+  }
+}
+
 const clearError = () => {
   return {
     type: actionTypes.CLEAR_ERROR_USER
@@ -42,5 +48,6 @@ export {
   setLoginData,
   setLoginError,
   createAccount,
+  logOut,
   clearError
 }

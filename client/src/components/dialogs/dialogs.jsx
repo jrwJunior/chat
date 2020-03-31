@@ -5,18 +5,16 @@ import { Spin, Icon } from 'antd';
 
 import Search from '../search';
 import DialogItem from '../dilaog_item';
+import LogOut from 'components/logout';
 
 import Contacts from 'components/contacts';
 
 import './style.scss';
 
-const list = (({authorizedUser, loading, dialogs }) => {
-  const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-
+const list = (({authorizedUser, dialogs }) => {
   return (
     <ul className='nav-pills'>
-      { loading ? <Spin indicator={ antIcon }/>: (
-        dialogs.map(({author, partner, ...rest}) => (
+      { dialogs.map(({author, partner, ...rest}) => (
           <DialogItem 
             key={ rest._id }
             authorizedUser={ authorizedUser }
@@ -24,7 +22,7 @@ const list = (({authorizedUser, loading, dialogs }) => {
             { ...rest }
           />
         )
-      ))}
+      )}
     </ul>
   )
 });
@@ -34,14 +32,17 @@ const Dialogs = () => {
   const { contacts } = useSelector(state => state.contacts);
   const { authorizedUser } = useSelector(state => state.user);
   const assholes = useCallback(() => (
-    list({authorizedUser, loading, dialogs})
+    list({authorizedUser, dialogs})
     // eslint-disable-next-line
   ), [dialogs]);
+
+  const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
   return (
     <aside className='dialogs-panel'>
       <div className='dialogs-head'>
-        <h1 className='dialogs-title'>Chat</h1>
+        <h1 className='dialogs-title'>Chats</h1>
+        <LogOut/>
       </div>
       <Search/>
       <Scrollbars
@@ -49,7 +50,8 @@ const Dialogs = () => {
         autoHideTimeout={ 1000 }
         autoHideDuration={ 200 }
       >
-        { (!dialogs.length && !contacts.length) ? <div className='dialogs-empty'>No contacts yet...</div> : null }
+        { loading ? <Spin indicator={ antIcon }/> : null }
+        {/* { (!dialogs.length && !contacts.length) ? <div className='dialogs-empty'>No contacts yet...</div> : null } */}
         { !contacts.length ? assholes() : <Contacts/> }
       </Scrollbars>
     </aside>
