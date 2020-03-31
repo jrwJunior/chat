@@ -2,6 +2,7 @@ import * as actionTypes from 'constans';
 
 const initialState = {
   userData: {},
+  logOut: false,
   error: null,
   loading: false,
   status: null
@@ -31,6 +32,12 @@ export default (state = initialState, action) => {
         loading: false,
         status,
         error
+      }
+    case actionTypes.LOG_OUT:
+      return {
+        ...state,
+        userData: {},
+        logOut: true
       }
     case actionTypes.CLEAR_ERROR_USER:
       return initialState;

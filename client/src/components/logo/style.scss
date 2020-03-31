@@ -1,0 +1,18 @@
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-inner {
+  display: inline-block;
+  font-size: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.logo-text {
+  font-size: 22px;
+  font-weight: 500;
+  margin-left: 3px;
+  color: #00a5ff;
+}
