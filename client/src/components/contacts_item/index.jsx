@@ -11,7 +11,7 @@ const ContactsItem = props => {
     _id,
     avatar,
     firstName,
-    surname
+    surname,
   } = props;
   const { online } = useOnlineStatus(_id);
   const foo = props.location.pathname.split('/p/').join('') === _id;
