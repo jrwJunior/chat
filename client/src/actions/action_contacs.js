@@ -1,6 +1,6 @@
 import * as actionTypes from 'constans';
 
-const getFoundByUsers = data => {
+const getFoundUsers = data => {
   return {
     type: actionTypes.CONTACTS_REQUESTED,
     payload: data
@@ -14,14 +14,7 @@ const setFoundUsers = data => {
   }
 }
 
-const stopFindContacts = () => {
-  return {
-    type: actionTypes.CONTACTS_NOT_FOUND
-  }
-}
-
 export {
-  getFoundByUsers,
+  getFoundUsers,
   setFoundUsers,
-  stopFindContacts
 }
