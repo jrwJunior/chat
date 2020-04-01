@@ -13,30 +13,29 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const createRoutes = (app, io) => {
-  const { getUser, findUser, createUser, login, foo } = new UserController(io);
-  const { getDialogs, createDialog, deleteDialog } = new DialogController(io);
+  const { findUser, createUser, login, getUser, getAuthUser } = new UserController(io);
+  const { getDialogs } = new DialogController(io);
   const { getMessages, createMessage, deleteMessage, editMessage, messageRead } = new MessageController(io);
 
   app.use(express.json({ extended: true }));
+  app.use(verifyToken);
 
   // Route user
-  app.get('/api/user/me', [verifyToken, lastSeen], getUser);
-  app.get('/api/user/search', verifyToken, findUser);
+  app.get('/api/user/me', lastSeen, getAuthUser);
+  app.get('/api/user/search', findUser);
   app.post('/api/login', login);
   app.post('/api/register', createUser);
-  app.get('/api/user/p/:id', foo);
+  app.get('/api/user/p/:id', getUser);
 
   // Route dialogs 
-  app.get('/api/dialogs', verifyToken, getDialogs);
-  // app.post('/api/dialogs', verifyToken, createDialog);
-  app.delete('/api/dialogs/:id', verifyToken, deleteDialog);
+  app.get('/api/dialogs', getDialogs);
 
   // Route Messages
-  app.get('/api/messages', verifyToken, getMessages);
-  app.post('/api/messages', verifyToken, createMessage);
-  app.put('/api/readed', verifyToken, messageRead);
-  app.put('/api/edited', verifyToken, editMessage);
-  app.delete('/api/messages', verifyToken, deleteMessage);
+  app.get('/api/messages', getMessages);
+  app.post('/api/messages', createMessage);
+  app.put('/api/readed', messageRead);
+  app.put('/api/edited', editMessage);
+  app.delete('/api/messages', deleteMessage);
 }
 
 

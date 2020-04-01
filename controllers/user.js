@@ -9,7 +9,7 @@ class UserController {
     this.validate = new Validator();
   }
 
-  getUser(req, res) {
+  getAuthUser(req, res) {
     const id = req.user && req.user._id;
 
     UserModal.findById(id, (err, user) => {
@@ -23,7 +23,7 @@ class UserController {
     });
   }
 
-  foo(req, res) {
+  getUser(req, res) {
     const id = req.params.id;
 
     UserModal.findById(id, (err, user) => {
