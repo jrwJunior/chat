@@ -2,6 +2,11 @@ import jwt from 'jsonwebtoken';
 
 export default (req, res, next) => {
   const token = req.header('Authorization');
+  const excludePaths = ['/api/login', '/api/register'];
+
+  if (excludePaths.includes(req.path)) {
+    return next();
+  }
 
   if (!token) {
     return res.status(401).json({

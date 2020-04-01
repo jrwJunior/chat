@@ -31,7 +31,7 @@ class MessageController {
             return res.json(err);
           }
     
-          this.socket.to('guys').emit('MESSAGES_READED', {
+          this.socket.to(dialogId).emit('MESSAGES_READED', {
             dialogId: message.dialog,
             readed: message.readed
           });
@@ -40,8 +40,8 @@ class MessageController {
     );
   };
 
-  getMessagesNoRead = () => {
-    MessageModal.find({readed: {$in: false}}).countDocuments((err, count) => {
+  unreadMessages = () => {
+    MessageModal.find({readed: {$ne: true}}).countDocuments((err, count) => {
       if (err) {
         return res.status(500).json({
           message: err,
@@ -69,7 +69,7 @@ class MessageController {
       .populate('user')
       .exec((err, messages) => {
         if (err) {
-          return  res.json({message: "Messages not found"});
+          return res.json({message: "Messages not found"});
         }
 
         res.json(messages);
@@ -79,7 +79,7 @@ class MessageController {
 
   createMessage = async(req, res) => {
     const userId = req.user._id;
-    const { message, interlocutor } = req.body;
+    const { message, user, author, replyMessage } = req.body;
     const query = [{author: userId},{partner:userId}];
 
     DialogModal
@@ -92,7 +92,7 @@ class MessageController {
 
         try {
           if (!dialog) {
-            const dialog = new DialogModal({ author: userId, partner: interlocutor });
+            const dialog = new DialogModal({ author: userId, user });
             const dialogObj = await dialog.save();
     
             const msg = new MessageModal({ message, dialog: dialogObj._id, user: userId });
@@ -107,13 +107,22 @@ class MessageController {
               await dialogObj.save();
               this.dialog.getDialog(userId, this.socket);
 
-              this.socket.to('guys').emit('MESSAGE_RECEIVED', {message});
+              this.socket.to(dialog._id).emit('MESSAGE_RECEIVED', {message});
             });
           } else {
-            const msg = new MessageModal({ message, dialog: dialog._id, user: userId });
+            const data = {
+              author,
+              message: replyMessage
+            }
+            const msg = new MessageModal({ 
+              message,
+              dialog: dialog._id,
+              user: userId,
+              replyMessage: (!author || !replyMessage) ? [] : data
+            });
             const messageObj = await msg.save();
 
-            messageObj.populate('user', (err, message) => {
+            messageObj.populate(['user'], (err, message) => {
               const query = { _id: dialog._id };
               const update = { lastMessage: message._id };
               const options = { new: true, upsert: true };
@@ -130,8 +139,8 @@ class MessageController {
                 }
               });
 
-              this.socket.to('guys').emit('MESSAGE_RECEIVED', {message});
-              this.getMessagesNoRead();
+              this.socket.to(dialog._id).emit('MESSAGE_RECEIVED', {message});
+              this.unreadMessages();
             });
 
             this.socket.emit('LAST_MESSAGE', {lastMessage: messageObj});
@@ -159,7 +168,7 @@ class MessageController {
           return res.json({message: "Messages not found"});
         }
 
-        this.socket.to('guys').emit('MESSAGE_EDITING', {
+        this.socket.to(message.dialog).emit('MESSAGE_EDITING', {
           editedMessage: message
         });
       });
@@ -183,8 +192,9 @@ class MessageController {
         dialog.lastMessage = lastMessage;
         dialog.save();
       });
-
-      this.socket.to('guys').emit('LAST_MESSAGE', {lastMessage});
+      
+      this.socket.to(dialogId).emit('LAST_MESSAGE', {lastMessage});
+      this.unreadMessages();
     });
   }
 
@@ -197,9 +207,9 @@ class MessageController {
           message: err,
         });
       }
-      
+
       this.updateLastMessage(dialogId);
-      this.socket.to('guys').emit('DELETE_MESSAGE', {
+      this.socket.to(dialogId).emit('DELETE_MESSAGE', {
         deleteMessage: messages
       });
     });
