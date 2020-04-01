@@ -8,6 +8,7 @@
     "npm": "6.13.4"
   },
   "scripts": {
+    "start": "node app.js",
     "server": "nodemon --exec babel-node app.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
