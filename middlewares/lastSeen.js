@@ -1,6 +1,6 @@
-import { UserModal } from '../models';
+const { UserModal } = require('../models');
 
-export default (req, _, next) => {
+module.exports = (req, _, next) => {
   if (req.user) {
     UserModal.findOneAndUpdate(
       { 

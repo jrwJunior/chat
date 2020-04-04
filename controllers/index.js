@@ -1,8 +1,8 @@
-import UserController from './user';
-import DialogController from './dialog';
-import MessageController from './message';
+const UserController = require('./user');
+const DialogController = require('./dialog');
+const MessageController = require('./message');
 
-export {
+module.exports = {
   UserController,
   DialogController,
   MessageController

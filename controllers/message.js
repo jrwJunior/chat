@@ -1,10 +1,9 @@
-import { MessageModal, DialogModal } from '../models';
-import DialogController from './dialog';
+const { MessageModal, DialogModal } = require('../models');
+const DialogController = require('./dialog');
 
 class MessageController {
   constructor(socket) {
     this.socket = socket;
-    this.dialog = new DialogController(socket);
   }
   
   messageRead = (req, res) => {
@@ -81,6 +80,7 @@ class MessageController {
     const userId = req.user._id;
     const { message, user, author, replyMessage } = req.body;
     const query = [{author: userId},{partner:userId}];
+    const newDialog = new DialogController(this.socket);
 
     DialogModal
       .findOne()
@@ -105,7 +105,7 @@ class MessageController {
 
               dialogObj.lastMessage = msg._id;
               await dialogObj.save();
-              this.dialog.getDialog(userId, this.socket);
+              newDialog.getDialog(userId, this.socket);
 
               this.socket.to(dialog._id).emit('MESSAGE_RECEIVED', {message});
             });
@@ -216,4 +216,4 @@ class MessageController {
   }
 }
 
-export default MessageController;
+module.exports = MessageController;

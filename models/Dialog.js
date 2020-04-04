@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
   author: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -8,4 +8,4 @@ const schema = new Schema({
   timestamps: true
 });
 
-export default model('Dialog', schema);
+module.exports = model('Dialog', schema);

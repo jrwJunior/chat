@@ -1,27 +1,33 @@
-import express from 'express';
-import dotenv from "dotenv";
-import { createServer } from "http";
+const express = require('express');
+const path = require('path');
+const dotenv = require('dotenv');
+const { createServer } = require('http');
 
-import createRoutes from './core/routes';
-import connectDB from './core/connect_db';
-import createSocket from './core/socket';
-
+const routing = require('./routes');
+const verifyToken = require('./middlewares/verifyToken');
+const createSocket = require('./core/socket');
+const connectDB = require('./core/connectDB');
 
 const app = express();
 const http = createServer(app);
-const io = createSocket(http);
+const socket = createSocket(http);
+
+app.use(express.json({ extended: true }));
 dotenv.config();
+const PORT = process.env.PORT || 5000;
 
-// Create routes
-createRoutes(app, io);
-
-// Connect to DB
-const PORT = process.env.PORT || 8080;
-
-http.listen(3003, () => {
-  console.log(`Server: http://localhost:${3003}`);
+app.use('/', express.static(path.join(__dirname, 'client', 'build')));
+app.get('*', (_, res) => {
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
 
-connectDB(() => (
-  app.listen(PORT, () => console.log(`Started ${ PORT }!`))
-));
+app.use(verifyToken);
+
+routing(app, socket);
+connectDB();
+
+http.listen(PORT, () => {
+  console.log(`Server: http://localhost:${PORT}`);
+});
+
+// app.listen(PORT, () => console.log(`Server: http://localhost:${PORT}`));

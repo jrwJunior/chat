@@ -1,8 +1,8 @@
-import UserModal from './User';
-import DialogModal from './Dialog';
-import MessageModal from './Message';
+const UserModal = require('./User');
+const DialogModal = require('./Dialog');
+const MessageModal = require('./Message');
 
-export {
+module.exports = {
   UserModal,
   DialogModal,
   MessageModal

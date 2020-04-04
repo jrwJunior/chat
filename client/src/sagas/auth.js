@@ -1,4 +1,4 @@
-import { put, call, take, fork } from 'redux-saga/effects';
+import { put, call, take, fork, cancel } from 'redux-saga/effects';
 
 import * as actionTypes from 'constans';
 import { setLoginData, setLoginError } from 'actions/action_auth';
@@ -23,8 +23,13 @@ function* fetchLogin(action) {
 
 function* watchForLogin() {
   while(true) {
-    const action = yield take(actionTypes.LOGIN_REQUESTED);
-    yield fork(fetchLogin, action);
+    const data = yield take(actionTypes.LOGIN_REQUESTED);
+    const task = yield fork(fetchLogin, data);
+    const action = yield take(actionTypes.LOG_OUT);
+
+    if (action.type === actionTypes.LOG_OUT) {
+      yield cancel(task);
+    }
   }
 }
 

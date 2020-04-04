@@ -1,5 +1,5 @@
-import { DialogModal } from '../models';
-import MessageController from './message';
+const { DialogModal } = require('../models');
+const MessageController = require('./message');
 
 class DialogController {
   constructor(socket) {
@@ -48,4 +48,4 @@ class DialogController {
   }
 }
 
-export default DialogController;
+module.exports = DialogController;

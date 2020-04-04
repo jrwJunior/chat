@@ -1,24 +1,18 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Popover } from 'antd';
 
-import { logOut } from 'actions/action_auth';
+// import { logOut } from 'actions/action_auth';
 import './style.scss';
 
-const LogOut = props => {
-  const dispatch = useDispatch();
-  const logout = useCallback(() => dispatch(logOut()), [dispatch]);
-
-  const handleLogOut = () => {
-    logout();
-    props.history.push('/');
-  }
+const LogOut = () => {
+  // const dispatch = useDispatch();
+  // const logout = useCallback(() => dispatch(logOut()), [dispatch]);
 
   const content = (
     <button
       className='logout-btn'
-      onClick={handleLogOut}
+      // onClick={logout}
     >
       Log out
     </button>

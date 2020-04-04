@@ -1,8 +1,8 @@
-import { UserModal } from '../models';
-import bcrypt from 'bcryptjs';
+const { UserModal } = require('../models');
+const bcrypt = require('bcryptjs');
 
-import { Validator } from '../utils/validation';
-import createJWTToken from '../utils/createJWToken';
+const { Validator } = require('../utils/validation');
+const createJWTToken = require('../utils/createJWToken');
 
 class UserController {
   constructor() {
@@ -142,4 +142,4 @@ class UserController {
   }
 }
 
-export default UserController;
+module.exports = UserController;

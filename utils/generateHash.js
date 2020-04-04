@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+const bcrypt = require('bcryptjs');
 
 export default async(string) => {
   const salt = await bcrypt.genSalt(10);
