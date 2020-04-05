@@ -15,9 +15,9 @@ const Container = withFormik({
   validate: values => validateForm({ values, path: '/register' }),
 
   handleSubmit: (values, { props }) => {
-    const { userRegister, setInitialState } = props;
+    const { userRegister, clearErrorData } = props;
     
-    setInitialState()
+    clearErrorData();
     userRegister(values);
   },
 
@@ -27,7 +27,7 @@ const Container = withFormik({
 const mapDispatchToProps = dispatch => {
   return {
     userRegister: values => dispatch(createAccount(values)),
-    setInitialState: () => dispatch(clearError())
+    clearErrorData: () => dispatch(clearError())
   }
 }
 

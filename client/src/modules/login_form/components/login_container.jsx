@@ -12,9 +12,9 @@ const HocFormik = withFormik({
   }),
   validate: values => validateForm({ values, path:'/login' }),
   handleSubmit: (values, { props }) => {
-    const { userLogin, setInitialState } = props;
-    
-    setInitialState();
+    const { userLogin, clearErrorData } = props;
+
+    clearErrorData();
     userLogin(values);
   },
   displayName: 'Login'
@@ -23,7 +23,7 @@ const HocFormik = withFormik({
 const mapDispatchToProps = dispatch => {
   return {
     userLogin: values => dispatch(login(values)),
-    setInitialState: () => dispatch(clearError())
+    clearErrorData: () => dispatch(clearError())
   }
 }
 

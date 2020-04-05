@@ -40,7 +40,10 @@ export default (state = initialState, action) => {
         logoutUser: true
       };
     case actionTypes.CLEAR_ERROR_USER:
-      return initialState;
+      return {
+        ...state,
+        error: null
+      };
     default:
       return state;
   }

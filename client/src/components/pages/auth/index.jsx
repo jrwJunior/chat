@@ -23,22 +23,20 @@ const Auth = ({ location }) => {
   const prevPath = usePrevious(location.pathname);
 
   const dispatch = useDispatch();
-  const setInitialState = useCallback(() => dispatch(clearError()), [dispatch]);
+  const clearErrorData = useCallback(() => dispatch(clearError()), [dispatch]);
 
   useEffect(() => {
     if (prevPath !== location.pathname && error) {
-      setInitialState();
+      clearErrorData();
     }
   });
 
   useEffect(() => {
-    if (status !== 'success') {
-      document.body.classList.add('no-logged');
-    }
-
     if (status === 'success') {
       showNotify({type: status});
       document.body.classList.add('loggedIn');
+    } else {
+      document.body.classList.add('no-logged');
     }
   }, [status]);
 
