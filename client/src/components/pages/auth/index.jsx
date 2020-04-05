@@ -25,9 +25,11 @@ const Auth = ({ location }) => {
   const dispatch = useDispatch();
   const setInitialState = useCallback(() => dispatch(clearError()), [dispatch]);
 
-  if (prevPath !== location.pathname && error) {
-    setInitialState();
-  }
+  useEffect(() => {
+    if (prevPath !== location.pathname && error) {
+      setInitialState();
+    }
+  });
 
   useEffect(() => {
     if (status !== 'success') {
