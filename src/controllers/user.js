@@ -137,6 +137,7 @@ class UserController {
         user
       });
     } catch(err) {
+      console.log(err)
       res.json({ err })
     }
   }

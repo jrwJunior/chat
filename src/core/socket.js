@@ -1,4 +1,4 @@
-import socket from "socket.io";
+import socket from 'socket.io';
 
 export default http => {
   const io = socket(http);

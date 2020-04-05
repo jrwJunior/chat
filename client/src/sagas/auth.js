@@ -23,8 +23,8 @@ function* fetchLogin(action) {
 
 function* watchForLogin() {
   while(true) {
-    const action = yield take(actionTypes.LOGIN_REQUESTED);
-    yield fork(fetchLogin, action);
+    const data = yield take(actionTypes.LOGIN_REQUESTED);
+    yield fork(fetchLogin, data);
   }
 }
 

@@ -13,7 +13,11 @@ const Login = props => {
   const { isLoading } = useSelector(state => state.user_auth);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 25 }} spin />;
-  useAuthentication(setSubmitting, props.history);
+  useAuthentication({
+    submitting: setSubmitting, 
+    history: props.history, 
+    isSubmitting
+  });
 
   return (
     <Form className="login-form" onSubmit={ handleSubmit }>

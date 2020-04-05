@@ -12,7 +12,11 @@ const Register = props => {
   const { isLoading } = useSelector(state => state.user_auth);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 25 }} spin />;
-  useAuthentication(isSubmitting, setSubmitting, props.history);
+  useAuthentication({
+    submitting: setSubmitting, 
+    history: props.history, 
+    isSubmitting
+  });
 
   return (
     <Form className="register-form" onSubmit={ handleSubmit }>

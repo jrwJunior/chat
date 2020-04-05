@@ -11,12 +11,11 @@ const App = () => {
       <Route
         path='/'
         render={ () => {
-          const loggedIn = localStorage.getItem('authentication');
+          const loggedIn = localStorage['token'];
 
-          return !!loggedIn ? <Home/> : <Redirect to='/login'/>
+          return !loggedIn ? <Redirect to='/login'/> : <Home/>
         }}
       />
-      <Redirect to='/'/>
     </Switch>
   );
 }

@@ -10,7 +10,7 @@ export default () => next => action => {
       
       if (!isLoggedIn) {
         localStorage.setItem('token', headers.authorization);
-        localStorage.setItem('authentication', true);
+        // localStorage.setItem('authentication', true);
 
         return next(setLoginData({
           data
@@ -19,11 +19,8 @@ export default () => next => action => {
 
       return next(action);
     case actionTypes.LOG_OUT:
-      const keys = ['token', 'authentication'];
-
-      for (let i = 0; i < keys.length; i+=1) {
-        localStorage.removeItem(keys[i]);
-      }
+      localStorage.removeItem('token');
+      // localStorage.setItem('authentication', false);
 
       return next(action);
     default:

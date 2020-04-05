@@ -54,4 +54,4 @@ class Validator {
 
 export {
   Validator
-}
+};
