@@ -2,6 +2,7 @@ import * as actionTypes from 'constans';
 
 const initialState = {
   contacts: [],
+  contactId: null,
   loading: false
 };
 
@@ -17,8 +18,16 @@ export default (state = initialState, action) => {
         contacts: action.payload,
         loading: false
       }
-    case actionTypes.CONTACTS_NOT_FOUND:
-      return initialState;
+    case actionTypes.SET_CONTACT_ID:
+      return {
+        ...state,
+        contactId: action.payload
+      };
+    case actionTypes.DELETE_SELECTED_CONTACT:
+      return {
+        ...state,
+        contacts: []
+      };
     default:
       return state;
   }

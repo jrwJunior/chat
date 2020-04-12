@@ -30,7 +30,7 @@ class MessageController {
             return res.json(err);
           }
     
-          this.socket.to(dialogId).emit('MESSAGES_READED', {
+          this.socket.to('guys').emit('MESSAGES_READED', {
             dialogId: message.dialog,
             readed: message.readed
           });
@@ -58,7 +58,7 @@ class MessageController {
     DialogModal
     .findOne()
     .or(query)
-    .exec(async(err, dialog) => {
+    .exec((err, dialog) => {
       if (err) {
         return res.json(err);
       }
@@ -68,7 +68,7 @@ class MessageController {
       .populate('user')
       .exec((err, messages) => {
         if (err) {
-          return res.json({message: "Messages not found"});
+          return res.status(500).json(err);
         }
 
         res.json(messages);
@@ -92,7 +92,7 @@ class MessageController {
 
         try {
           if (!dialog) {
-            const dialog = new DialogModal({ author: userId, user });
+            const dialog = new DialogModal({ author: userId, partner: user });
             const dialogObj = await dialog.save();
     
             const msg = new MessageModal({ message, dialog: dialogObj._id, user: userId });
@@ -105,9 +105,10 @@ class MessageController {
 
               dialogObj.lastMessage = msg._id;
               await dialogObj.save();
-              newDialog.getDialog(userId, this.socket);
+              newDialog.getDialog(userId);
 
-              this.socket.to(dialog._id).emit('MESSAGE_RECEIVED', {message});
+              this.socket.to('guys').emit('MESSAGE_RECEIVED', {message});
+              this.unreadMessages();
             });
           } else {
             const data = {
@@ -139,11 +140,10 @@ class MessageController {
                 }
               });
 
-              this.socket.to(dialog._id).emit('MESSAGE_RECEIVED', {message});
+              this.socket.to('guys').emit('MESSAGE_RECEIVED', {message});
               this.unreadMessages();
+              this.socket.emit('LAST_MESSAGE', {lastMessage: message});
             });
-
-            this.socket.emit('LAST_MESSAGE', {lastMessage: messageObj});
           }
         } catch(err) {
           res.json(err);
@@ -152,6 +152,7 @@ class MessageController {
   }
 
   editMessage = (req, res) => {
+    const userId = req.user._id;
     const { id, message } = req.body;
 
     MessageModal.findByIdAndUpdate({_id: id}, {edited: true, message}, { new: true }, err => {
@@ -168,13 +169,13 @@ class MessageController {
           return res.json({message: "Messages not found"});
         }
 
-        this.socket.to(message.dialog).emit('MESSAGE_EDITING', {
+        this.socket.to('guys').emit('MESSAGE_EDITING', {
           editedMessage: message
         });
       });
   }
 
-  updateLastMessage = dialogId => {
+  updateLastMessage = (dialogId, userId) => {
     MessageModal.findOne({ dialog: dialogId }, {}, {sort: { createdAt: -1 }}, (err, lastMessage) => {
       if (err) {
         return res.status(500).json({
@@ -193,12 +194,13 @@ class MessageController {
         dialog.save();
       });
       
-      this.socket.to(dialogId).emit('LAST_MESSAGE', {lastMessage});
+      this.socket.to('guys').emit('LAST_MESSAGE', {lastMessage});
       this.unreadMessages();
     });
   }
 
   deleteMessage = (req, res) => {
+    const userId = req.user._id;
     const { messages, dialogId } = req.body;
 
     MessageModal.deleteMany({_id: {$in: messages}}, err => {
@@ -208,8 +210,8 @@ class MessageController {
         });
       }
 
-      this.updateLastMessage(dialogId);
-      this.socket.to(dialogId).emit('DELETE_MESSAGE', {
+      this.updateLastMessage(dialogId, userId);
+      this.socket.to('guys').emit('DELETE_MESSAGE', {
         deleteMessage: messages
       });
     });

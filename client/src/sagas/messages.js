@@ -2,23 +2,23 @@ import { put, call, select, takeEvery } from 'redux-saga/effects';
 
 import { MESSAGES_REQUESTED } from 'constans';
 import { loadMessages } from 'actions/action_messages';
-import { API } from 'utils/api';
+import { APIMsg } from 'utils/api/msg';
 
 function* allMessages() {
-  const api = new API();
   const { dialogId } = yield select(state => state.dialog);
-  const { authorizedUser } = yield select(state => state.user);
+  const { authorizedUser } = yield select(state => state.authUser);
 
   try {
-    const messages = yield call(api.getMessages);
+    const messages = yield call(new APIMsg().getMessages);
     const findLastMsg = messages[messages.length-1];
+    const noMsgOwner = findLastMsg.user._id !== authorizedUser._id;
     yield put(loadMessages(messages));
 
-    if (!findLastMsg.readed && findLastMsg.user._id !== authorizedUser._id) {
-      yield call(api.getMessagesRead, {dialogId});
+    if (!findLastMsg.readed && noMsgOwner) {
+      yield call(new APIMsg().getMessagesRead, {dialogId});
     }
   } catch(err) {
-    console.log(err.message); // implement error handling
+    console.log(err.message);
   }
 }
 

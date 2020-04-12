@@ -1,0 +1,84 @@
+.ant-skeleton.ant-skeleton-with-avatar {
+  width: auto;
+  
+  & > div {
+    padding: 0;
+  }
+}
+
+.peer-btn {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: center;
+  background-image: none;
+  background: transparent;
+  border: 0;
+  user-select: none;
+  touch-action: manipulation;
+  transition: all .3s cubic-bezier(.645,.045,.355,1);
+  cursor: pointer;
+
+  &:active, &:focus {
+    opacity: 0.8;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.ant-popover-inner .ant-popover-inner-content {
+  padding: 0;
+}
+
+.peer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(169, 169, 169, 0.2);
+  text-align: right;
+
+  span {
+    font-size: 16px;
+    font-weight: 500;
+    color: #323232;
+  }
+
+  button {
+    font-size: 13px;
+    font-weight: 500;
+    color: #f03d25;
+    padding: 5px 15px;
+
+    &:active {
+      opacity: 1;
+    }
+  }
+}
+
+.ant-popover-content {
+  width: 300px;
+}
+
+.peer-profile {
+  display: flex;
+  padding: 15px 20px;
+}
+
+.peer-profile_photo {
+  margin-right: 15px;
+}
+
+.peer-profile_info {
+  display: flex;
+  flex-direction: column;
+}
+
+.peer-profile_name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #323232;
+}

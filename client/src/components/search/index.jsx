@@ -1,38 +1,53 @@
-import React, { useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Input } from 'antd';
 
-import { getFoundUsers } from 'actions/action_contacs';
+import { getFoundUsers, deleteSelectedContact } from 'actions/action_contacs';
+
 import 'style_components/search/style.scss';
 
 const { Search } = Input;
 
 const DialogSearch = () => {
-  const { loading } = useSelector(state => state.contacts);
+  const [value, setValue] = useState('');
+  const { loading, contactId } = useSelector(state => state.contacts);
   const { dialogs } = useSelector(state => state.chatDialogs);
+
   const dispatch = useDispatch();
-
   const foundUser = useCallback(data => dispatch(getFoundUsers(data)), [dispatch]);
+  const deleteContact = useCallback(() => dispatch(deleteSelectedContact()), [dispatch]);
 
-  const handleChange = evt => {
-    const value = evt.target.value.toLowerCase();
+  const filterContact = value => {
     // eslint-disable-next-line
     const foundContacts = dialogs.filter(({author, partner}) => {
-      const fullNameOne = `${author.firstName} ${author.sruname}`.toLowerCase();
-      const fullNameSecond = `${partner.firstName} ${partner.sruname}`.toLowerCase();
+      const owner = `${author.firstName} ${author.sruname}`.toLowerCase();
+      const user = `${partner.firstName} ${partner.sruname}`.toLowerCase();
       
       if (value) {
         return (
-          fullNameOne.indexOf(value) >= 0 || 
-          fullNameSecond.indexOf(value) >= 0
+          owner.indexOf(value.toLowerCase()) >= 0 || 
+          user.indexOf(value.toLowerCase()) >= 0
         )
       }
     });
 
     if (!foundContacts.length) {
-      foundUser(evt.target.value);
+      foundUser(value);
     }
+  };
+
+  const handleChange = evt => {
+    const value = evt.target.value;
+    setValue(value);
+    filterContact(value);
   }
+
+  useEffect(() => {
+    if (contactId) {
+      setValue('');
+      deleteContact();
+    }
+  }, [contactId, deleteContact]);
 
   return (
     <div className='dialogs_search'>
@@ -40,6 +55,7 @@ const DialogSearch = () => {
         placeholder="Search..."
         onChange={ handleChange }
         allowClear
+        value={value}
         loading={ loading }
       />
     </div>

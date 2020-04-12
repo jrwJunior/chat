@@ -24,12 +24,13 @@ export default () => {
 
   const handleDelete = () => {
     const count = deletedMessages.length;
-    const deleteMessage = deletedMessages;
+    const text = deletedMessages;
 
     confirmDelete({
-      onDelete: removeMessage,
-      deleted: deleteMessage,
-      count
+      onCallback: removeMessage,
+      data: text,
+      content: `Are you sure you want to delete ${count} message?`,
+      okText: 'Delete'
     });
   }
 

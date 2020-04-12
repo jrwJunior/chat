@@ -19,12 +19,13 @@ export default () => {
   const setEditMessage = useCallback(id => dispatch(editMessage(id)), [dispatch]);
 
   const handleDelete = (evt, data, child) => {
-    const deleteMessage = child.lastChild.dataset.msgId;
+    const msdId = child.lastChild.dataset.msgId;
 
     confirmDelete({
-      onDelete: removeMessage,
-      onClose: null,
-      deleted: deleteMessage
+      onCallback: removeMessage,
+      content: 'Are you sure you want to delete 1 message?',
+      data: msdId,
+      okText: 'Delete'
     });
   }
 

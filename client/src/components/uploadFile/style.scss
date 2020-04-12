@@ -1,18 +1,50 @@
+.avatar-uploader {
+  position: absolute;
+  top: 80px;
+  right: 0;
+}
+
 .avatar-uploader .ant-upload.ant-upload-select-picture-card {
   width: 75px;
   height: 75px;
   border-radius: 50%;
   border: 0;
   background-color: #1FA7F5;
+  overflow: hidden;
+}
+
+.invisibility, .uploaded .ant-upload.ant-upload-select-picture-card {
+  background-color: transparent;
+}
+
+.avatar-uploader .ant-upload.ant-upload-select-picture-card > .ant-upload {
+  padding: 0;
+  height: 75px;
 }
 
 .avatar-uploader.ant-upload-picture-card-wrapper {
   width: auto;
 }
 
-.foo {
+.upload-icon {
   display: inline-block;
   width: 35px;
   height: 35px;
   background: url('../../img/photo-camera.svg') no-repeat center/contain;
+}
+
+.avatar-uploader .ant-spin.ant-spin-spinning {
+  position: static;
+}
+
+.ant-upload.ant-upload-select-picture-card:hover {
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:active, &:focus {
+    opacity: 0.5;
+  }
 }

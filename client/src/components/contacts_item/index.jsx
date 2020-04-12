@@ -1,7 +1,8 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Link, withRouter } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
+import { contactId } from 'actions/action_contacs';
 import Avatar from 'components/avatar';
 
 import { useOnlineStatus } from 'utils/hooks';
@@ -11,19 +12,20 @@ const ContactsItem = props => {
     _id,
     avatar,
     firstName,
-    surname,
+    surname
   } = props;
+  const dispatch = useDispatch()
+  const setContactId = useCallback(id => dispatch(contactId(id)), [dispatch]);
+
   const { online } = useOnlineStatus(_id);
-  const foo = props.location.pathname.split('/p/').join('') === _id;
 
   return (
     <li
-      className={ classNames('dialog-wrap', 
-        {'is-active': foo}) 
-      }
+      className='dialog-wrap'
+      onClick={() => setContactId(_id)}
     >
       <Link
-        to={`/p/${_id}`}
+        to={`/im/p/${_id}`}
         className='dialog'
       >
         <div className='dialog-photo'>
@@ -44,4 +46,4 @@ const ContactsItem = props => {
   )
 };
 
-export default withRouter(ContactsItem);
+export default ContactsItem;

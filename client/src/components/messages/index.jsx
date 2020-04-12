@@ -9,7 +9,9 @@ import Message from 'components/message';
 
 import { getAllMessages, flaggedMessage } from 'actions/action_messages';
 import { getUser } from 'actions/action_user';
-import { resizeBodyHeight, resizeEditor, isEmpty, compareDate } from 'utils/helpers';
+import { resizeBodyHeight, resizeEditor, isEmpty } from 'utils/helpers';
+import { socket } from 'utils/socket';
+import { socketEvents } from 'constans/socketEvents';
 
 import './style.scss';
 import 'style_components/indicator/style.scss';
@@ -19,8 +21,9 @@ const HistoryMessages = props => {
 
   const { messages, deletedMessages, isLoading } = useSelector(state => state.chat_message);
   const { isOpenPanel } = useSelector(state => state.deletePanel);
-  const { authorizedUser, user } = useSelector(state => state.user);
-  const { dialogId } = useSelector(state => state.dialog);
+  const { user } = useSelector(state => state.user);
+  const { authorizedUser } = useSelector(state => state.authUser);
+  const { dialogs } = useSelector(state => state.chatDialogs);
   
   const editorNode = useRef();
   const messagesNode = useRef();
@@ -50,7 +53,11 @@ const HistoryMessages = props => {
   }, [handleResizeBodyHeight, handleResizeEditor]);
 
   useEffect(() => {
-    if (dialogId && !messages.length && userId) {
+    if (userId) {
+      socket.emit(socketEvents.DIALOG_JOIN, 'guys');
+    }
+
+    if (dialogs.length && !messages.length && userId) {
       setMessages();
     }
 
@@ -58,7 +65,7 @@ const HistoryMessages = props => {
       getUserData(userId);
     }
     // eslint-disable-next-line
-  }, [userId, dialogId, setMessages, getUserData]);
+  }, [userId, dialogs, setMessages, getUserData]);
 
   return (
     <div ref={ messagesNode }>
@@ -70,9 +77,6 @@ const HistoryMessages = props => {
           { isLoading ? (
             <Spin indicator={ antIcon }/>
             ) : messages.map((item, idx, arr) => {
-              const nextItem = !arr[idx-1] ? arr[idx+1] : arr[idx-1];
-              const createdDate = compareDate(item.createdAt, nextItem.createdAt);
-
               return (
                 <Message
                   key={ item._id }
@@ -80,7 +84,7 @@ const HistoryMessages = props => {
                   selectedMessage={ addFlaggedMessage }
                   deletedMessages={ deletedMessages }
                   isOpenPanel={ isOpenPanel }
-                  createdDate={ createdDate }
+                  // createdDate={ createdDate }
                   { ...item }
                 >
                   { isOpenPanel ? (

@@ -15,10 +15,10 @@ const Container = withFormik({
   validate: values => validateForm({ values, path: '/register' }),
 
   handleSubmit: (values, { props }) => {
-    const { userRegister, clearErrorData } = props;
-    
+    const { createUser, clearErrorData } = props;
+
     clearErrorData();
-    userRegister(values);
+    createUser(values);
   },
 
   displayName: 'Register'
@@ -26,7 +26,7 @@ const Container = withFormik({
 
 const mapDispatchToProps = dispatch => {
   return {
-    userRegister: values => dispatch(createAccount(values)),
+    createUser: values => dispatch(createAccount(values)),
     clearErrorData: () => dispatch(clearError())
   }
 }

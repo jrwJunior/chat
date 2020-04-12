@@ -11,9 +11,10 @@ import deletePanel from './deletePanel';
 import replyMessage from './replyMessage';
 import user from './user';
 import notifi from './notifiBadge';
+import attachment from './attachment';
 
 const rootReducer = combineReducers({
-  user_auth: auth,
+  authUser: auth,
   user,
   chatDialogs: dialogs,
   dialog,
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
   onlineStatus,
   deletePanel,
   replyMessage,
-  notifi
+  notifi,
+  attachmentFile: attachment
 });
 
 export default rootReducer;

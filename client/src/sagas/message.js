@@ -5,13 +5,11 @@ import { setMessage } from 'actions/action_messages';
 import { typingMessage } from 'actions/action_typing';
 import { socketEvents } from 'constans/socketEvents';
 import { createChannel } from './createChannel';
-import { API } from 'utils/api';
+import { APIMsg } from 'utils/api/msg';
 
 function* fetchMessage(action) {
-  const api = new API();
-
   try {
-    yield call(api.createMessage, action.payload);
+    yield call(new APIMsg().createMessage, action.payload);
   } catch(err) {
     console.log(err.message); // implement error handling
   }

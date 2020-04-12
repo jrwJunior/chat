@@ -43,6 +43,16 @@
   padding: 0;
 }
 
+.message-send {
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
 .ant-input {
   resize: none;
 }
@@ -113,4 +123,13 @@
   &:focus {
     outline: none;
   }
+}
+
+.public-DraftEditorPlaceholder-inner {
+  color: #7b7b7b;
+}
+
+.public-DraftEditorPlaceholder-hasFocus {
+  opacity: 0.7;
+  transition: opacity 0.15s;
 }

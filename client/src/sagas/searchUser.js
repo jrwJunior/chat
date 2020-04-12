@@ -2,13 +2,11 @@ import { put, call, takeLatest } from 'redux-saga/effects';
 
 import * as actionTypes from 'constans';
 import { setFoundUsers } from 'actions/action_contacs';
-import { API } from 'utils/api';
-
-const api = new API();
+import { APIUser } from 'utils/api/user';
 
 function* fetchFindContacts(action) {
   try {
-    const { data } = yield call(api.searchForUsers, action.payload);
+    const { data } = yield call(new APIUser().searchUsers, action.payload);
 
     yield put(setFoundUsers(data));
   } catch(err) {

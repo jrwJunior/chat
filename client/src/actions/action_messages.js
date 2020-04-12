@@ -67,6 +67,13 @@ const setReadedMessages = data => {
   }
 }
 
+const messageHisrortEmpty = data => {
+  return {
+    type: actionTypes.MESSAGE_HISTORY_EMPTY,
+    payload: data
+  }
+}
+
 export {
   getAllMessages,
   loadMessages,
@@ -76,5 +83,6 @@ export {
   editingMessages,
   deleteMessage,
   flaggedMessage,
-  setReadedMessages
+  setReadedMessages,
+  messageHisrortEmpty
 }
