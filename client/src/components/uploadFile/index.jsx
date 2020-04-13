@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { Upload, message, Spin, Icon } from 'antd';
 
-import { attachment } from 'actions/action_attachment';
+// import { attachment } from 'actions/action_attachment';
 import './style.scss';
 
 const UploadFile = () => {
@@ -13,7 +13,7 @@ const UploadFile = () => {
   });
 
   const dispatch = useDispatch();
-  const setAttachment = useCallback(file => dispatch(attachment(file)), [dispatch]);
+  // const setAttachment = useCallback(file => dispatch(attachment(file)), [dispatch]);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -48,7 +48,7 @@ const UploadFile = () => {
         setState({url, loading: false})
       });
       
-      setAttachment(info.file.originFileObj);
+      // setAttachment(info.file.originFileObj);
     }
   }
 

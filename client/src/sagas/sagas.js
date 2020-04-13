@@ -6,6 +6,7 @@ import message from './message';
 import deleteMessage from './deleteMessage';
 import editMessage from './messageEdit';
 import searchUser from './searchUser';
+import uploadFile from './uploadFile';
 import createChannel from './createChannel';
 
 export {
@@ -17,5 +18,6 @@ export {
   deleteMessage,
   editMessage,
   searchUser,
+  uploadFile,
   createChannel
 }

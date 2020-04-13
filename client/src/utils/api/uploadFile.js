@@ -9,16 +9,16 @@ class APIUploadFile extends Root {
 
   uploadAvatar = async(file) => {
     const formData = new FormData();
-  
     formData.append("file", file);
   
     try {
-      const res = await axios.post('/api/file', formData, {
+      const { data } = await axios.post('/api/file', formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       });
-      return res;
+
+      return data;
     } catch(error) {
       this.errorBoundary(error.response);
     }

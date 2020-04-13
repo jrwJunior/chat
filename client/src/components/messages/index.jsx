@@ -10,8 +10,6 @@ import Message from 'components/message';
 import { getAllMessages, flaggedMessage } from 'actions/action_messages';
 import { getUser } from 'actions/action_user';
 import { resizeBodyHeight, resizeEditor, isEmpty } from 'utils/helpers';
-import { socket } from 'utils/socket';
-import { socketEvents } from 'constans/socketEvents';
 
 import './style.scss';
 import 'style_components/indicator/style.scss';
@@ -53,10 +51,6 @@ const HistoryMessages = props => {
   }, [handleResizeBodyHeight, handleResizeEditor]);
 
   useEffect(() => {
-    if (userId) {
-      socket.emit(socketEvents.DIALOG_JOIN, 'guys');
-    }
-
     if (dialogs.length && !messages.length && userId) {
       setMessages();
     }

@@ -31,7 +31,7 @@ const Message = props => {
   const msgRef = useRef(null);
 
   const dispatch = useDispatch();
-  const setEditMessage = useCallback(id => dispatch(editMessage(id)), [dispatch]);
+  const setReplyMessage = useCallback(id => dispatch(editMessage(id)), [dispatch]);
 
   const haneleSelect = () => {
     if (isOpenPanel) {
@@ -45,7 +45,7 @@ const Message = props => {
     const id = evt.target.dataset.msgId;
 
     if (!isOpenPanel) {
-      setEditMessage({
+      setReplyMessage({
         message,
         id,
         author: `${user.firstName} ${user.surname}`,

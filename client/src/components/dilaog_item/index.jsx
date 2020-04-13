@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
@@ -13,6 +13,8 @@ import Indicator from 'components/typing_indicator';
 import { messageTimeConvert } from 'utils/helpers';
 import { setDialogId } from 'actions/action_dialog';
 import { APIMsg } from 'utils/api/msg';
+import { socket } from 'utils/socket';
+import { socketEvents } from 'constans/socketEvents';
 
 import 'style_components/badge/style.scss';
 
@@ -31,7 +33,6 @@ const DialogsItem = props => {
   const isActive = paramsId === user._id;
 
   const notMsgOwner = lastMessage.user._id !== authorizedUser._id;
-  // const muteNotify = useMemo(() => localStorage['mute_notify'], []);
 
   const dispatch = useDispatch();
   const setIdDialog = useCallback(id => dispatch(setDialogId(id)), [dispatch]);
@@ -44,14 +45,9 @@ const DialogsItem = props => {
 
   useEffect(() => {
     if (paramsId === user._id && !dialogId) {
-      console.log('effect')
+      socket.emit(socketEvents.DIALOG_JOIN, _id);
       setIdDialog(_id);
     }
-
-    // if (count > 0 && notMsgOwner && !muteNotify) {
-    //   new Audio('/sound/sound_a.mp3').autoplay = 'true';
-    //   localStorage.setItem('mute_notify', false);
-    // }
     // eslint-disable-next-line
   }, [_id, paramsId, user, count, setIdDialog]);
 

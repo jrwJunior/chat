@@ -33,6 +33,7 @@ export default () => {
   );
 
   if (logoutUser) {
+    document.body.classList.remove('loggedIn');
     return <Redirect to='/login'/>
   }
 

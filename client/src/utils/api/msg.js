@@ -7,9 +7,9 @@ class APIMsg extends Root {
     super();
   }
 
-  getMessages = async() => {
+  getMessages = async(id) => {
     try {
-      const { data } = await axios.get('/api/messages');
+      const { data } = await axios.get(`/api/messages?dialog=${id}`);
       return data;
     } catch(error) {
       this.errorBoundary(error.response);

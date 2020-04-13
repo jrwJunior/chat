@@ -1,14 +1,18 @@
 import * as actionTypes from 'constans';
 
 const initialState = {
-  file: null
+  fileLoading: false
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
-    case actionTypes.SET_ATTACHMENT_FILE:
+    case actionTypes.FILE_REQUESTED:
       return {
-        file: action.payload
+        fileLoading: true
+      }
+    case actionTypes.FILE_SUCCESSFULLY_UPLOADED:
+      return {
+        fileLoading: false,
       }
     default:
       return state;

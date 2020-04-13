@@ -28,13 +28,11 @@ const list = (({authorizedUser, dialogs }) => {
 });
 
 const Dialogs = () => {
-  const { dialogs, loading } = useSelector(state => state.chatDialogs);
+  const { dialogs, noDialogs, loading } = useSelector(state => state.chatDialogs);
   const { contacts } = useSelector(state => state.contacts);
   const { authorizedUser, loading: isLoading } = useSelector(state => state.authUser);
-  const assholes = useCallback(() => (
-    list({authorizedUser, dialogs})
-    // eslint-disable-next-line
-  ), [dialogs]);
+  // eslint-disable-next-line
+  const assholes = useCallback(() => list({authorizedUser, dialogs}), [dialogs]);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -56,8 +54,8 @@ const Dialogs = () => {
         autoHideDuration={ 200 }
       >
         { loading ? <Spin indicator={ antIcon }/> : null }
-        {/* { (!dialogs.length && !contacts.length) ? <div className='dialogs-empty'>No contacts yet...</div> : null } */}
         { !contacts.length ? assholes() : <Contacts/> }
+        { noDialogs && !contacts.length ? <div className='dialogs-empty'>No contacts yet...</div> : null }
       </Scrollbars>
     </aside>
   )

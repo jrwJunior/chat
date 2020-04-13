@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { getDefaultKeyBinding, KeyBindingUtil, EditorState, ContentState } from 'draft-js';
@@ -28,6 +28,7 @@ const { Picker } = emojiPlugin;
 const SendPanel = React.forwardRef(({ userId }, ref) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const { message, author, showReply, editing } = useSelector(state => state.replyMessage);
+  const refEditor = useRef();
 
   const dispatch = useDispatch();
 
@@ -91,7 +92,6 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
 
     if (command === 'myeditor-save') {
       handleSubmit();
-
       return 'handled';
     }
     return 'not-handled';
@@ -99,8 +99,9 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
 
   useEffect(() => {
     if (showReply) {
-      const newEditorState = insertReplyText(editorState, message);
+      const newEditorState = insertReplyText(editorState, !editing ? '' : message);
       setEditorState(newEditorState);
+      !editing && refEditor.current.focus();
     }
     // eslint-disable-next-line
   }, [message, showReply]);
@@ -125,6 +126,7 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
             keyBindingFn={ myKeyBindingFn }
             plugins={ [emojiPlugin] }
             placeholder='Type a message...'
+            ref={ refEditor }
           />
           <EmojiPanel Picker={ Picker } />
         </div>
