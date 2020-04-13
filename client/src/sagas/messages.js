@@ -9,7 +9,7 @@ function* allMessages() {
   const { authorizedUser } = yield select(state => state.authUser);
 
   try {
-    const messages = yield call(new APIMsg().getMessages);
+    const messages = yield call(new APIMsg().getMessages, dialogId);
     const findLastMsg = messages[messages.length-1];
     const noMsgOwner = findLastMsg.user._id !== authorizedUser._id;
     yield put(loadMessages(messages));

@@ -17,6 +17,8 @@ const Home = () => {
   const authUser = useCallback(() => dispatch(getAuthorizedUser()), [dispatch]);
 
   useEffect(() => {
+    document.body.classList.add('loggedIn');
+    
     dialogsUser();
     authUser();
   }, [dialogsUser, authUser]);

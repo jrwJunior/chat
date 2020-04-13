@@ -6,79 +6,57 @@
   }
 }
 
-.peer-btn {
-  display: inline-block;
-  font-size: 14px;
-  font-weight: 400;
-  white-space: nowrap;
-  text-align: center;
-  background-image: none;
+.peer-upload_avatar.ant-upload-picture-card-wrapper {
+  width: auto;
+}
+
+.peer-upload_avatar .ant-upload.ant-upload-select-picture-card {
+  position: relative;
+  width: 40px;
+  height: 40px;
   background: transparent;
   border: 0;
-  user-select: none;
-  touch-action: manipulation;
-  transition: all .3s cubic-bezier(.645,.045,.355,1);
-  cursor: pointer;
+  margin-right: 0;
+  margin-bottom: 0;
 
-  &:active, &:focus {
-    opacity: 0.8;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5) url('../../img/edit.svg') no-repeat center/14px;
+    transition: opacity 0.15s;
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
   }
 
-  &:focus {
-    outline: 0;
-  }
-}
+  &:hover {
+    opacity: 1;
 
-.ant-popover-inner .ant-popover-inner-content {
-  padding: 0;
-}
-
-.peer-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
-  border-bottom: 1px solid rgba(169, 169, 169, 0.2);
-  text-align: right;
-
-  span {
-    font-size: 16px;
-    font-weight: 500;
-    color: #323232;
-  }
-
-  button {
-    font-size: 13px;
-    font-weight: 500;
-    color: #f03d25;
-    padding: 5px 15px;
-
-    &:active {
+    &:before {
       opacity: 1;
     }
   }
 }
 
-.ant-popover-content {
-  width: 300px;
+.ant-upload.ant-upload-select-picture-card > .ant-upload[role=button] {
+  padding: 0;
 }
 
-.peer-profile {
-  display: flex;
-  padding: 15px 20px;
+.peer-upload_avatar.invisibility {
+  pointer-events: none;
 }
 
-.peer-profile_photo {
-  margin-right: 15px;
+.invisibility .ant-upload {
+  background: #f1f1f1;
+  border-radius: 50%;
 }
 
-.peer-profile_info {
-  display: flex;
-  flex-direction: column;
-}
-
-.peer-profile_name {
-  font-size: 16px;
-  font-weight: 500;
-  color: #323232;
+.ant-upload[role=button] .ant-spin {
+  position: static;
 }

@@ -38,15 +38,11 @@ const Auth = ({ location }) => {
     if (prevPath !== location.pathname && error) {
       clearErrorData();
     }
-  });
 
-  useEffect(() => {
     if (status === 'success') {
       showNotify({type: status});
-      document.body.classList.add('loggedIn');
-    } else {
-      document.body.classList.remove('loggedIn');
     }
+    // eslint-disable-next-line
   }, [status]);
 
   return (

@@ -1,12 +1,19 @@
 import * as actionTypes from 'constans';
 
-const attachment = file => {
+const attachmentRequest = file => {
   return {
-    type: actionTypes.SET_ATTACHMENT_FILE,
+    type: actionTypes.FILE_REQUESTED,
     payload: file
   }
 }
 
+const attachmentLoadSuccess = () => {
+  return {
+    type: actionTypes.FILE_SUCCESSFULLY_UPLOADED
+  }
+}
+
 export {
-  attachment
+  attachmentRequest,
+  attachmentLoadSuccess
 }
