@@ -4,14 +4,13 @@ import { SAVE_EDITED_MESSAGE } from 'constans';
 import { setMessages } from 'actions/action_messages';
 import { socketEvents } from 'constans/socketEvents';
 import { createChannel } from './createChannel';
-import { API } from 'utils/api';
+import { APIMsg } from 'utils/api/msg';
 
 function* fetchEditedMessage() {
-  const api = new API();
   const { editedMessage, id } = yield select(state => state.replyMessage);
 
   try {
-    yield call(api.editedMessage, {
+    yield call(new APIMsg().editedMessage, {
       message: editedMessage, 
       id
     });

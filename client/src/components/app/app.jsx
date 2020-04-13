@@ -9,13 +9,17 @@ const App = () => {
     <Switch>
       <Route exact path={[ '/login', '/register' ]} component={ Auth } />
       <Route
-        path='/'
+        path='/im'
         render={ () => {
-          const loggedIn = localStorage['token'];
+          const authentication = localStorage.getItem('auth_key');
 
-          return !loggedIn ? <Redirect to='/login'/> : <Home/>
+          if (authentication) {
+            return <Home/>;
+          }
+          return <Redirect exact to='/login'/>;
         }}
       />
+      <Redirect to='/im'/>
     </Switch>
   );
 }

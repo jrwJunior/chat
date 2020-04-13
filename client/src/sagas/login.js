@@ -2,14 +2,11 @@ import { put, call, take, fork } from 'redux-saga/effects';
 
 import * as actionTypes from 'constans';
 import { setLoginData, setLoginError } from 'actions/action_auth';
-import { API } from 'utils/api';
+import { APIAuth } from 'utils/api/auth';
 
-function* fetchLogin(action) {
-  const api = new API();
-
+function* authorization(action) {
   try {
-    const data = yield call(api.login, action.payload);
-
+    const data = yield call(new APIAuth().login, action.payload);
     yield put(setLoginData(data));
   } catch(err) {
     const { message, status } = JSON.parse(err.message);
@@ -21,11 +18,11 @@ function* fetchLogin(action) {
   }
 }
 
-function* watchForLogin() {
+function* watchAuthorization() {
   while(true) {
     const data = yield take(actionTypes.LOGIN_REQUESTED);
-    yield fork(fetchLogin, data);
+    yield fork(authorization, data);
   }
 }
 
-export default watchForLogin;
+export default watchAuthorization;

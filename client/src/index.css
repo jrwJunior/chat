@@ -19,7 +19,7 @@ body {
   -webkit-touch-callout: none;
   direction: ltr;
   color: #323232;
-  background-color: #f2f2f2;
+  background-color: #fff;
   overflow: hidden;
 }
 
@@ -39,10 +39,6 @@ img {
   max-width: 1270px;
   margin: auto;
   padding: 0 15px;
-}
-
-.no-logged {
-  background-color: #fff;
 }
 
 .loggedIn {

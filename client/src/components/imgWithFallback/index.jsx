@@ -7,7 +7,7 @@ const ImgWithFallback = ({
   ...rest
 }) => {
   return (
-    <picture className='foo'>
+    <picture className='drawing'>
       <source srcSet={src} type={type} />
       {/* eslint-disable-next-line */}
       <img src={fallback} {...rest} />

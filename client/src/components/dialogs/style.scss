@@ -13,19 +13,25 @@
 
 .dialogs-head {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   margin-bottom: 18px;
   padding: 0 15px;
 
   span {
     display: block;
   }
+
+  .separator {
+    flex: 1 1 auto;
+  }
 }
 
 .dialogs-title {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 500;
   color: #323232;
+  margin-left: 12px;
+  margin-bottom: 0;
 }
 
 .dialogs_search {

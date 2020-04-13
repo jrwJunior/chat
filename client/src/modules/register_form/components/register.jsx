@@ -9,7 +9,7 @@ import 'style_components/button/style.scss';
 
 const Register = props => {
   const { isValid, isSubmitting, setSubmitting, handleSubmit } = props;
-  const { isLoading } = useSelector(state => state.user_auth);
+  const { isLoading } = useSelector(state => state.authUser);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 25 }} spin />;
   useAuthentication({

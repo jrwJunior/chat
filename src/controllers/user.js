@@ -85,14 +85,12 @@ class UserController {
 
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
-
-    const user = new UserModal({ email, password: hashPassword, firstName, surname });
+    const user = new UserModal({ email, password: hashPassword, firstName, surname, avatar: null });
 
     try {
-      const data = await user.save();
-      res.json({
-        status: 'success',
-        data
+      await user.save();
+      res.status(200).json({
+        status: 'created successfully'
       });
     } catch(err) {
       res.status(400).json(err);
@@ -137,7 +135,6 @@ class UserController {
         user
       });
     } catch(err) {
-      console.log(err)
       res.json({ err })
     }
   }

@@ -4,15 +4,13 @@ import { DELETE_MESSAGE } from 'constans';
 import { setMessages } from 'actions/action_messages';
 import { socketEvents } from 'constans/socketEvents';
 import { createChannel } from './createChannel';
-import { API } from 'utils/api';
-
-const api = new API();
+import { APIMsg } from 'utils/api/msg';
 
 function* fetchDeleteMessage(action) {
   const { dialogId } = yield select(state => state.dialog);
 
   try {
-    yield call(api.removeMessage, {dialogId, messages: action.payload});
+    yield call(new APIMsg().removeMessage, {dialogId, messages: action.payload});
   } catch(err) {
     console.log(err.message); // implement error handling
   }

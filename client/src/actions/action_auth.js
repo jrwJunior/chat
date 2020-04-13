@@ -27,7 +27,9 @@ const setLoginError = data => {
 const createAccount = data => {
   return {
     type: actionTypes.REGISTER_REQUESTED,
-    payload: data
+    payload: {
+      ...data
+    }
   }
 }
 

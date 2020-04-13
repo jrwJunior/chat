@@ -5,9 +5,9 @@ import { Spin, Icon } from 'antd';
 
 import Search from '../search';
 import DialogItem from '../dilaog_item';
-import LogOut from 'components/logout';
-
+import Dropdown from 'components/dropdown';
 import Contacts from 'components/contacts';
+import Profile from 'components/profile';
 
 import './style.scss';
 
@@ -30,7 +30,7 @@ const list = (({authorizedUser, dialogs }) => {
 const Dialogs = () => {
   const { dialogs, loading } = useSelector(state => state.chatDialogs);
   const { contacts } = useSelector(state => state.contacts);
-  const { authorizedUser } = useSelector(state => state.user);
+  const { authorizedUser, loading: isLoading } = useSelector(state => state.authUser);
   const assholes = useCallback(() => (
     list({authorizedUser, dialogs})
     // eslint-disable-next-line
@@ -41,8 +41,13 @@ const Dialogs = () => {
   return (
     <aside className='dialogs-panel'>
       <div className='dialogs-head'>
+        <Profile
+          user={ authorizedUser }
+          loading={ isLoading }
+        />
         <h1 className='dialogs-title'>Chats</h1>
-        <LogOut/>
+        <div className='separator'/>
+        <Dropdown/>
       </div>
       <Search/>
       <Scrollbars

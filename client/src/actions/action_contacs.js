@@ -14,7 +14,22 @@ const setFoundUsers = data => {
   }
 }
 
+const contactId = id => {
+  return {
+    type: actionTypes.SET_CONTACT_ID,
+    payload: id
+  }
+}
+
+const deleteSelectedContact = () => {
+  return {
+    type: actionTypes.DELETE_SELECTED_CONTACT
+  }
+}
+
 export {
   getFoundUsers,
   setFoundUsers,
+  contactId,
+  deleteSelectedContact
 }

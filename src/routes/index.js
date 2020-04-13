@@ -1,14 +1,17 @@
+import multer from '../core/multer';
 import lastSeen from '../middlewares/lastSeen';
 import { 
   UserController,
   DialogController,
-  MessageController
+  MessageController,
+  UploadController
 } from '../controllers';
 
 export default (app, socket) => {
   const { findUser, createUser, login, getUser, getAuthUser } = new UserController(socket);
   const { getDialogs } = new DialogController(socket);
   const { getMessages, createMessage, deleteMessage, editMessage, messageRead } = new MessageController(socket);
+  const { uploadFile } = new UploadController();
 
   // Route user
   app.get('/api/user/me', lastSeen, getAuthUser);
@@ -26,4 +29,6 @@ export default (app, socket) => {
   app.put('/api/readed', messageRead);
   app.put('/api/edited', editMessage);
   app.delete('/api/messages', deleteMessage);
+
+  app.post("/api/file", multer.single('file'), uploadFile);
 }

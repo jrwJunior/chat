@@ -7,6 +7,7 @@ import { Typography, Alert } from 'antd';
 import { LoginForm, RegisterForm } from 'modules';
 import ImgWithFallback from 'components/imgWithFallback';
 import Logo from 'components/logo';
+import UploadAvatar from 'components/uploadFile';
 
 import { clearError } from 'actions/action_auth';
 import { usePrevious } from 'utils/hooks/usePrevious';
@@ -19,11 +20,19 @@ import fallback from 'img/main-bg.jpg';
 const { Title, Text } = Typography;
 
 const Auth = ({ location }) => {
-  const { error, status } = useSelector(state => state.user_auth);
+  const { error, status } = useSelector(state => state.authUser);
   const prevPath = usePrevious(location.pathname);
 
   const dispatch = useDispatch();
   const clearErrorData = useCallback(() => dispatch(clearError()), [dispatch]);
+
+  const titles = () => {
+    if (location.pathname === '/login') {
+      return <Text className='text'>An simple way to messaging<br/> all in one place.</Text>
+    }
+
+    return <Text className='text'>Please enter your name and<br/> upload a photo.</Text>
+  }
 
   useEffect(() => {
     if (prevPath !== location.pathname && error) {
@@ -36,7 +45,7 @@ const Auth = ({ location }) => {
       showNotify({type: status});
       document.body.classList.add('loggedIn');
     } else {
-      document.body.classList.add('no-logged');
+      document.body.classList.remove('loggedIn');
     }
   }, [status]);
 
@@ -51,8 +60,11 @@ const Auth = ({ location }) => {
         <div className='wrapper-auth'>
           <Title>Be together, whenever.</Title>
           <div style={{display: 'flex'}}>
-            <Text className='text'>An simple way to messaging<br/> all in one place.</Text>
+            { titles() }
           </div>
+          { location.pathname === '/register' ? (
+            <UploadAvatar/>
+          ): null }
           <Switch>
             <Route exact path='/login' component={ LoginForm } />
             <Route path='/register' component={ RegisterForm } />

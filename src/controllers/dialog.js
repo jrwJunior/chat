@@ -12,7 +12,8 @@ class DialogController {
     DialogModal.find()
     .populate(["author", "partner"])
     .populate({
-      path: "lastMessage"
+      path: "lastMessage",
+      populate: { path: "user" }
     })
     .exec((err, dialogs) => {
       if (err) {

@@ -83,13 +83,14 @@
 .ant-btn.btn-cancel,
 .ant-btn.btn-del {
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 500;
   color: #3796ee;
   border: 0;
   box-shadow: none;
   background: none;
   border-color: transparent;
   text-shadow: none;
+  text-transform: uppercase;
 }
 
 .ant-btn.btn-cancel:hover, .ant-btn.btn-cancel:focus {

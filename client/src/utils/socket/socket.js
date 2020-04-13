@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const socket = io.connect('https://appichat.herokuapp.com/')
-// const socket = io(window.location.origin.replace("3000", "3003"))
+// const socket = io.connect('https://appichat.herokuapp.com/')
+const socket = io(window.location.origin.replace("3000", "3003"))
 
 export default socket;
