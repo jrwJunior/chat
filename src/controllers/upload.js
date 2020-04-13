@@ -31,6 +31,8 @@ class UploadController {
           });
         }
       });
+
+      res.status(200).json({avatar: data.url});
     }).end(file.buffer);
   }
 };
