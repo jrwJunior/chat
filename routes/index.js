@@ -1,20 +1,17 @@
-import multer from '../core/multer';
-import lastSeen from '../middlewares/lastSeen';
-import { 
-  UserController,
-  DialogController,
-  MessageController,
-  UploadController
-} from '../controllers';
+const multer = require('../core/multer');
+const { UserController } = require('../controllers/user');
+const { DialogController } = require('../controllers/dialog');
+const { UploadController } = require('../controllers/upload');
+const { MessageController } = require('../controllers/message');
 
-export default (app, socket) => {
+module.exports = (app, socket) => {
   const { findUser, createUser, login, getUser, getAuthUser } = new UserController(socket);
   const { getDialogs } = new DialogController(socket);
   const { getMessages, createMessage, deleteMessage, editMessage, messageRead } = new MessageController(socket);
   const { uploadFile } = new UploadController();
 
   // Route user
-  app.get('/api/user/me', lastSeen, getAuthUser);
+  app.get('/api/user/me', getAuthUser);
   app.get('/api/user/search', findUser);
   app.get('/api/user/p/:id', getUser);
   app.post('/api/login', login);

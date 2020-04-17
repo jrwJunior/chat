@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
@@ -11,8 +12,8 @@ import Avatar from 'components/avatar';
 import Indicator from 'components/typing_indicator';
 
 import { messageTimeConvert } from 'utils/helpers';
-import { setDialogId } from 'actions/action_dialog';
 import { APIMsg } from 'utils/api/msg';
+import { setDialogId } from 'actions/action_dialog';
 import { socket } from 'utils/socket';
 import { socketEvents } from 'constans/socketEvents';
 
@@ -23,33 +24,38 @@ const DialogsItem = props => {
     _id,
     user,
     authorizedUser,
-    lastMessage
+    lastMessage,
+    userOnline
   } = props;
-  const { typing } = useSelector(state => state.isTyping);
+  const { typing, senderUserId } = useSelector(state => state.isTyping);
   const { count } = useSelector(state => state.notifi);
   const { dialogId } = useSelector(state => state.dialog);
 
   const paramsId = props.location.pathname.split('/im/p/').join('');
   const isActive = paramsId === user._id;
 
-  const notMsgOwner = lastMessage.user._id !== authorizedUser._id;
+  const isAuthorMsg = lastMessage.user._id !== authorizedUser._id;
 
   const dispatch = useDispatch();
   const setIdDialog = useCallback(id => dispatch(setDialogId(id)), [dispatch]);
   const messageRead = useCallback(() => {
-    if (!lastMessage.readed && notMsgOwner && isActive) {
+    if (!lastMessage.readed && isAuthorMsg && isActive) {
       new APIMsg().getMessagesRead({dialogId: _id});
     }
     // eslint-disable-next-line
   }, [lastMessage]);
+  
+  useEffect(() => {
+    socket.emit(socketEvents.DIALOG_JOIN, _id);
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (paramsId === user._id && !dialogId) {
-      socket.emit(socketEvents.DIALOG_JOIN, _id);
       setIdDialog(_id);
     }
     // eslint-disable-next-line
-  }, [_id, paramsId, user, count, setIdDialog]);
+  }, [_id, setIdDialog]);
 
   useEffect(() => {
     window.addEventListener('focus', messageRead);
@@ -60,6 +66,7 @@ const DialogsItem = props => {
       className={ classNames('dialog-wrap', 
         {'is-active': isActive}) 
       }
+      onClick={() => setIdDialog(_id)}
     >
       <Link
         to={`/im/p/${user._id}`}
@@ -73,11 +80,11 @@ const DialogsItem = props => {
               size={ 40 }
             />
           </div>
-          {/* { online ? <span className='online-status'/> : null } */}
+          { userOnline.includes(user._id) ? <span className='online-status'/> : null }
         </div>
         <div className='dialog-message_wrap'>
           <div className="dialog-head">{ `${user.firstName} ${user.surname}` }</div>
-          { typing ? <Indicator/> : (
+          { (typing && senderUserId === _id) ? <Indicator/> : (
             <>
               {lastMessage.user._id !== user._id ? <span style={{color: '#4ba1ff'}}>You:&nbsp;</span> : null}
               {reactStringReplace(lastMessage.message, /:(.+?):/g, match => (
@@ -91,7 +98,7 @@ const DialogsItem = props => {
           { lastMessage.user._id !== user._id ? (
             lastMessage.readed ? <span className='icon-readed readed icon-blue' style={{marginTop: '2px'}}/> : <span className='icon-noread readed icon-blue' style={{marginTop: '2px'}}/>
           ) : null }
-          { notMsgOwner && count > 0 ? (
+          { isAuthorMsg && count > 0 ? (
             <div className='notif-badge'>
               <Badge className='unread-msg_badge' count={count}/>
             </div>
@@ -101,5 +108,13 @@ const DialogsItem = props => {
     </li>
   )
 };
+
+DialogsItem.propTypes = {
+  _id: PropTypes.string,
+  user: PropTypes.object,
+  authorizedUser: PropTypes.object,
+  lastMessage: PropTypes.object,
+  userOnline: PropTypes.array
+}
 
 export default withRouter(DialogsItem);

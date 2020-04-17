@@ -11,28 +11,28 @@ import Profile from 'components/profile';
 
 import './style.scss';
 
-const list = (({authorizedUser, dialogs }) => {
-  return (
-    <ul className='nav-pills'>
-      { dialogs.map(({author, partner, ...rest}) => (
-          <DialogItem 
-            key={ rest._id }
-            authorizedUser={ authorizedUser }
-            user={ authorizedUser._id === author._id ? partner : author }
-            { ...rest }
-          />
-        )
-      )}
-    </ul>
-  )
-});
+const list = (({authorizedUser, dialogs, userOnline }) => (
+  <ul className='nav-pills'>
+    { dialogs.map(({author, partner, ...rest}) => (
+        <DialogItem 
+          key={ rest._id }
+          authorizedUser={ authorizedUser }
+          user={ authorizedUser._id === author._id ? partner : author }
+          userOnline={ userOnline }
+          { ...rest }
+        />
+      )
+    )}
+  </ul>
+));
 
 const Dialogs = () => {
   const { dialogs, noDialogs, loading } = useSelector(state => state.chatDialogs);
   const { contacts } = useSelector(state => state.contacts);
   const { authorizedUser, loading: isLoading } = useSelector(state => state.authUser);
+  const { userOnline } = useSelector(state => state.onlineStatus);
   // eslint-disable-next-line
-  const assholes = useCallback(() => list({authorizedUser, dialogs}), [dialogs]);
+  const assholes = useCallback(() => list({authorizedUser, dialogs, userOnline}), [dialogs, userOnline]);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 

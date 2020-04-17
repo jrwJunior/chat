@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
 
 import Dialogs from 'components/dialogs';
@@ -7,21 +7,31 @@ import Navbar from 'components/navbar';
 import HistoryMessages from 'components/messages';
 
 import { getAllDialogs } from 'actions/action_dialogs';
-import { getAuthorizedUser } from 'actions/action_user';
+
+import { isEmpty } from 'utils/helpers';
+import { socket } from 'utils/socket';
+import { socketEvents } from 'constans/socketEvents';
 
 import './style.scss';
 
 const Home = () => {
+  const { authorizedUser } = useSelector(state => state.authUser);
+  const { userOnline } = useSelector(state => state.onlineStatus);
   const dispatch = useDispatch();
+  
   const dialogsUser = useCallback(() => dispatch(getAllDialogs()), [dispatch]);
-  const authUser = useCallback(() => dispatch(getAuthorizedUser()), [dispatch]);
 
   useEffect(() => {
     document.body.classList.add('loggedIn');
     
     dialogsUser();
-    authUser();
-  }, [dialogsUser, authUser]);
+  }, [dialogsUser]);
+
+  useEffect(() => {
+    if (!isEmpty(authorizedUser)) {
+      socket.emit(socketEvents.AUTH_USER, authorizedUser._id);
+    }
+  }, [authorizedUser, userOnline]);
 
   return (
     <div className='layout'>

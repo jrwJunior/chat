@@ -1,4 +1,5 @@
 import React, { useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { Emoji } from 'emoji-mart';
@@ -110,5 +111,20 @@ const Message = props => {
     </>
   )
 };
+
+Message.propTypes = {
+  _id: PropTypes.string,
+  message: PropTypes.string,
+  ownerMessage: PropTypes.bool,
+  user: PropTypes.object,
+  edited: PropTypes.bool,
+  readed: PropTypes.bool,
+  createdAt: PropTypes.string,
+  replyMessage: PropTypes.array,
+  selectedMessage: PropTypes.func,
+  deletedMessages: PropTypes.array,
+  isOpenPanel: PropTypes.bool,
+  createdDate: PropTypes.string
+}
 
 export default Message;

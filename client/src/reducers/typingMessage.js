@@ -1,15 +1,18 @@
 import * as actionTypes from 'constans';
 
 const initialState = {
-  typing: false
+  typing: false,
+  senderUserId: null
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
     case actionTypes.TYPING_MESSAGE:
+      const { typing, dialogId } = action.payload;
+
       return {
-        ...state,
-        typing: action.payload
+        typing,
+        senderUserId: dialogId
       }
     default:
       return state;

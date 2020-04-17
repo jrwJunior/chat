@@ -4,13 +4,8 @@ import { useSelector } from 'react-redux';
 import Indicator from 'components/typing_indicator';
 import Avatar from 'components/avatar';
 
-import { userLastSeen } from 'utils/helpers';
-import { useOnlineStatus } from 'utils/hooks';
-
 const NavbarInfo = ({ data }) => {
   const { typing } = useSelector(state => state.isTyping);
-  const { dialogId } = useSelector(state => state.dialog);
-  const { online, lastSeen } = useOnlineStatus(dialogId);
 
   return (
     <div className='navbar-peer'>
@@ -24,9 +19,9 @@ const NavbarInfo = ({ data }) => {
         { typing ? <Indicator/> : (
           <div 
             className='profile-peer-status' 
-            style={{ color: !online ? '#a9a9a9' : false }}
+            style={{ color: false ? '#a9a9a9' : false }}
           >
-            { online ? 'online' : userLastSeen(lastSeen || data.last_seen)}
+            {/* { online ? 'online' : userLastSeen(lastSeen || data.last_seen)} */}
           </div>
         )}
       </div>

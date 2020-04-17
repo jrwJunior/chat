@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
-export default user => {
+module.exports = user => {
   const token = jwt.sign({
     _id: user._id
   },

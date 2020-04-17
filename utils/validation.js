@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+const Joi = require('@hapi/joi');
 
 class Validator {
   validRegister(data) {
@@ -53,6 +53,6 @@ class Validator {
 }
 
 
-export {
+module.exports = {
   Validator
 };

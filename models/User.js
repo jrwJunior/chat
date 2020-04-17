@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+const { Schema, model } = require('mongoose');
 
 const schema = new Schema({
   email: { type: String, unique: true, required: true },
@@ -12,4 +12,6 @@ const schema = new Schema({
   timestamps: true
 });
 
-export default model('User', schema);
+module.exports = {
+	UserModal: model('User', schema)
+};
