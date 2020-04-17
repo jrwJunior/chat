@@ -1,5 +1,5 @@
-import cloudinary from "../core/cloudinary";
-import { UserModal } from '../models';
+const cloudinary = require('../core/cloudinary');
+const { UserModal } = require('../models/User');
 
 class UploadController {
   uploadFile(req, res) {
@@ -37,4 +37,6 @@ class UploadController {
   }
 };
 
-export default UploadController;
+module.exports = {
+  UploadController
+};

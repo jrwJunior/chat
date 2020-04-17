@@ -1,15 +1,15 @@
-import { UserModal } from '../models';
-import bcrypt from 'bcryptjs';
+const bcrypt = require('bcryptjs');
+const { UserModal } = require('../models/User');
 
-import { Validator } from '../utils/validation';
-import createJWTToken from '../utils/createJWToken';
+const { Validator } = require('../utils/validation');
+const createJWTToken = require('../utils/createJWToken');
 
 class UserController {
   constructor() {
     this.validate = new Validator();
   }
 
-  getAuthUser(req, res) {
+  getAuthUser = async(req, res) => {
     const id = req.user && req.user._id;
 
     UserModal.findById(id, (err, user) => {
@@ -140,4 +140,6 @@ class UserController {
   }
 }
 
-export default UserController;
+module.exports = {
+  UserController
+};

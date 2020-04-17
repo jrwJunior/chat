@@ -21,7 +21,7 @@ const HistoryMessages = props => {
   const { isOpenPanel } = useSelector(state => state.deletePanel);
   const { user } = useSelector(state => state.user);
   const { authorizedUser } = useSelector(state => state.authUser);
-  const { dialogs } = useSelector(state => state.chatDialogs);
+  const { dialogId } = useSelector(state => state.dialog);
   
   const editorNode = useRef();
   const messagesNode = useRef();
@@ -51,15 +51,16 @@ const HistoryMessages = props => {
   }, [handleResizeBodyHeight, handleResizeEditor]);
 
   useEffect(() => {
-    if (dialogs.length && !messages.length && userId) {
+    if (dialogId) {
       setMessages();
     }
 
-    if (isEmpty(user) && userId) {
+    if (userId) {
+      console.log('effect')
       getUserData(userId);
     }
     // eslint-disable-next-line
-  }, [userId, dialogs, setMessages, getUserData]);
+  }, [userId, dialogId, setMessages, getUserData]);
 
   return (
     <div ref={ messagesNode }>

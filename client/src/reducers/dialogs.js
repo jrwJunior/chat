@@ -48,10 +48,8 @@ export default (state = initialState, action) => {
     case actionTypes.SET_DIALOG:
       return {
         ...state,
-        noDialogs: !action.payload.length,
-        dialogs: [
-          ...action.payload
-        ]
+        noDialogs: !state.dialogs,
+        dialogs: state.dialogs.concat(action.payload)
       }
     default:
       return state;

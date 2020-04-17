@@ -7,7 +7,7 @@ import { Typography, Alert } from 'antd';
 import { LoginForm, RegisterForm } from 'modules';
 import ImgWithFallback from 'components/imgWithFallback';
 import Logo from 'components/logo';
-import UploadAvatar from 'components/uploadFile';
+// import UploadAvatar from 'components/uploadFile';
 
 import { clearError } from 'actions/action_auth';
 import { usePrevious } from 'utils/hooks/usePrevious';
@@ -58,9 +58,9 @@ const Auth = ({ location }) => {
           <div style={{display: 'flex'}}>
             { titles() }
           </div>
-          { location.pathname === '/register' ? (
+          {/* { location.pathname === '/register' ? (
             <UploadAvatar/>
-          ): null }
+          ): null } */}
           <Switch>
             <Route exact path='/login' component={ LoginForm } />
             <Route path='/register' component={ RegisterForm } />

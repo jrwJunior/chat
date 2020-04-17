@@ -1,6 +1,6 @@
 import { put, call, all, take, fork } from 'redux-saga/effects';
 
-import { DEALOGS_REQUESTED, GET_USER, GET_AUTHORIZED_USER } from 'constans';
+import { DEALOGS_REQUESTED, GET_USER } from 'constans';
 import { dialogsLoad } from 'actions/action_dialogs';
 import { setAuthorizedUser, setUser } from 'actions/action_user';
 import { APIDialogs } from 'utils/api/dialog';
@@ -12,7 +12,7 @@ function* getUserAndDialogs() {
       call(new APIDialogs().getAllDialogs),
       call(new APIUser().getAuthUser)
     ]);
-  
+
     yield put(setAuthorizedUser(user));
     yield put(dialogsLoad(dialogs));
   } catch(err) {
@@ -33,7 +33,6 @@ function* watchForDailogs() {
   while(true) {
     const action = yield take([
       DEALOGS_REQUESTED,
-      GET_AUTHORIZED_USER,
       GET_USER
     ]);
 

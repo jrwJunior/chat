@@ -32,9 +32,9 @@ export function* messageTyping() {
   const channel = yield call(createChannel, socketEvents.TYPING_MESSAGE);
 
   while(true) {
-    const { typing } = yield take(channel);
+    const { typing, dialogId } = yield take(channel);
 
-    yield put(typingMessage(typing));
+    yield put(typingMessage({typing, dialogId}));
     yield delay(3000);
     yield put(typingMessage(false));
   }

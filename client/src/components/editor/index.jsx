@@ -28,6 +28,7 @@ const { Picker } = emojiPlugin;
 const SendPanel = React.forwardRef(({ userId }, ref) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const { message, author, showReply, editing } = useSelector(state => state.replyMessage);
+  const { dialogId } = useSelector(state => state.dialog);
   const refEditor = useRef();
 
   const dispatch = useDispatch();
@@ -67,7 +68,7 @@ const SendPanel = React.forwardRef(({ userId }, ref) => {
       return 'edited-save';
     }
 
-    socket.emit(socketEvents.TYPING_MESSAGE, { typing: true });
+    socket.emit(socketEvents.TYPING_MESSAGE, { typing: true, dialogId });
 
     return getDefaultKeyBinding(evt);
   }

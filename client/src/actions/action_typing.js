@@ -1,9 +1,9 @@
 import * as actionTypes from 'constans';
 
-const typingMessage = typing => {
+const typingMessage = data => {
   return {
     type: actionTypes.TYPING_MESSAGE,
-    payload: typing
+    payload: data
   }
 }
 
