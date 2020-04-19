@@ -9,10 +9,8 @@ import uuidv5 from 'uuid/v5';
 import reactStringReplace from 'react-string-replace';
 
 import { editMessage } from 'actions/action_editMessage';
-import createdDateMsg from './createdDate';
 
 import './style.scss';
-import 'style_components/context_menu/style.scss';
 
 const Message = props => {
   const {
@@ -26,8 +24,7 @@ const Message = props => {
     replyMessage,
     selectedMessage,
     deletedMessages,
-    isOpenPanel,
-    createdDate
+    isOpenPanel
   } = props;
   const msgRef = useRef(null);
 
@@ -60,7 +57,6 @@ const Message = props => {
         className={classNames('message', { 'pull-right' : ownerMessage })}
         style={{paddingRight: isOpenPanel ? '35px' : false}}
       >
-        { createdDateMsg({createdDate, createdAt}) }
         <div className="message-content">
           { ownerMessage ? React.Children.map(props.children, child => (
             React.cloneElement(child, {
@@ -69,7 +65,7 @@ const Message = props => {
             })
           )) : null }
           <ContextMenuTrigger 
-            id="some_unique_identifier"
+            id={ ownerMessage ? 'some_unique_identifier' : 'some_unique_identifier2' }
           >
             <div
               ref={ msgRef }

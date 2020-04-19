@@ -20,26 +20,18 @@ export default (state = initialState, action) => {
         loading: false
       }
     case actionTypes.SET_LAST_MESSAGE:
-      const lastMessage = action.payload;
-
       return {
         ...state,
-        dialogs: state.dialogs.map(item => {
-          if (item.lastMessage._id !== lastMessage._id) {
-            item.lastMessage = lastMessage;
-          }
-  
-          return item;
-        })
+        dialogs: action.payload
       }
     case actionTypes.READED_LAST_MESSAGE:
-        const { readed, dialogId } = action.payload;
+        const { dialogId } = action.payload;
 
         return {
           ...state,
           dialogs: state.dialogs.map(item => {
             if (item.lastMessage.dialog === dialogId) {
-              item.lastMessage.readed = readed;
+              item.lastMessage.readed = true;
             }
   
             return item;

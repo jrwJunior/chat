@@ -28,7 +28,7 @@ const DialogsItem = props => {
     userOnline
   } = props;
   const { typing, senderUserId } = useSelector(state => state.isTyping);
-  const { count } = useSelector(state => state.notifi);
+  const { unreadMessages } = useSelector(state => state.notifi);
   const { dialogId } = useSelector(state => state.dialog);
 
   const paramsId = props.location.pathname.split('/im/p/').join('');
@@ -98,11 +98,11 @@ const DialogsItem = props => {
           { lastMessage.user._id !== user._id ? (
             lastMessage.readed ? <span className='icon-readed readed icon-blue' style={{marginTop: '2px'}}/> : <span className='icon-noread readed icon-blue' style={{marginTop: '2px'}}/>
           ) : null }
-          { isAuthorMsg && count > 0 ? (
-            <div className='notif-badge'>
-              <Badge className='unread-msg_badge' count={count}/>
+          {isAuthorMsg && unreadMessages.map((item, idx) => (
+            <div className='notif-badge' key={ uuidv5(idx.toString(), uuidv5.DNS) }>
+              { item.id.includes(_id) && <Badge className='unread-msg_badge' count={item.count}/> }
             </div>
-          ) : null }
+          ))}
         </div>
       </Link>
     </li>

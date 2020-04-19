@@ -1,19 +1,24 @@
 import * as actionTypes from 'constans';
 
 const initialState = {
-  count: 0
+  unreadMessages: []
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
     case actionTypes.NOTIF_BADGE:
-      const { unread } = action.payload;
+      const { unread, dialogId } = action.payload;
 
       return {
-        count: unread
+        unreadMessages: state.unreadMessages.concat({
+          count: unread,
+          id: dialogId
+        })
       }
     case actionTypes.DELETE_NOTIF_BADGE:
-      return initialState;
+      return {
+        unreadMessages: state.unreadMessages.filter(item => item.id !== action.payload)
+      };
     default:
       return state;
   }

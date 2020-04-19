@@ -11,9 +11,9 @@ export function* readedMessages() {
 
   while(true) {
     const data = yield take(channel);
-    
+
     yield put(setReadedMessages(data));
     yield put(setReadedLastMessage(data));
-    yield put(deleteNotifBadge());
+    yield put(deleteNotifBadge(data.dialogId));
   }
 }
