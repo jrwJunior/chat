@@ -26,13 +26,13 @@ export default (state = initialState, action) => {
         messages: state.messages.concat(action.payload)
       }
     case actionTypes.READED_MESSAGES:
-      const { readed, dialogId } = action.payload;
+      const { dialogId } = action.payload;
 
       return {
         ...state,
         messages: state.messages.map(message => {
           if (message.dialog === dialogId) {
-            message.readed = readed;
+            message.readed = true;
           }
 
           return message;

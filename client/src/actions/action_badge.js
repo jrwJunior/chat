@@ -7,9 +7,10 @@ const notifBadge = data => {
   }
 }
 
-const deleteNotifBadge = () => {
+const deleteNotifBadge = data => {
   return {
-    type: actionTypes.DELETE_NOTIF_BADGE
+    type: actionTypes.DELETE_NOTIF_BADGE,
+    payload: data
   }
 }
 
