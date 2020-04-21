@@ -13,8 +13,8 @@ class MessageController {
     MessageModal.updateMany(
       { dialog: dialogId, user: { $ne: userId } },
       { $set: { readed: true } },
-      { "multi": true },
-      err => {
+      { "multi": true, new: true },
+      (err) => {
         if (err) {
           return res.status(500).json({
             status: 'error',
@@ -22,18 +22,8 @@ class MessageController {
           });
         }
 
-        MessageModal
-        .findOne()
-        .sort({createdAt: -1})
-        .exec((err, message) => {
-          if (err) {
-            return res.json(err);
-          }
-        
-          this.socket.to(dialogId).emit('MESSAGES_READED', {
-            dialogId: message.dialog,
-            readed: message.readed
-          });
+        this.socket.to(dialogId).emit('MESSAGES_READED', {
+          dialogId
         });
       }
     );
@@ -47,7 +37,10 @@ class MessageController {
         });
       }
 
-      socket.emit('MESSAGES_NO_READ', {unread: count});
+      socket.emit('MESSAGES_NO_READ', {
+        unread: count,
+        dialogId
+      });
     })
   }
 
@@ -102,7 +95,7 @@ class MessageController {
                     message: 'Dialog not found',
                   });
                 }
-                console.log(dialog)
+
                 this.socket.emit('DIALOG_RECEIVED', {dialog});
               })
 
@@ -141,7 +134,10 @@ class MessageController {
 
               this.socket.to(dialog._id).emit('MESSAGE_RECEIVED', {message});
               MessageController.unreadMessages(this.socket, dialog._id);
-              this.socket.emit('LAST_MESSAGE', {lastMessage: message});
+              this.socket.emit('LAST_MESSAGE', {
+                lastMessage: message,
+                dialogId: dialog._id
+              });
             });
           }
         } catch(err) {
@@ -195,7 +191,10 @@ class MessageController {
         dialog.save();
       });
 
-      this.socket.to(dialogId).emit('LAST_MESSAGE', {lastMessage});
+      this.socket.to(dialogId).emit('LAST_MESSAGE', {
+        lastMessage,
+        dialogId
+      });
       MessageController.unreadMessages(this.socket, dialogId);
     });
   }

@@ -24,8 +24,7 @@ const DialogsItem = props => {
     _id,
     user,
     authorizedUser,
-    lastMessage,
-    userOnline
+    lastMessage
   } = props;
   const { typing, senderUserId } = useSelector(state => state.isTyping);
   const { unreadMessages } = useSelector(state => state.notifi);
@@ -80,7 +79,7 @@ const DialogsItem = props => {
               size={ 40 }
             />
           </div>
-          { userOnline.includes(user._id) ? <span className='online-status'/> : null }
+          {/* { userOnline.includes(user._id) ? <span className='online-status'/> : null } */}
         </div>
         <div className='dialog-message_wrap'>
           <div className="dialog-head">{ `${user.firstName} ${user.surname}` }</div>

@@ -1,11 +1,14 @@
-import { messageReceived, messageTyping } from './message';
-import { messageEdited } from './messageEdit';
-import { messageNoRead } from './messageNoRead';
+import { 
+  messageReceived,
+  messageTyping,
+  messageEdited,
+  messageNoRead,
+  readedMessages 
+} from './message';
 import { lastMessageReceived } from './lastMessage';
-import { readedMessages } from './readedMessage';
 import { deleteMessage } from './deleteMessage';
 import { dialogReceived } from './dialog';
-import { onlineStatus } from './onlineStatus';
+import { userOnline } from './online';
 
 export {
   messageReceived,
@@ -16,5 +19,5 @@ export {
   messageNoRead,
   dialogReceived,
   deleteMessage,
-  onlineStatus
+  userOnline
 }

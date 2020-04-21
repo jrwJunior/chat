@@ -5,7 +5,7 @@ const useAuthentication = ({submitting, history, isSubmitting}) => {
   const { status } = useSelector(state => state.authUser);
 
   useEffect(() => {
-    if (status === 'success') {
+    if (status && status !== 'error') {
       history.push('/im');
     } else if (status === 'error' && isSubmitting) {
       submitting(false);

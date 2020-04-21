@@ -18,7 +18,6 @@ const Home = () => {
   // const { authorizedUser } = useSelector(state => state.authUser);
   // const { userOnline } = useSelector(state => state.onlineStatus);
   const dispatch = useDispatch();
-  
   const dialogsUser = useCallback(() => dispatch(getAllDialogs()), [dispatch]);
 
   useEffect(() => {

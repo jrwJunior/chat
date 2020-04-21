@@ -1,27 +1,33 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 const dotenv = require('dotenv');
 const { createServer } = require('http');
 
-const createdRouting = require('./routes');
-const verifyToken = require('./middlewares/verifyToken');
+const router = require('./routes');
 const createSocket = require('./core/socket');
 
 const app = express();
 const http = createServer(app);
 const socket = createSocket(http);
+const routes = router(socket);
 const PORT = process.env.PORT || 8000;
 
 app.use(express.json({ extended: true }));
 dotenv.config();
 
-app.use(verifyToken);
-
 // Routing
-createdRouting(app, socket);
+app.use('/api', routes);
+
+// Express Static
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+app.get('*', (_, res) => {
+	res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+});
 
 // DB Connect
 const dbPath = process.env.MONGODB_URI || 'mongodb://localhost:27017/chat';
+mongoose.Promise = global.Promise;
 const options = {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -30,13 +36,14 @@ const options = {
 };
 
 mongoose.connect(dbPath, options);
+
 const db = mongoose.connection;
 
 db.on("error", () => {
-	console.log(" error occurred from the database");
+    console.log(" error occurred from the database");
 });
 db.once("open", () => {
-	console.log(" successfully connect the database");
+    console.log(" successfully connect the database");
 });
 
 // Http Listen

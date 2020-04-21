@@ -1,50 +1,62 @@
-.avatar-uploader {
-  position: absolute;
-  top: 80px;
-  right: 0;
-}
-
-.avatar-uploader .ant-upload.ant-upload-select-picture-card {
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
-  border: 0;
-  background-color: #1FA7F5;
-  overflow: hidden;
-}
-
-.invisibility, .uploaded .ant-upload.ant-upload-select-picture-card {
-  background-color: transparent;
-}
-
-.avatar-uploader .ant-upload.ant-upload-select-picture-card > .ant-upload {
-  padding: 0;
-  height: 75px;
+.ant-skeleton.ant-skeleton-with-avatar {
+  width: auto;
+  
+  & > div {
+    padding: 0;
+  }
 }
 
 .peer-upload_avatar.ant-upload-picture-card-wrapper {
   width: auto;
 }
 
-.upload-icon {
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  background: url('../../img/photo-camera.svg') no-repeat center/contain;
-}
+.peer-upload_avatar .ant-upload.ant-upload-select-picture-card {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 0;
+  margin-right: 0;
+  margin-bottom: 0;
 
-.avatar-uploader .ant-spin.ant-spin-spinning {
-  position: static;
-}
-
-.ant-upload.ant-upload-select-picture-card:hover {
-  transition: opacity 0.15s;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5) url('../../img/edit.svg') no-repeat center/14px;
+    transition: opacity 0.15s;
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
+  }
 
   &:hover {
-    opacity: 0.8;
-  }
+    opacity: 1;
 
-  &:active, &:focus {
-    opacity: 0.5;
+    &:before {
+      opacity: 1;
+    }
   }
+}
+
+.ant-upload.ant-upload-select-picture-card > .ant-upload[role=button] {
+  padding: 0;
+}
+
+.peer-upload_avatar.invisibility {
+  pointer-events: none;
+}
+
+.invisibility .ant-upload {
+  background: #f1f1f1;
+  border-radius: 50%;
+}
+
+.ant-upload[role=button] .ant-spin {
+  position: static;
 }

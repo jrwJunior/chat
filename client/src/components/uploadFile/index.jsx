@@ -1,26 +1,26 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Upload, message, Spin, Icon } from 'antd';
 
-// import { attachment } from 'actions/action_attachment';
+import Avatar from 'components/avatar';
+import { attachmentRequest } from 'actions/action_attachment';
+
 import './style.scss';
 
-const UploadFile = () => {
-  const [state, setState] = useState({
-    loading: false,
-    url: null
-  });
-
-  const dispatch = useDispatch();
-  // const setAttachment = useCallback(file => dispatch(attachment(file)), [dispatch]);
+const UploadFile = ({user}) => {
+  const { fileLoading } = useSelector(state => state.attachmentFile);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
-  const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
+  const dispatch = useDispatch();
+  const getAttachment = useCallback(file => dispatch(attachmentRequest(file)), [dispatch]);
+
+  const handleChange = info => {
+    if (info.file.status === 'done') {
+      getAttachment(info.file.originFileObj);
+    }
   }
 
   const beforeUpload = file => {
@@ -37,44 +37,31 @@ const UploadFile = () => {
     return isJpgOrPng && isLt2M;
   }
 
-  const handleChange = info => {
-    if (info.file.status === 'uploading') {
-      setState({...state,loading: true});
-      return;
-    }
-
-    if (info.file.status === 'done') {
-      getBase64(info.file.originFileObj, url => {
-        setState({url, loading: false})
-      });
-      
-      // setAttachment(info.file.originFileObj);
-    }
-  }
-
-  const uploadButton = (
-    state.loading ? <Spin indicator={ antIcon }/> : <div className="upload-icon"/>
-  );
-
   return (
     <Upload
       name="avatar"
       listType="picture-card"
-      className={classNames(
-        'avatar-uploader', 
-        { 
-          'invisibility':  state.loading,
-          'uploaded': !!state.url
-        }
-      )}
+      className={classNames('peer-upload_avatar', {'invisibility':  fileLoading})}
       showUploadList={ false }
       action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-      onChange={ handleChange }
       beforeUpload={ beforeUpload }
+      onChange={ handleChange }
     >
-      {!state.url ? uploadButton : <img src={state.url} alt="avatar" style={{objectFit: 'cover'}} />}
+      { fileLoading ? (
+        <Spin indicator={ antIcon }/>
+      ) : (
+        <Avatar
+          userName={ user.firstName }
+          avatar={ user.avatar }
+          size={ 40 }
+        />
+      )}
     </Upload>
   );
 };
+
+UploadFile.propTypes = {
+  user: PropTypes.object
+}
 
 export default UploadFile;
