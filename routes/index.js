@@ -1,31 +1,39 @@
+const express = require('express');
+
 const multer = require('../core/multer');
 const { UserController } = require('../controllers/user');
 const { DialogController } = require('../controllers/dialog');
 const { UploadController } = require('../controllers/upload');
 const { MessageController } = require('../controllers/message');
+const verifyToken = require('../middlewares/verifyToken');
 
-module.exports = (app, socket) => {
+const router = express.Router();
+
+module.exports = socket => {
   const { findUser, createUser, login, getUser, getAuthUser } = new UserController(socket);
   const { getDialogs } = new DialogController(socket);
   const { getMessages, createMessage, deleteMessage, editMessage, messageRead } = new MessageController(socket);
   const { uploadFile } = new UploadController();
 
   // Route user
-  app.get('/api/user/me', getAuthUser);
-  app.get('/api/user/search', findUser);
-  app.get('/api/user/p/:id', getUser);
-  app.post('/api/login', login);
-  app.post('/api/register', createUser);
+  router.get('/user/me', verifyToken, getAuthUser);
+  router.get('/user/search', verifyToken, findUser);
+  router.get('/user/p/:id', verifyToken, getUser);
+  router.post('/login', login);
+  router.post('/register', createUser);
 
-  // Route dialogs 
-  app.get('/api/dialogs', getDialogs);
+  // Route Dialogs 
+  router.get('/dialogs', verifyToken, getDialogs);
 
   // Route Messages
-  app.get('/api/messages', getMessages);
-  app.post('/api/messages', createMessage);
-  app.put('/api/readed', messageRead);
-  app.put('/api/edited', editMessage);
-  app.delete('/api/messages', deleteMessage);
+  router.get('/messages', verifyToken, getMessages);
+  router.post('/messages', verifyToken, createMessage);
+  router.put('/readed', verifyToken, messageRead);
+  router.put('/edited', verifyToken, editMessage);
+  router.delete('/messages', verifyToken, deleteMessage);
 
-  app.post("/api/file", multer.single('file'), uploadFile);
-}
+  // Upload File
+  router.post("/file", multer.single('file'), verifyToken, uploadFile);
+
+  return router;
+};

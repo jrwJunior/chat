@@ -23,20 +23,9 @@ class DialogController {
           message: 'Dialogs not found'
         });
       }
-      
-      res.json(dialogs);
-    });
 
-    this.getDialog(query);
-  }
-
-  getDialog(query) {
-    DialogModal.findOne()
-    .or(query)
-    .exec((_, dialog) => {
-      if (dialog) {
-        MessageController.unreadMessages(this.socket, dialog._id);
-      }
+      dialogs.forEach(item => MessageController.unreadMessages(this.socket, item._id));
+      res.status(200).json(dialogs);
     });
   }
 }

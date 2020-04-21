@@ -90,7 +90,7 @@ class UserController {
     try {
       await user.save();
       res.status(200).json({
-        status: 'created successfully'
+        status: 'success'
       });
     } catch(err) {
       res.status(400).json(err);
@@ -130,7 +130,7 @@ class UserController {
       const token = createJWTToken(user);
       res.header('Authorization', token);
 
-      res.json({
+      res.status(200).json({
         status: "success",
         user
       });

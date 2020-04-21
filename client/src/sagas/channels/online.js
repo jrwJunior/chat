@@ -4,7 +4,7 @@ import { socketEvents } from 'constans/socketEvents';
 import { createChannel } from './createChannel';
 import { userIsOnline } from 'actions/action_online';
 
-export function* onlineStatus() {
+export function* userOnline() {
   const channel = yield call(createChannel, socketEvents.AUTH_USER);
 
   while(true) {

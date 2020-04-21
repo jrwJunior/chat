@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
   const excludePaths = ['/api/login', '/api/register'];
-
+  
   if (excludePaths.includes(req.path)) {
     return next();
   }

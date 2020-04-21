@@ -7,18 +7,17 @@ import Search from '../search';
 import DialogItem from '../dilaog_item';
 import Dropdown from 'components/dropdown';
 import Contacts from 'components/contacts';
-import Profile from 'components/profile';
+import UploadFile from 'components/uploadFile';
 
 import './style.scss';
 
-const list = (({authorizedUser, dialogs, userOnline }) => (
+const list = (({authorizedUser, dialogs }) => (
   <ul className='nav-pills'>
     { dialogs.map(({author, partner, ...rest}) => (
         <DialogItem 
           key={ rest._id }
           authorizedUser={ authorizedUser }
           user={ authorizedUser._id === author._id ? partner : author }
-          userOnline={ userOnline }
           { ...rest }
         />
       )
@@ -29,19 +28,18 @@ const list = (({authorizedUser, dialogs, userOnline }) => (
 const Dialogs = () => {
   const { dialogs, noDialogs, loading } = useSelector(state => state.chatDialogs);
   const { contacts } = useSelector(state => state.contacts);
-  const { authorizedUser, loading: isLoading } = useSelector(state => state.authUser);
-  const { userOnline } = useSelector(state => state.onlineStatus);
+  const { authorizedUser } = useSelector(state => state.authUser);
+  console.log(dialogs)
   // eslint-disable-next-line
-  const assholes = useCallback(() => list({authorizedUser, dialogs, userOnline}), [dialogs, userOnline]);
+  const assholes = useCallback(() => list({authorizedUser, dialogs}), [dialogs]);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
   return (
     <aside className='dialogs-panel'>
       <div className='dialogs-head'>
-        <Profile
+        <UploadFile
           user={ authorizedUser }
-          loading={ isLoading }
         />
         <h1 className='dialogs-title'>Chats</h1>
         <div className='separator'/>

@@ -26,21 +26,21 @@ const Auth = ({ location }) => {
   const dispatch = useDispatch();
   const clearErrorData = useCallback(() => dispatch(clearError()), [dispatch]);
 
-  const titles = () => {
-    if (location.pathname === '/login') {
-      return <Text className='text'>An simple way to messaging<br/> all in one place.</Text>
-    }
+  // const titles = () => {
+  //   if (location.pathname === '/login') {
+  //     return <Text className='text'>An simple way to messaging<br/> all in one place.</Text>
+  //   }
 
-    return <Text className='text'>Please enter your name and<br/> upload a photo.</Text>
-  }
+  //   return <Text className='text'>Please enter your name and<br/> upload a photo.</Text>
+  // }
 
   useEffect(() => {
     if (prevPath !== location.pathname && error) {
       clearErrorData();
     }
 
-    if (status === 'success') {
-      showNotify({type: status});
+    if (status && status !== 'error') {
+      showNotify({type: 'success'});
     }
     // eslint-disable-next-line
   }, [status]);
@@ -56,7 +56,7 @@ const Auth = ({ location }) => {
         <div className='wrapper-auth'>
           <Title>Be together, whenever.</Title>
           <div style={{display: 'flex'}}>
-            { titles() }
+            <Text className='text'>An simple way to messaging<br/> all in one place.</Text>
           </div>
           {/* { location.pathname === '/register' ? (
             <UploadAvatar/>

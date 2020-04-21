@@ -2,7 +2,7 @@ import { eventChannel } from 'redux-saga';
 import { fork, all } from 'redux-saga/effects';
 
 import { socket } from 'utils/socket';
-import * as connectedChannels from './connectedChannels';
+import * as connectedChannels from './connect';
 
 export function createChannel(socketEvent) {
   const subscribe = emitter => {
