@@ -25,9 +25,15 @@
 .profile-peer-status {
   position: relative;
   font-size: 13px;
-  color: #1583fb;
-  font-weight: normal;
+  color: #3796ee;
+  font-weight: 500;
   height: 20px;
+
+  span {
+    position: static;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 
 .climb-up-enter {

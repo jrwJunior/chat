@@ -4,9 +4,13 @@ import { fork, all } from 'redux-saga/effects';
 import { socket } from 'utils/socket';
 import * as connectedChannels from './connect';
 
-export function createChannel(socketEvent) {
+export function createChannel(socketEvent, params) {
   const subscribe = emitter => {
     socket.on(socketEvent, emitter);
+    
+    if (params) {
+      socket.emit(socketEvent, params);
+    }
 
     return () => {
       socket.removeListener(socketEvent, emitter);
