@@ -1,4 +1,6 @@
 import * as actionTypes from 'constans';
+import { socket } from 'utils/socket';
+import { socketEvents } from 'constans/socketEvents';
 
 const login = data => {
   return {
@@ -33,7 +35,9 @@ const createAccount = data => {
   }
 }
 
-const logOut = () => {
+const logOut = id => {
+  socket.emit(socketEvents.USER_LOG_OUT, id);
+  
   return {
     type: actionTypes.LOG_OUT
   }

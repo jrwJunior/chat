@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ImgWithFallback = ({
   src,
@@ -14,5 +15,11 @@ const ImgWithFallback = ({
     </picture>
   );
 };
+
+ImgWithFallback.propTypes = {
+  src: PropTypes.string,
+  fallback: PropTypes.string,
+  type: PropTypes.string
+}
 
 export default ImgWithFallback;

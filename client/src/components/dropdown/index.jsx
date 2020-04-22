@@ -10,14 +10,14 @@ import 'style_components/dropdown/style.scss';
 import 'style_components/confirm/style.scss';
 
 export default () => {
-  const { logoutUser } = useSelector(state => state.authUser);
+  const { logoutUser, authorizedUser } = useSelector(state => state.authUser);
 
   const dispatch = useDispatch();
-  const userLogOut = useCallback(() => dispatch(logOut()), [dispatch]);
+  const userLogOut = useCallback(id => dispatch(logOut(id)), [dispatch]);
 
   const handleConfirm = () => {
     confirmDelete({
-      onCallback: userLogOut,
+      onCallback: () => userLogOut(authorizedUser._id),
       content: 'Are you sure you want to log out?',
       data: null,
       okText: 'Log out'

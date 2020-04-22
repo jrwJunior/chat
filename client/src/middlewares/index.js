@@ -6,9 +6,9 @@ export default () => next => action => {
   switch(action.type) {
     case actionTypes.LOGIN_SUCCESS:
       const { headers, data } = action.payload;
-      const isLoggedIn = localStorage['auth_key'];
+      const authKey = localStorage['auth_key'];
 
-      if (!isLoggedIn) {
+      if (!authKey) {
         localStorage.setItem('auth_key', headers.authorization);
 
         return next(setLoginData({

@@ -12,6 +12,7 @@ import Avatar from 'components/avatar';
 import Indicator from 'components/typing_indicator';
 
 import { messageTimeConvert } from 'utils/helpers';
+import { usePrevious } from 'utils/hooks';
 import { APIMsg } from 'utils/api/msg';
 import { setDialogId } from 'actions/action_dialog';
 import { socket } from 'utils/socket';
@@ -30,10 +31,10 @@ const DialogsItem = props => {
   const { unreadMessages } = useSelector(state => state.notifi);
   const { dialogId } = useSelector(state => state.dialog);
   const { userOnline } = useSelector(state => state.onlineStatus);
+  const prevProps = usePrevious(_id);
 
   const paramsId = props.location.pathname.split('/im/p/').join('');
   const isActive = paramsId === user._id;
-
   const isAuthorMsg = lastMessage.user._id !== authorizedUser._id;
 
   const dispatch = useDispatch();
@@ -46,9 +47,12 @@ const DialogsItem = props => {
   }, [lastMessage]);
   
   useEffect(() => {
-    socket.emit(socketEvents.DIALOG_JOIN, _id);
-    // eslint-disable-next-line
-  }, []);
+    if (prevProps !== _id) {
+      socket.emit(socketEvents.DIALOG_JOIN, _id);
+    }
+
+    window.addEventListener('focus', messageRead);
+  }, [_id, messageRead, prevProps]);
 
   useEffect(() => {
     if (paramsId === user._id && !dialogId) {
@@ -57,55 +61,53 @@ const DialogsItem = props => {
     // eslint-disable-next-line
   }, [_id, setIdDialog]);
 
-  useEffect(() => {
-    window.addEventListener('focus', messageRead);
-  }, [messageRead]);
-
   return (
-    <li 
-      className={ classNames('dialog-wrap', 
-        {'is-active': isActive}) 
-      }
-      onClick={() => setIdDialog(_id)}
-    >
-      <Link
-        to={`/im/p/${user._id}`}
-        className='dialog'
+    <>
+      <li 
+        className={ classNames('dialog-wrap', 
+          {'is-active': isActive}) 
+        }
+        onClick={() => setIdDialog(_id)}
       >
-        <div className='dialog-photo'>
-          <div className='dialog-photo_inner'>
-            <Avatar
-              userName={ user.firstName }
-              avatar={ user.avatar }
-              size={ 40 }
-            />
-          </div>
-          { userOnline.includes(user._id) ? <span className='online-status'/> : null }
-        </div>
-        <div className='dialog-message_wrap'>
-          <div className="dialog-head">{ `${user.firstName} ${user.surname}` }</div>
-          { (typing && senderUserId === _id) ? <Indicator/> : (
-            <>
-              {lastMessage.user._id !== user._id ? <span style={{color: '#4ba1ff'}}>You:&nbsp;</span> : null}
-              {reactStringReplace(lastMessage.message, /:(.+?):/g, match => (
-                <Emoji key={ uuidv5('guys.example.com', uuidv5.DNS) } emoji={match} set='messenger' size={16} />
-              ))}
-            </>
-          )}
-        </div>
-        <div className="dialog-meta">
-          <div className="dialog-date">{ messageTimeConvert(lastMessage.createdAt) }</div>
-          { lastMessage.user._id !== user._id ? (
-            lastMessage.readed ? <span className='icon-readed readed icon-blue' style={{marginTop: '2px'}}/> : <span className='icon-noread readed icon-blue' style={{marginTop: '2px'}}/>
-          ) : null }
-          {isAuthorMsg && unreadMessages.map((item, idx) => (
-            <div className='notif-badge' key={ uuidv5(idx.toString(), uuidv5.DNS) }>
-              { item.id.includes(_id) && <Badge className='unread-msg_badge' count={item.count}/> }
+        <Link
+          to={`/im/p/${user._id}`}
+          className='dialog'
+        >
+          <div className='dialog-photo'>
+            <div className='dialog-photo_inner'>
+              <Avatar
+                userName={ user.firstName }
+                avatar={ user.avatar }
+                size={ 40 }
+              />
             </div>
-          ))}
-        </div>
-      </Link>
-    </li>
+            { userOnline.includes(user._id) ? <span className='online-status'/> : null }
+          </div>
+          <div className='dialog-message_wrap'>
+            <div className="dialog-head">{ `${user.firstName} ${user.surname}` }</div>
+            { (typing && senderUserId === _id) ? <Indicator/> : (
+              <>
+                {lastMessage.user._id !== user._id ? <span style={{color: '#4ba1ff'}}>You:&nbsp;</span> : null}
+                {reactStringReplace(lastMessage.message, /:(.+?):/g, match => (
+                  <Emoji key={ uuidv5('guys.example.com', uuidv5.DNS) } emoji={match} set='messenger' size={16} />
+                ))}
+              </>
+            )}
+          </div>
+          <div className="dialog-meta">
+            <div className="dialog-date">{ messageTimeConvert(lastMessage.createdAt) }</div>
+            { lastMessage.user._id !== user._id ? (
+              lastMessage.readed ? <span className='icon-readed readed icon-blue' style={{marginTop: '2px'}}/> : <span className='icon-noread readed icon-blue' style={{marginTop: '2px'}}/>
+            ) : null }
+            {isAuthorMsg && unreadMessages.map((item, idx) => (
+              <div className='notif-badge' key={ uuidv5(idx.toString(), uuidv5.DNS) }>
+                { item.id.includes(_id) && <Badge className='unread-msg_badge' count={item.count}/> }
+              </div>
+            ))}
+          </div>
+        </Link>
+      </li>
+    </>
   )
 };
 
