@@ -12,7 +12,6 @@ import 'style_components/skeleton/style.scss';
 const Navbar = () => {
   const [showInfoPanel, setShowInfoPanel] = useState(true);
 
-  // const { loading } = useSelector(state => state.chatDialogs);
   const { isOpenPanel } = useSelector(state => state.deletePanel);
   const { user, loading } = useSelector(state => state.user);
 

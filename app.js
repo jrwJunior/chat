@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const path = require('path');
 const dotenv = require('dotenv');
 const { createServer } = require('http');
 
@@ -18,12 +17,6 @@ dotenv.config();
 
 // Routing
 app.use('/api', routes);
-
-// Express Static
-app.use(express.static(path.join(__dirname, 'client', 'build')));
-app.get('*', (_, res) => {
-	res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-});
 
 // DB Connect
 const dbPath = process.env.MONGODB_URI || 'mongodb://localhost:27017/chat';

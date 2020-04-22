@@ -5,6 +5,7 @@ import { dialogsLoad } from 'actions/action_dialogs';
 import { setAuthorizedUser, setUser } from 'actions/action_user';
 import { APIDialogs } from 'utils/api/dialog';
 import { APIUser } from 'utils/api/user';
+import { userOnline } from './channels/online';
 
 function* getUserAndDialogs() {
   try {
@@ -15,6 +16,7 @@ function* getUserAndDialogs() {
 
     yield put(setAuthorizedUser(user));
     yield put(dialogsLoad(dialogs));
+    yield call(userOnline);
   } catch(err) {
     console.log(err.message);
   }

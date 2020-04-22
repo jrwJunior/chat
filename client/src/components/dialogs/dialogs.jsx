@@ -29,7 +29,7 @@ const Dialogs = () => {
   const { dialogs, noDialogs, loading } = useSelector(state => state.chatDialogs);
   const { contacts } = useSelector(state => state.contacts);
   const { authorizedUser } = useSelector(state => state.authUser);
-  console.log(dialogs)
+
   // eslint-disable-next-line
   const assholes = useCallback(() => list({authorizedUser, dialogs}), [dialogs]);
 

@@ -29,6 +29,7 @@ const DialogsItem = props => {
   const { typing, senderUserId } = useSelector(state => state.isTyping);
   const { unreadMessages } = useSelector(state => state.notifi);
   const { dialogId } = useSelector(state => state.dialog);
+  const { userOnline } = useSelector(state => state.onlineStatus);
 
   const paramsId = props.location.pathname.split('/im/p/').join('');
   const isActive = paramsId === user._id;
@@ -79,7 +80,7 @@ const DialogsItem = props => {
               size={ 40 }
             />
           </div>
-          {/* { userOnline.includes(user._id) ? <span className='online-status'/> : null } */}
+          { userOnline.includes(user._id) ? <span className='online-status'/> : null }
         </div>
         <div className='dialog-message_wrap'>
           <div className="dialog-head">{ `${user.firstName} ${user.surname}` }</div>
@@ -112,8 +113,7 @@ DialogsItem.propTypes = {
   _id: PropTypes.string,
   user: PropTypes.object,
   authorizedUser: PropTypes.object,
-  lastMessage: PropTypes.object,
-  userOnline: PropTypes.array
+  lastMessage: PropTypes.object
 }
 
 export default withRouter(DialogsItem);

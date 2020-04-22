@@ -8,7 +8,6 @@ import {
 import { lastMessageReceived } from './lastMessage';
 import { deleteMessage } from './deleteMessage';
 import { dialogReceived } from './dialog';
-import { userOnline } from './online';
 
 export {
   messageReceived,
@@ -18,6 +17,5 @@ export {
   readedMessages,
   messageNoRead,
   dialogReceived,
-  deleteMessage,
-  userOnline
+  deleteMessage
 }

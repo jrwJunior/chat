@@ -11,6 +11,8 @@ import './style.scss';
 
 const UploadFile = ({user}) => {
   const { fileLoading } = useSelector(state => state.attachmentFile);
+  const { userOnline } = useSelector(state => state.onlineStatus);
+  const { authorizedUser } = useSelector(state => state.authUser);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -56,6 +58,7 @@ const UploadFile = ({user}) => {
           size={ 40 }
         />
       )}
+      { userOnline.includes(authorizedUser._id) ? <span className='online-status'/> : null }
     </Upload>
   );
 };
