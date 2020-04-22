@@ -3,6 +3,7 @@ import { put, call, all, take, fork } from 'redux-saga/effects';
 import { DEALOGS_REQUESTED, GET_USER } from 'constans';
 import { dialogsLoad } from 'actions/action_dialogs';
 import { setAuthorizedUser, setUser } from 'actions/action_user';
+import { logOut } from 'actions/action_auth';
 import { APIDialogs } from 'utils/api/dialog';
 import { APIUser } from 'utils/api/user';
 import { userOnline } from './channels/online';
@@ -18,7 +19,11 @@ function* getUserAndDialogs() {
     yield put(dialogsLoad(dialogs));
     yield call(userOnline);
   } catch(err) {
-    console.log(err.message);
+    const { message } = JSON.parse(err.message);
+    
+    if (message === 'Invalid Token') {
+      yield put(logOut());
+    }
   }
 }
 

@@ -7,12 +7,13 @@ const initialState = {
 export default (state = initialState, action) => {
   switch(action.type) {
     case actionTypes.NOTIF_BADGE:
-      const { unread, dialogId } = action.payload;
+      const { unread, dialogId, userId } = action.payload;
 
       return {
         unreadMessages: state.unreadMessages.concat({
           count: unread,
-          id: dialogId
+          id: dialogId,
+          user: userId
         })
       }
     case actionTypes.DELETE_NOTIF_BADGE:

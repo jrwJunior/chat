@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { Input, Form } from 'antd';
@@ -14,7 +15,7 @@ const Field = props => {
     touched,
     errors,
     handleChange,
-    handleBlur,
+    handleBlur
   } = rest;
 
   return (
@@ -41,5 +42,13 @@ const Field = props => {
     </Item>
   )
 };
+
+Field.propTypes = {
+  values: PropTypes.object,
+  touched: PropTypes.object,
+  errors: PropTypes.object,
+  handleChange: PropTypes.func,
+  handleBlur: PropTypes.func
+}
 
 export default Field;

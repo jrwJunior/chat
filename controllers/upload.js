@@ -26,7 +26,7 @@ class UploadController {
       
       UserModal.findOneAndUpdate(query, update, options, err => {
         if (err) {
-          return res.status(500).json({
+          return res.status(400).json({
             message: err,
           });
         }

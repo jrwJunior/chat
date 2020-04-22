@@ -24,7 +24,7 @@ class DialogController {
         });
       }
 
-      dialogs.forEach(item => MessageController.unreadMessages(this.socket, item._id));
+      dialogs.forEach(item => !item.lastMessage.readed && MessageController.unreadMessages(this.socket, item._id, userId));
       res.status(200).json(dialogs);
     });
   }

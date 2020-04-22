@@ -6,6 +6,13 @@ const userConnected = (io, users) => {
   });
 }
 
+const userDisconnected = (userId, users, io) => {
+  const indexUser = users.findIndex(user => user === userId);
+  users.splice(indexUser, 1);
+  
+  userConnected(io, users);
+}
+
 module.exports = http => {
   const io = socket(http);
   let authorizedUsers = [];
@@ -27,13 +34,14 @@ module.exports = http => {
       }
 
       userConnected(io, authorizedUsers);
-    })
+    });
+
+    socket.on('USER_LOG_OUT', userId => {
+      userDisconnected(userId, authorizedUsers, io);
+    });
 
     socket.on('disconnect', () => {
-      const indexUser = authorizedUsers.findIndex(user => user === socket.user);
-      authorizedUsers.splice(indexUser, 1);
-      
-      userConnected(io, authorizedUsers);
+      userDisconnected(socket.user, authorizedUsers, io);
     });
   });
 

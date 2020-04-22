@@ -29,7 +29,7 @@ class MessageController {
     );
   };
 
-  static unreadMessages = (socket, dialogId) => {
+  static unreadMessages = (socket, dialogId, userId) => {
     MessageModal.find({readed: {$ne: true}, dialog: dialogId}).countDocuments((err, count) => {
       if (err) {
         return res.status(500).json({
@@ -39,7 +39,8 @@ class MessageController {
 
       socket.emit('MESSAGES_NO_READ', {
         unread: count,
-        dialogId
+        dialogId,
+        userId
       });
     })
   }
@@ -52,7 +53,7 @@ class MessageController {
     .populate('user')
     .exec((err, messages) => {
       if (err) {
-        return res.status(500).json(err);
+        return res.status(400).json(err);
       }
 
       res.status(200).json(messages);
@@ -100,7 +101,7 @@ class MessageController {
               })
 
               this.socket.to(dialogObj._id).emit('MESSAGE_RECEIVED', {message});
-              MessageController.unreadMessages(this.socket, dialogObj._id);
+              MessageController.unreadMessages(this.socket, dialogObj._id, userId);
             });
           } else {
             const data = {
@@ -121,19 +122,19 @@ class MessageController {
               const options = { new: true, upsert: true };
   
               if (err) {
-                return res.status(500).json({ message: err});
+                return res.status(400).json({ message: err});
               }
   
               DialogModal.findOneAndUpdate(query, update, options, err => {
                 if (err) {
-                  return res.status(500).json({
+                  return res.status(400).json({
                     message: err,
                   });
                 }
               });
 
               this.socket.to(dialog._id).emit('MESSAGE_RECEIVED', {message});
-              MessageController.unreadMessages(this.socket, dialog._id);
+              MessageController.unreadMessages(this.socket, dialog._id, userId);
               this.socket.emit('LAST_MESSAGE', {
                 lastMessage: message,
                 dialogId: dialog._id
@@ -169,7 +170,7 @@ class MessageController {
       });
   }
 
-  updateLastMessage = dialogId => {
+  updateLastMessage = (dialogId, userId) => {
     MessageModal
     .findOne({ dialog: dialogId }, {}, {sort: { createdAt: -1 }})
     .populate('user')
@@ -195,21 +196,22 @@ class MessageController {
         lastMessage,
         dialogId
       });
-      MessageController.unreadMessages(this.socket, dialogId);
+      MessageController.unreadMessages(this.socket, dialogId, userId);
     });
   }
 
   deleteMessage = (req, res) => {
     const { messages, dialogId } = req.body;
+    const userId = req.user._id;
 
     MessageModal.deleteMany({_id: {$in: messages}}, err => {
       if (err) {
-        return res.status(500).json({
+        return res.status(400).json({
           message: err,
         });
       }
 
-      this.updateLastMessage(dialogId);
+      this.updateLastMessage(dialogId, userId);
       this.socket.to(dialogId).emit('DELETE_MESSAGE', {
         deleteMessage: messages
       });

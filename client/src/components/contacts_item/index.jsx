@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -45,5 +46,12 @@ const ContactsItem = props => {
     </li>
   )
 };
+
+ContactsItem.propTypes = {
+  _id: PropTypes.string,
+  avatar: PropTypes.string,
+  firstName: PropTypes.string,
+  surname: PropTypes.string
+}
 
 export default ContactsItem;
