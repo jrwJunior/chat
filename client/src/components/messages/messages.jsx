@@ -9,8 +9,7 @@ import Message from 'components/message';
 
 import { getAllMessages, flaggedMessage } from 'actions/action_messages';
 import { getUser } from 'actions/action_user';
-import { resizeBodyHeight, resizeEditor } from 'utils/helpers';
-import { usePrevious } from 'utils/hooks';
+import { resizeBodyHeight, resizeEditor, isEmpty } from 'utils/helpers';
 
 import './style.scss';
 import 'style_components/indicator/style.scss';
@@ -21,8 +20,8 @@ const HistoryMessages = props => {
   const { messages, deletedMessages, isLoading } = useSelector(state => state.chat_message);
   const { isOpenPanel } = useSelector(state => state.deletePanel);
   const { authorizedUser } = useSelector(state => state.authUser);
+  const { user } = useSelector(state => state.user);
   const { dialogId } = useSelector(state => state.dialog);
-  const prevState = usePrevious(userId);
   
   const editorNode = useRef();
   const messagesNode = useRef();
@@ -52,11 +51,11 @@ const HistoryMessages = props => {
   }, [handleResizeBodyHeight, handleResizeEditor]);
 
   useEffect(() => {
-    if (dialogId) {
+    if (dialogId && !messages.length) {
       setMessages();
     }
 
-    if (prevState !== userId) {
+    if (isEmpty(user)) {
       getUserData(userId);
     }
     // eslint-disable-next-line
