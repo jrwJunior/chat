@@ -148,26 +148,23 @@ class MessageController {
   }
 
   editMessage = (req, res) => {
-    const { id, message } = req.body;
+    const { id, message, dialogId } = req.body;
 
-    MessageModal.findByIdAndUpdate({_id: id}, {edited: true, message}, { new: true }, err => {
+    MessageModal.findByIdAndUpdate({_id: id}, {edited: true, message}, { new: true }, (err, message) => {
       if (err) {
-        return res.json(err);
+        return res.status(400).json(err);
       }
-    });
 
-    MessageModal
-      .findById(id)
-      .populate("user")
-      .exec((err, message) => {
+      message.populate('user', (err, editedMessage) => {
         if (err) {
-          return res.json({message: "Messages not found"});
+          return res.status(400).json(err);
         }
 
-        this.socket.to(message.dialog).emit('MESSAGE_EDITING', {
-          editedMessage: message
+        this.socket.to(dialogId).emit('MESSAGE_EDITING', {
+          editedMessage
         });
       });
+    });
   }
 
   updateLastMessage = (dialogId, userId) => {
