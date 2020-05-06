@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { contactId } from 'actions/action_contacs';
 import Avatar from 'components/avatar';
 
-import { useOnlineStatus } from 'utils/hooks';
+// import { useOnlineStatus } from 'utils/hooks';
 
 const ContactsItem = props => {
   const { 
@@ -17,8 +17,7 @@ const ContactsItem = props => {
   } = props;
   const dispatch = useDispatch()
   const setContactId = useCallback(id => dispatch(contactId(id)), [dispatch]);
-
-  const { online } = useOnlineStatus(_id);
+  // const { online } = useOnlineStatus(_id);
 
   return (
     <li
@@ -37,7 +36,7 @@ const ContactsItem = props => {
               size={ 40 }
             />
           </div>
-          { online ? <span className='online-status'/> : null }
+          {/* { online ? <span className='online-status'/> : null } */}
         </div>
         <div className='dialog-message_wrap'>
           <div className="dialog-head">{ `${firstName} ${surname}` }</div>
