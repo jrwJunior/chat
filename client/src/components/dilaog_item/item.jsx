@@ -27,6 +27,7 @@ const DialogsItem = props => {
     authorizedUser,
     lastMessage
   } = props;
+
   const { typing, senderUserId } = useSelector(state => state.isTyping);
   const { unreadMessages } = useSelector(state => state.notifi);
   const { dialogId } = useSelector(state => state.dialog);
@@ -96,7 +97,7 @@ const DialogsItem = props => {
           </div>
           <div className="dialog-meta">
             <div className="dialog-date">{ messageTimeConvert(lastMessage.createdAt) }</div>
-            { lastMessage.user._id !== user._id ? (
+            {lastMessage.user._id !== user._id ? (
               lastMessage.readed ? <span className='icon-readed readed icon-blue' style={{marginTop: '2px'}}/> : <span className='icon-noread readed icon-blue' style={{marginTop: '2px'}}/>
             ) : null }
             {isAuthorMsg && unreadMessages.map((item, idx) => (

@@ -7,9 +7,9 @@ import ContextMenu from "components/context_menu";
 import Editor from 'components/editor';
 import Message from 'components/message';
 
-import { getAllMessages, flaggedMessage } from 'actions/action_messages';
+import { flaggedMessage } from 'actions/action_messages';
+import { resizeBodyHeight, resizeEditor } from 'utils/helpers';
 import { getUser } from 'actions/action_user';
-import { resizeBodyHeight, resizeEditor, isEmpty } from 'utils/helpers';
 
 import './style.scss';
 import 'style_components/indicator/style.scss';
@@ -20,22 +20,15 @@ const HistoryMessages = props => {
   const { messages, deletedMessages, isLoading } = useSelector(state => state.chat_message);
   const { isOpenPanel } = useSelector(state => state.deletePanel);
   const { authorizedUser } = useSelector(state => state.authUser);
-  const { user } = useSelector(state => state.user);
-  const { dialogId } = useSelector(state => state.dialog);
   
   const editorNode = useRef();
   const messagesNode = useRef();
 
   const dispatch = useDispatch();
-  const setMessages = useCallback(() => dispatch(getAllMessages()), [dispatch]);
   const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
   const getUserData = useCallback(id => dispatch(getUser(id)), [dispatch]);
-  const handleResizeBodyHeight = useCallback(() => {
-    resizeBodyHeight(messagesNode, editorNode)
-  }, [messagesNode, editorNode]);
-  const handleResizeEditor = useCallback(() => {
-    resizeEditor(messagesNode, editorNode)
-  }, [messagesNode, editorNode]);
+  const handleResizeBodyHeight = useCallback(() => resizeBodyHeight(messagesNode, editorNode), [messagesNode, editorNode]);
+  const handleResizeEditor = useCallback(() => resizeEditor(messagesNode, editorNode), [messagesNode, editorNode]);
 
   const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
@@ -51,15 +44,10 @@ const HistoryMessages = props => {
   }, [handleResizeBodyHeight, handleResizeEditor]);
 
   useEffect(() => {
-    if (dialogId && !messages.length) {
-      setMessages();
-    }
-
-    if (isEmpty(user)) {
+    if (!messages.length) {
       getUserData(userId);
     }
-    // eslint-disable-next-line
-  }, [userId, dialogId, setMessages, getUserData]);
+  }, [messages, userId, getUserData]);
 
   return (
     <div ref={ messagesNode }>
