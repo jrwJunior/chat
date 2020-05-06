@@ -7,6 +7,13 @@ const setDialogId = id => {
   }
 }
 
+const deleteDialogId = () => {
+  return {
+    type: actionTypes.DELETE_DIALOG_ID
+  }
+}
+
 export {
-  setDialogId
+  setDialogId,
+  deleteDialogId
 }

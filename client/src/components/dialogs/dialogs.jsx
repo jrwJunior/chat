@@ -19,14 +19,13 @@ import './style.scss';
 const list = (({authorizedUser, dialogs }) => (
   <ul className='nav-pills'>
     { dialogs.map(({author, partner, ...rest}) => (
-        <DialogItem 
-          key={ rest._id }
-          authorizedUser={ authorizedUser }
-          user={ authorizedUser._id === author._id ? partner : author }
-          { ...rest }
-        />
-      )
-    )}
+      <DialogItem 
+        key={ rest._id }
+        authorizedUser={ authorizedUser }
+        user={ authorizedUser._id === author._id ? partner : author }
+        { ...rest }
+      />
+    ))}
   </ul>
 ));
 
@@ -53,7 +52,7 @@ const Dialogs = props => {
       setMessages();
     }
     // eslint-disable-next-line
-    if (prevState && prevState != dialogId) {
+    if ((prevState && prevState != dialogId)) {
       getUserData(paramsId);
     }
 

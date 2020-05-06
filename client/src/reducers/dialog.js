@@ -10,6 +10,10 @@ export default (state = initialState, action) => {
       return {
         dialogId: action.payload
       }
+    case actionTypes.DELETE_DIALOG_ID:
+      return {
+        dialogId: null
+      }
     default:
       return state;
   }

@@ -10,12 +10,15 @@ function* allMessages() {
 
   try {
     const messages = yield call(new APIMsg().getMessages, dialogId);
-    const findLastMsg = messages[messages.length-1];
-    const noMsgOwner = findLastMsg.user._id !== authorizedUser._id;
     yield put(loadMessages(messages));
+    
+    if (messages.length) {
+      const findLastMsg = messages[messages.length-1];
+      const noMsgOwner = findLastMsg.user._id !== authorizedUser._id;
 
-    if (!findLastMsg.readed && noMsgOwner) {
-      yield call(new APIMsg().getMessagesRead, {dialogId});
+      if (!findLastMsg.readed && noMsgOwner) {
+        yield call(new APIMsg().getMessagesRead, {dialogId});
+      }
     }
   } catch(err) {
     console.log(err.message);

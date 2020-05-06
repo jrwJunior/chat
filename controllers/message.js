@@ -10,23 +10,25 @@ class MessageController {
     const userId = req.user._id;
     const dialogId = req.query.dialog;
 
-    MessageModal.updateMany(
-      { dialog: dialogId, user: { $ne: userId } },
-      { $set: { readed: true } },
-      { "multi": true, new: true },
-      (err) => {
-        if (err) {
-          return res.status(500).json({
-            status: 'error',
-            message: err,
+    if (dialogId.match(/^[0-9a-fA-F]{24}$/)) {
+      MessageModal.updateMany(
+        { dialog: dialogId, user: { $ne: userId } },
+        { $set: { readed: true } },
+        { "multi": true, new: true },
+        (err) => {
+          if (err) {
+            return res.status(500).json({
+              status: 'error',
+              message: err,
+            });
+          }
+
+          this.socket.to(dialogId).emit('MESSAGES_READED', {
+            dialogId
           });
         }
-
-        this.socket.to(dialogId).emit('MESSAGES_READED', {
-          dialogId
-        });
-      }
-    );
+      );
+    }
   };
 
   static unreadMessages = (socket, dialogId, userId) => {
@@ -47,17 +49,22 @@ class MessageController {
 
   getMessages = async(req, res) => {
     const dialogId = req.query.dialog;
+    const isEmpty = [];
 
-    MessageModal
-    .find({dialog: dialogId})
-    .populate('user')
-    .exec((err, messages) => {
-      if (err) {
-        return res.status(400).json(err);
-      }
-
-      res.status(200).json(messages);
-    });
+    if (dialogId.match(/^[0-9a-fA-F]{24}$/)) {
+      MessageModal
+      .find({dialog: dialogId})
+      .populate('user')
+      .exec((err, messages) => {
+        if (err) {
+          return res.status(400).json(err);
+        }
+        
+        res.status(200).json(messages);
+      });
+    } else {
+      return res.json(isEmpty);
+    }
   }
 
   createMessage = async(req, res) => {
@@ -183,7 +190,7 @@ class MessageController {
           return res.status(400).json({
             message: err,
           });
-        }
+        } 
 
         dialog.lastMessage = lastMessage;
         dialog.save();
