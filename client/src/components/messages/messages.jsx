@@ -8,7 +8,7 @@ import Editor from 'components/editor';
 import Message from 'components/message';
 
 import { flaggedMessage } from 'actions/action_messages';
-import { resizeBodyHeight, resizeEditor } from 'utils/helpers';
+import { resizeBodyHeight, resizeEditor, isEmpty } from 'utils/helpers';
 import { getUser } from 'actions/action_user';
 
 import './style.scss';
@@ -18,8 +18,11 @@ const HistoryMessages = props => {
   const userId = props.match.params.id;
 
   const { messages, deletedMessages, isLoading } = useSelector(state => state.chat_message);
-  const { isOpenPanel } = useSelector(state => state.deletePanel);
-  const { authorizedUser } = useSelector(state => state.authUser);
+  const { isOpenPanel, authorizedUser, user } = useSelector(state => ({
+    isOpenPanel: state.deletePanel.isOpenPanel,
+    authorizedUser: state.authUser.authorizedUser,
+    user: state.user.user
+  }));
   
   const editorNode = useRef();
   const messagesNode = useRef();
@@ -44,10 +47,11 @@ const HistoryMessages = props => {
   }, [handleResizeBodyHeight, handleResizeEditor]);
 
   useEffect(() => {
-    if (!messages.length) {
+    if (isEmpty(user)) {
       getUserData(userId);
     }
-  }, [messages, userId, getUserData]);
+    // eslint-disable-next-line
+  }, [user, getUserData]);
 
   return (
     <div ref={ messagesNode }>

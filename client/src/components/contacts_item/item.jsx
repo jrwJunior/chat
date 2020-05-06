@@ -1,12 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { contactId } from 'actions/action_contacs';
+import { setContactId } from 'actions/action_contacs';
 import Avatar from 'components/avatar';
-
-// import { useOnlineStatus } from 'utils/hooks';
+import { deleteDialogId } from 'actions/action_dialog';
 
 const ContactsItem = props => {
   const { 
@@ -15,14 +14,22 @@ const ContactsItem = props => {
     firstName,
     surname
   } = props;
+  const { contactId } = useSelector(state => state.contacts);
+
   const dispatch = useDispatch()
-  const setContactId = useCallback(id => dispatch(contactId(id)), [dispatch]);
-  // const { online } = useOnlineStatus(_id);
+  const setContact = useCallback(id => dispatch(setContactId(id)), [dispatch]);
+  const deleteId = useCallback(() => dispatch(deleteDialogId()), [dispatch]);
+
+  useEffect(() => {
+    if (contactId) {
+      deleteId();
+    }
+  }, [contactId, deleteId]);
 
   return (
     <li
       className='dialog-wrap'
-      onClick={() => setContactId(_id)}
+      onClick={() => setContact(_id)}
     >
       <Link
         to={`/im/p/${_id}`}
@@ -36,7 +43,6 @@ const ContactsItem = props => {
               size={ 40 }
             />
           </div>
-          {/* { online ? <span className='online-status'/> : null } */}
         </div>
         <div className='dialog-message_wrap'>
           <div className="dialog-head">{ `${firstName} ${surname}` }</div>
