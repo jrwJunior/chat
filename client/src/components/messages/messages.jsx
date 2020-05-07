@@ -8,7 +8,7 @@ import Editor from 'components/editor';
 import Message from 'components/message';
 
 import { flaggedMessage } from 'actions/action_messages';
-import { resizeBodyHeight, resizeEditor, isEmpty } from 'utils/helpers';
+import { resizeBodyHeight, resizeEditor } from 'utils/helpers';
 import { getUser } from 'actions/action_user';
 
 import './style.scss';
@@ -47,11 +47,10 @@ const HistoryMessages = props => {
   }, [handleResizeBodyHeight, handleResizeEditor]);
 
   useEffect(() => {
-    if (isEmpty(user)) {
+    if (user._id !== userId) {
       getUserData(userId);
     }
-    // eslint-disable-next-line
-  }, [user, getUserData]);
+  }, [user._id, userId, getUserData]);
 
   return (
     <div ref={ messagesNode }>
