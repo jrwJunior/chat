@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <header className='navbar'>
       <Skeleton 
-        loading={ loading } 
+        loading={ loading }
         active 
         avatar 
         title={{width: '150px'}}
