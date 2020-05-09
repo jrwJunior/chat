@@ -1,6 +1,6 @@
 import login from './login';
 import signUp from './signUp';
-import dialogsUser from './dialogsUser';
+import dialogsAuthUser from './dialogsAuthUser';
 import messages from './messages';
 import message from './message';
 import deleteMessage from './deleteMessage';
@@ -12,7 +12,7 @@ import createChannel from './channels/createChannel';
 export {
   login,
   signUp,
-  dialogsUser,
+  dialogsAuthUser,
   messages,
   message,
   deleteMessage,

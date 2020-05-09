@@ -27,7 +27,7 @@ const Home = () => {
           path='/im/p/:id'
           render={routeProps => (
             <>
-              <Navbar/>
+              <Navbar { ...routeProps }/>
               <HistoryMessages { ...routeProps } />
             </>
           )}

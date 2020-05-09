@@ -1,14 +1,14 @@
 import { put, call, all, take, fork } from 'redux-saga/effects';
 
-import { DEALOGS_REQUESTED, GET_USER } from 'constans';
+import { DEALOGS_REQUESTED } from 'constans';
 import { dialogsLoad } from 'actions/action_dialogs';
-import { setAuthorizedUser, setUser } from 'actions/action_user';
+import { setAuthorizedUser } from 'actions/action_user';
 import { logOut } from 'actions/action_auth';
 import { APIDialogs } from 'utils/api/dialog';
 import { APIUser } from 'utils/api/user';
 import { userOnline } from './channels/online';
 
-function* getUserAndDialogs() {
+function* getDialogsAndAuthUser() {
   try {
     const [ dialogs, user ] = yield all([
       call(new APIDialogs().getAllDialogs),
@@ -27,27 +27,10 @@ function* getUserAndDialogs() {
   }
 }
 
-function* getPartnerDialog(action) {
-  try {
-    const { data } = yield call(new APIUser().getMyPartner, action.payload);
-    yield put(setUser(data));
-  } catch(err) {
-    console.log(err.message);
-  }
-}
-
 function* watchForDailogs() {
   while(true) {
-    const action = yield take([
-      DEALOGS_REQUESTED,
-      GET_USER
-    ]);
-
-    if (action.type === GET_USER) {
-      yield fork(getPartnerDialog, action);
-    } else {
-      yield fork(getUserAndDialogs);
-    }
+    yield take(DEALOGS_REQUESTED);
+    yield fork(getDialogsAndAuthUser);
   }
 };
 

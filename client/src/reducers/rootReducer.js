@@ -9,13 +9,11 @@ import typingMessage from './typingMessage';
 import onlineStatus from './onlineStatus';
 import deletePanel from './deletePanel';
 import replyMessage from './replyMessage';
-import user from './user';
 import notifi from './notifiBadge';
 import attachment from './attachment';
 
 const rootReducer = combineReducers({
   authUser: auth,
-  user,
   chatDialogs: dialogs,
   dialog,
   contacts,

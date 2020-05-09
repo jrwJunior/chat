@@ -29,9 +29,11 @@ const list = (({authorizedUser, dialogs }) => (
 
 const Dialogs = () => {
   const { dialogs, noDialogs, loading } = useSelector(state => state.chatDialogs);
-  const { contacts } = useSelector(state => state.contacts);
-  const { authorizedUser } = useSelector(state => state.authUser);
-  const { dialogId } = useSelector(state => state.dialog);
+  const { contacts, authorizedUser, dialogId } = useSelector(state => ({
+    contacts: state.contacts.contacts,
+    authorizedUser: state.authUser.authorizedUser,
+    dialogId: state.dialog.dialogId
+  }));
 
   const prevState = usePrevious(dialogId);
 
