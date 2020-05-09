@@ -30,9 +30,11 @@ const DialogsItem = props => {
   } = props;
 
   const { typing, senderUserId } = useSelector(state => state.isTyping);
-  const { unreadMessages } = useSelector(state => state.notifi);
-  const { dialogId } = useSelector(state => state.dialog);
-  const { userOnline } = useSelector(state => state.onlineStatus);
+  const { unreadMessages, dialogId, userOnline } = useSelector(state => ({
+    unreadMessages: state.notifi.unreadMessages,
+    dialogId: state.dialog.dialogId,
+    userOnline: state.onlineStatus.userOnline
+  }));
 
   const prevProps = usePrevious(_id);
 

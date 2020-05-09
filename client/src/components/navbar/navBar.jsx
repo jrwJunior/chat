@@ -1,50 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { CSSTransition } from 'react-transition-group';
-import { Skeleton } from 'antd';
 
-import DeletePanel from 'components/deletePanel';
-import NavbarInfo from './info';
+import Indicator from 'components/typing_indicator';
+import Avatar from 'components/avatar';
 
-import './style.scss';
-import 'style_components/skeleton/style.scss';
-
-const Navbar = () => {
-  const [showInfoPanel, setShowInfoPanel] = useState(true);
-
-  const { isOpenPanel } = useSelector(state => state.deletePanel);
-  const { user, loading } = useSelector(state => state.user);
+const Navbar = ({ data }) => {
+  const { typing } = useSelector(state => state.isTyping);
+  const { userOnline } = useSelector(state => state.onlineStatus);
 
   return (
-    <header className='navbar'>
-      <Skeleton 
-        loading={ loading }
-        active 
-        avatar 
-        title={{width: '150px'}}
-        paragraph={{rows: 1, width: '200px'}}
-      >
-        <CSSTransition
-          in={ showInfoPanel }
-          timeout={ 150 }
-          classNames="come-down"
-          unmountOnExit
-        >
-          <NavbarInfo data={ user } />
-        </CSSTransition>
-        <CSSTransition
-          in={ isOpenPanel }
-          timeout={ 150 }
-          classNames="climb-up"
-          unmountOnExit
-          onEnter={() => setShowInfoPanel(false)}
-          onExited={() => setShowInfoPanel(true)}
-        >
-          <DeletePanel/>
-        </CSSTransition>
-      </Skeleton>
-    </header>
+    <div className='navbar-peer'>
+      <Avatar
+        userName={ data.firstName }
+        avatar={ data.avatar }
+        size={ 35 }
+      />
+      <div className='navbar-peer-title'>
+        { `${data.firstName} ${data.surname}` }
+        { typing ? <Indicator/> : (
+          <div 
+            className='profile-peer-status' 
+            style={{ color: false ? '#a9a9a9' : false }}
+          >
+            { userOnline.includes(data._id) ? (
+              <>
+                <span className='online-status'/>
+                Active now
+              </>
+            ): 'Not active now'}
+          </div>
+        )}
+      </div>
+    </div>
   )
 };
+
+Navbar.propTypes = {
+  data: PropTypes.object
+}
 
 export default Navbar;

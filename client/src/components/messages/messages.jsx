@@ -9,7 +9,6 @@ import Message from 'components/message';
 
 import { flaggedMessage } from 'actions/action_messages';
 import { resizeBodyHeight, resizeEditor } from 'utils/helpers';
-import { getUser } from 'actions/action_user';
 
 import './style.scss';
 import 'style_components/indicator/style.scss';
@@ -18,10 +17,9 @@ const HistoryMessages = props => {
   const userId = props.match.params.id;
 
   const { messages, deletedMessages, isLoading } = useSelector(state => state.chat_message);
-  const { isOpenPanel, authorizedUser, user } = useSelector(state => ({
+  const { isOpenPanel, authorizedUser } = useSelector(state => ({
     isOpenPanel: state.deletePanel.isOpenPanel,
-    authorizedUser: state.authUser.authorizedUser,
-    user: state.user.user
+    authorizedUser: state.authUser.authorizedUser
   }));
   
   const editorNode = useRef();
@@ -29,7 +27,6 @@ const HistoryMessages = props => {
 
   const dispatch = useDispatch();
   const setFlaggedMessage = useCallback(id => dispatch(flaggedMessage(id)), [dispatch]);
-  const getUserData = useCallback(id => dispatch(getUser(id)), [dispatch]);
   const handleResizeBodyHeight = useCallback(() => resizeBodyHeight(messagesNode, editorNode), [messagesNode, editorNode]);
   const handleResizeEditor = useCallback(() => resizeEditor(messagesNode, editorNode), [messagesNode, editorNode]);
 
@@ -45,12 +42,6 @@ const HistoryMessages = props => {
     handleResizeBodyHeight();
     handleResizeEditor();
   }, [handleResizeBodyHeight, handleResizeEditor]);
-
-  useEffect(() => {
-    if (user._id !== userId) {
-      getUserData(userId);
-    }
-  }, [user._id, userId, getUserData]);
 
   return (
     <div ref={ messagesNode }>

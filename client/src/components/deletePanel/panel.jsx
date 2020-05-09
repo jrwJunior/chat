@@ -49,7 +49,7 @@ export default () => {
         >
           <Badge className='badge-slc_msg' count={ deletedMessages.length }/>
         </button>
-        <Button className='btn-cancel' onClick={ handleCancel }>Cancel</Button>
+        <Button className='btn-cancel' onClick={ handleCancel } style={{textTransform: 'capitalize'}}>Cancel</Button>
       </div>
     </div>
   )
