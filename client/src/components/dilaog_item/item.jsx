@@ -43,6 +43,7 @@ const DialogsItem = props => {
   const isAuthorMsg = !!lastMessage && lastMessage.user._id !== authorizedUser._id;
 
   const dispatch = useDispatch();
+  
   const setIdDialog = useCallback(id => dispatch(setDialogId(id)), [dispatch]);
   const messageRead = useCallback(() => {
     if (!!lastMessage && !lastMessage.readed && isAuthorMsg && isActive) {
