@@ -50,7 +50,6 @@ class UserController {
     .or([
       { firstName: new RegExp(query, 'i') },
       { surname: new RegExp(query, 'i') },
-      { email: new RegExp(query, 'i') },
     ])
     .then(users => {
       users.forEach(item => {

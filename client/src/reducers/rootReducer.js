@@ -4,6 +4,7 @@ import auth from './auth';
 import dialogs from './dialogs';
 import dialog from './dialog';
 import contacts from './contacts';
+import user from './user';
 import messages from './messages';
 import typingMessage from './typingMessage';
 import onlineStatus from './onlineStatus';
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   chatDialogs: dialogs,
   dialog,
   contacts,
+  user,
   isTyping: typingMessage,
   chat_message: messages,
   onlineStatus,

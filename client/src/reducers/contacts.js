@@ -2,7 +2,7 @@ import * as actionTypes from 'constans';
 
 const initialState = {
   contacts: [],
-  contactId: null,
+  contact: null,
   loading: false
 };
 
@@ -21,7 +21,7 @@ export default (state = initialState, action) => {
     case actionTypes.SET_CONTACT_ID:
       return {
         ...state,
-        contactId: action.payload
+        contact: action.payload
       };
     case actionTypes.DELETE_SELECTED_CONTACT:
       return {

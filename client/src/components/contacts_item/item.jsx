@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { setContactId } from 'actions/action_contacs';
 import Avatar from 'components/avatar';
 import { deleteDialogId } from 'actions/action_dialog';
+import { setUserDialog } from 'actions/action_user';
 
 const ContactsItem = props => {
   const { 
@@ -14,22 +14,22 @@ const ContactsItem = props => {
     firstName,
     surname
   } = props;
-  const { contactId } = useSelector(state => state.contacts);
+  const { user } = useSelector(state => state.user);
 
   const dispatch = useDispatch()
-  const setContact = useCallback(id => dispatch(setContactId(id)), [dispatch]);
+  const setUser = useCallback(data => dispatch(setUserDialog(data)), [dispatch]);
   const deleteId = useCallback(() => dispatch(deleteDialogId()), [dispatch]);
 
   useEffect(() => {
-    if (contactId) {
+    if (user) {
       deleteId();
     }
-  }, [contactId, deleteId]);
+  }, [user, deleteId]);
 
   return (
     <li
       className='dialog-wrap'
-      onClick={() => setContact(_id)}
+      onClick={() => setUser({_id,avatar,firstName,surname})}
     >
       <Link
         to={`/im/p/${_id}`}

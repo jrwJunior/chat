@@ -13,7 +13,23 @@ const setAuthorizedUser = data => {
   }
 }
 
+const setUserDialog = data => {
+  return {
+    type: actionTypes.SET_USER,
+    payload: data
+  }
+}
+
+const getUser = id => {
+  return {
+    type: actionTypes.GET_USER,
+    payload: id
+  }
+}
+
 export {
   getAuthorizedUser,
-  setAuthorizedUser
+  setAuthorizedUser,
+  setUserDialog,
+  getUser
 }
