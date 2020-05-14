@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
-import { Skeleton } from 'antd';
 
 import DeletePanel from 'components/deletePanel';
 import NavbarInfo from './navbar';
@@ -13,9 +12,9 @@ import 'style_components/skeleton/style.scss';
 const Navbar = props => {
   const [showBar, setShowBar] = useState(true);
 
-  const { isOpenPanel, dialogs, user } = useSelector(state => ({
+  const { dialogs, noDialogs } = useSelector(state => state.chatDialogs)
+  const { isOpenPanel, user } = useSelector(state => ({
     isOpenPanel: state.deletePanel.isOpenPanel,
-    dialogs: state.chatDialogs.dialogs,
     user: state.user.user
   }));
 
@@ -23,12 +22,15 @@ const Navbar = props => {
   const getUserData = useCallback(id => dispatch(getUser(id)), [dispatch]);
 
   const userId = props.match.params.id;
+  const isUser = !user || user._id !== userId;
 
-  const userNotFoundDialogs = useMemo(() => (
-    !!dialogs.length && dialogs.every(item => (
-      item.author._id !== userId && item.partner._id !== userId
-    ))
-  ), [dialogs, userId])
+  const userNotFoundDialogs = useMemo(() => {
+    if (dialogs.length || noDialogs) {
+      return dialogs.every(item => (
+        item.author._id !== userId && item.partner._id !== userId
+      ))
+    }
+  }, [dialogs, noDialogs, userId])
 
   useEffect(() => {
     if (userNotFoundDialogs && !user) {
@@ -49,18 +51,11 @@ const Navbar = props => {
             const keys = [partner._id, author._id];
             const user = author._id === userId ? author : partner;
 
-            if (keys.includes(userId)) {
+            if (keys.includes(userId) && isUser) {
               return <NavbarInfo key={rest._id} data={ user } />
             }
           })}
-          <Skeleton 
-            loading={ !dialogs.length }
-            active 
-            avatar 
-            title={{width: '150px'}}
-            paragraph={{rows: 1, width: '200px'}}
-          />
-          { (!user || user._id !== userId) ? null : <NavbarInfo data={ user } /> }
+          { isUser ? null : <NavbarInfo data={ user } /> }
         </>
       </CSSTransition>
       <CSSTransition
