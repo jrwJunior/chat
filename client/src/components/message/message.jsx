@@ -85,7 +85,9 @@ const Message = props => {
                     { author }
                   </div>
                   <div className='message-reply_body'>
-                    { message }
+                    {reactStringReplace(message, /:(.+?):/g, match => (
+                      <Emoji key={ uuidv5('guys.example.com', uuidv5.DNS) } emoji={match} set='messenger' size={16} />
+                    ))}
                   </div>
                 </div>
               )) }
